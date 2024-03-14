@@ -5,8 +5,9 @@ import { formatVietnameseToString } from "../../ultils/Common/formatVietnameseTo
 
 
 
-const notActive = 'hover:bg-secondary2 h-full flex justify-center items-center px-4 bg-secondary1'
-const active = 'hover:bg-secondary2 h-full flex justify-center items-center px-4 bg-secondary2'
+const notActive = 'hover:bg-secondary2 px-4 h-full flex items-center bg-secondary1'
+const active = 'hover:bg-secondary2 px-4 h-full flex items-center  bg-secondary2'
+
 const Navigate = () => {
     const [categories, setCategories] = useState([])
     useEffect(() => {
@@ -19,8 +20,8 @@ const Navigate = () => {
         fetchCategories()
     }, [])
     return (
-        <div className="w-screen flex justify-center items-center h-[40px] bg-secondary1 text-white">
-            <div className="w-3/5 flex h-full items-center  text-sm font-medium">
+        <div className="w-full flex justify-center items-center h-[40px] bg-secondary1 text-white">
+            <div className="w-3/4 flex h-full items-center text-sm font-medium">
                 <NavLink to={'/'}
                     className={({ isActive }) => isActive ? active : notActive}
                 >
