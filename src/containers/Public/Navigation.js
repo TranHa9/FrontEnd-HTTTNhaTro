@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from 'react-router-dom';
-import { apigetCategories } from "../../services/category";
+import { apiGetCategories } from "../../services/category";
 import { formatVietnameseToString } from "../../ultils/Common/formatVietnameseToString";
 
 
@@ -12,7 +12,7 @@ const Navigate = () => {
     const [categories, setCategories] = useState([])
     useEffect(() => {
         const fetchCategories = async () => {
-            const response = await apigetCategories()
+            const response = await apiGetCategories()
             if (response?.data.err === 0) {
                 setCategories(response.data.response)
             }

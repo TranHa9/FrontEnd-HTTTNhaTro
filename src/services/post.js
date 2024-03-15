@@ -1,10 +1,10 @@
 import axiosConfig from "../axiosConfig";
 
-export const apiGetCategories = () => new Promise(async (resolve, reject) => {
+export const apiGetPosts = () => new Promise(async (resolve, reject) => {
     try {
         const response = await axiosConfig({
             method: 'get',
-            url: '/api/v1/category/all'
+            url: '/api/v1/post/all'
         })
         resolve(response)
     } catch (error) {

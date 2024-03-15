@@ -1,23 +1,27 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import icons from '../ultils/icons'
 
-const images = [
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2024/02/19/so-nha_1708295903.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2024/02/19/untitled_1708295881.png",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2024/02/19/1_1708295901.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2024/02/19/2_1708295901.jpg",
-]
+const indexs = [0, 1, 2, 3]
 
 const { GrStar, RiHeartLine, RiHeartFill, BsBookmarkStarFill } = icons
 
-const Item = () => {
+const Item = ({ images, user, title, star, description, address, attributes }) => {
+    const [isHoverHeart, setIsHoverHeart] = useState(false)
     return (
-        <div className='w-full flex border-t border-orange-600'>
-            <div className='w-2/5 flex flex-wrap gap-[2px] items-center'>
-                <img src={images[0]} alt='perview' className='w-[140px] h-[120px] object-cover' />
-                <img src={images[1]} alt='perview' className='w-[140px] h-[120px] object-cover' />
-                <img src={images[2]} alt='perview' className='w-[140px] h-[120px] object-cover' />
-                <img src={images[3]} alt='perview' className='w-[140px] h-[120px] object-cover' />
+        <div className='w-full flex border-t border-orange-600 py-4'>
+            <div className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
+                {images.length > 0 && images.filter((i, index) => indexs.some(i => i === index))?.map((i, index) => {
+                    return (
+                        <img key={index} src={i} alt='perview' className='w-[140px] h-[120px] object-cover' />
+                    )
+                })}
+                <span className='bg-overlay-50 text-white px-2 rounded-md absolute left-1 bottom-4'>{`${images.length} ảnh`}</span>
+                <span className=' absolute right-5 bottom-1'
+                    onMouseEnter={() => setIsHoverHeart(true)}
+                    onMouseLeave={() => setIsHoverHeart(false)}
+                >
+                    {isHoverHeart ? <RiHeartFill size={24} color='red' /> : <RiHeartLine size={24} color='white' />}
+                </span>
             </div>
             <div className='w-3/5'>
                 <div className='flex justify-between gap-4 w-full'>
@@ -27,31 +31,32 @@ const Item = () => {
                         <GrStar className='star-item' size={18} color='yellow' />
                         <GrStar className='star-item' size={18} color='yellow' />
                         <GrStar className='star-item' size={18} color='yellow' />
-                        CHO THUÊ NHÀ TRỌ GIẢ RẺ TIỆN NGHI
+                        {title}
                     </div>
                     <div className='w-[10%] flex justify-end'>
                         <BsBookmarkStarFill size={24} color='orange' />
                     </div>
                 </div>
-                <div className='py-2 flex items-center justify-between'>
-                    <span className='font-bold text-green-600'>2.5 triệu/tháng</span>
-                    <span>25m²</span>
-                    <span>Gia Lâm - Hà Nội</span>
+                <div className='py-2 flex items-center justify-between gap-2'>
+                    <span className='font-bold flex-3 text-green-600 truncate'>{attributes?.price}</span>
+                    <span className='flex-1 truncate'>{attributes?.acreage}</span>
+                    <span className='flex-3 truncate'>
+                        {`${address.split(',')[address.split(',').length - 2]}${address.split(',')[address.split(',').length - 1]}`}
+                    </span>
                 </div>
-                <p className='text-gray-500'>
-                    Còn 3 phòng trọ cho thuê, không gian thoáng mát, tiện nghi không thiếu gì, có chỗ để xe, ô tô.Diện tích 30m2 thông thoáng.Nội thất đầy đủ: giường, tủ,…
-                </p>
-                <div className='flex items-center my-3 justify-between'>
+                <p className='text-gray-500 w-full h-[70px] overflow-hidden text-ellipsis'>{description}</p>
+                <div className='flex items-center justify-between my-7'>
                     <div className='flex items-center'>
                         <img src='https://i.pinimg.com/736x/b7/91/44/b79144e03dc4996ce319ff59118caf65.jpg' alt='avatar' className='w-[30px] h-[30px] 
                         object-cover rounded-full' />
-                        <p>Tuệ Thu</p>
+                        <p>{user?.name}</p>
                     </div>
                     <div className='flex items-center gap-1'>
                         <button
                             type='button'
                             className='bg-blue-700 text-white p-1 rounded-md'
-                        >Gọi 1234567890
+                        >
+                            {`Gọi ${user?.zalo}`}
                         </button>
                         <button
                             type='button'

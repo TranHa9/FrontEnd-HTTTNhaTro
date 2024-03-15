@@ -1,3 +1,5 @@
+
+
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -12,12 +14,17 @@ module.exports = {
         primary: '#F5F5F5',
         secondary1: '#1266dd',
         secondary2: '#f73859',
-        secondary3: '#febb02'
+        secondary3: '#febb02',
+        'overlay-30': 'rgb(0,0,0,0.3)',
+        'overlay-50': 'rgb(0,0,0,0.5)',
       },
       maxWidth: {
         '600': '600px',
         '1100': '1100px'
       },
+      flex: {
+        '3': '3 3 0%'
+      }
     },
   },
   plugins: [],
