@@ -18,7 +18,6 @@ const Item = ({ images, user, title, star, description, address, attributes, id 
         }
         return stars
     }
-    console.log(handleStar(5))
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
             <Link to={`chi-tiet/${formatVietnameseToString(title)}/${id}`} className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
