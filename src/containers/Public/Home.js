@@ -11,6 +11,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(action.getPrices())
         dispatch(action.getArea())
+        dispatch(action.getProvince())
     }, [])
     return (
         <div className="w-full flex gap-4 flex-col items-center h-full ">
