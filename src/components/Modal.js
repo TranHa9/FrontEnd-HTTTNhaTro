@@ -1,21 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import icons from '../ultils/icons';
+import { getNumbersArea, getNumbersPrice } from '../ultils/Common/getNumbers';
+import { getCodes, getCodesArea } from '../ultils/Common/getCodes';
 
 const { GrLinkPrevious } = icons;
 
-const Modal = ({ setIsShowModal, content, name }) => {
+const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax, defaultText }) => {
 
-    const [persent1, setPersent1] = useState(0)
-    const [persent2, setPersent2] = useState(100)
+    const [persent1, setPersent1] = useState(
+        name === 'price' && arrMinMax?.priceArr
+            ? arrMinMax?.priceArr[0]
+            : name === 'area' && arrMinMax?.areaArr ? arrMinMax?.areaArr[0] : 0
+    )
+    const [persent2, setPersent2] = useState(
+        name === 'price' && arrMinMax?.priceArr
+            ? arrMinMax?.priceArr[1]
+            : name === 'area' && arrMinMax?.areaArr ? arrMinMax?.areaArr[1] : 100
+    )
+    const [activedEl, setActivedEl] = useState('')
 
     useEffect(() => {
         const activedTrackEl = document.getElementById('track-active')
-        if (persent2 <= persent1) {
-            activedTrackEl.style.left = `${persent2}%`;
-            activedTrackEl.style.right = `${100 - persent1}%`
-        } else {
-            activedTrackEl.style.left = `${persent1}%`;
-            activedTrackEl.style.right = `${100 - persent2}%`
+        if (activedTrackEl) {
+            if (persent2 <= persent1) {
+                activedTrackEl.style.left = `${persent2}%`;
+                activedTrackEl.style.right = `${100 - persent1}%`
+            } else {
+                activedTrackEl.style.left = `${persent1}%`;
+                activedTrackEl.style.right = `${100 - persent2}%`
+            }
         }
     }, [persent1, persent2])
 
@@ -23,16 +36,59 @@ const Modal = ({ setIsShowModal, content, name }) => {
         e.stopPropagation()
         const stackEl = document.getElementById('track')
         const stacRect = stackEl.getBoundingClientRect()
-        let persent = value ? value : Math.round((e.clientX - stacRect.left) * 100 / stacRect.width, 0)
-        if (Math.abs(persent - persent1) <= (Math.abs(persent - persent2))) {
-            setPersent1(persent)
+        let percent = value ? value : Math.round((e.clientX - stacRect.left) * 100 / stacRect.width, 0)
+        if (Math.abs(percent - persent1) <= (Math.abs(percent - persent2))) {
+            setPersent1(percent)
         } else {
-            setPersent2(persent)
+            setPersent2(percent)
         }
     }
-    const convert100to15 = (persent) => {
-        return (Math.ceil(Math.round((persent * 1.5)) / 5) * 5) / 10
+    const convert100toTarget = (percent) => {
+        return name === 'price'
+            ? (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10
+            : name === 'area' ? (Math.ceil(Math.round((percent * 0.9)) / 5) * 5) : 0
     }
+    const convertto100 = (percent) => {
+        let target = name === 'price' ? 15 : name === 'area' ? 90 : 1
+        return Math.floor((percent / target) * 100)
+    }
+    const handlActive = (code, value) => {
+        setActivedEl(code)
+        let arrMaxMin = name === 'price' ? getNumbersPrice(value) : getNumbersArea(value)
+        if (arrMaxMin.length === 1) {
+            if (arrMaxMin[0] === 1) {
+                setPersent1(0)
+                setPersent2(convertto100(1))
+            }
+            if (arrMaxMin[0] === 20) {
+                setPersent1(0)
+                setPersent2(convertto100(20))
+            }
+            if (arrMaxMin[0] === 15 || arrMaxMin[0] === 90) {
+                setPersent1(100)
+                setPersent2(100)
+            }
+        }
+        if (arrMaxMin.length === 2) {
+            setPersent1(convertto100(arrMaxMin[0]))
+            setPersent2(convertto100(arrMaxMin[1]))
+        }
+    }
+    const handleBeforeSubmit = (e) => {
+        let min = persent1 <= persent2 ? persent1 : persent2
+        let max = persent1 <= persent2 ? persent2 : persent1
+        let arrMinMax = [convert100toTarget(min), convert100toTarget(max)]
+        // const gaps = name === 'price'
+        //     ? getCodes(arrMinMax, content)
+        //     : name === 'area' ? getCodesArea(arrMinMax, content) : []
+        handleSubmit(e, {
+            [`${name}Number`]: arrMinMax,
+            [name]: `Từ ${convert100toTarget(min)} - ${convert100toTarget(max)} ${name === 'price' ? 'triệu' : 'm2'}`
+        }, {
+            [`${name}Arr`]: [min, max]
+        })
+    }
+
     return (
         <div
             onClick={(e) => { setIsShowModal(false) }}
@@ -44,7 +100,7 @@ const Modal = ({ setIsShowModal, content, name }) => {
                     e.stopPropagation()
                     setIsShowModal(true)
                 }}
-                className='w-1/3 bg-white rounded-md'
+                className='w-2/5 h-[500px] bg-white rounded-md relative'
             >
                 <div className='h-[45px] px-4 flex items-center border-b border-gray-100'>
                     <span
@@ -58,13 +114,33 @@ const Modal = ({ setIsShowModal, content, name }) => {
                     </span>
                 </div>
                 {(name === 'category' || name === 'province') && <div className='p-4 flex flex-col'>
+                    <span
+                        className='py-2 flex gap-2 items-center border-b border-gray-300'
+                    >
+                        <input
+                            type='radio'
+                            name={name}
+                            id='default'
+                            value={defaultText || ''}
+                            checked={!queries[`${name}Code`] ? true : false}
+                            onChange={(e) => handleSubmit(e, { [name]: defaultText, [`${name}Code`]: null })}
+                        />
+                        <label htmlFor='default'>{defaultText}</label>
+                    </span>
                     {content?.map(item => {
                         return (
                             <span
                                 key={item.code}
                                 className='py-2 flex gap-2 items-center border-b border-gray-300'
                             >
-                                <input type='radio' name={name} id={item.code} value={item.code} />
+                                <input
+                                    type='radio'
+                                    name={name}
+                                    id={item.code}
+                                    value={item.code}
+                                    checked={item.code === queries[`${name}Code`] ? true : false}
+                                    onChange={(e) => handleSubmit(e, { [name]: item.value, [`${name}Code`]: item.code })}
+                                />
                                 <label htmlFor={item.code}>{item.value}</label>
                             </span>
                         )
@@ -73,10 +149,17 @@ const Modal = ({ setIsShowModal, content, name }) => {
                 {(name === 'price' || name === 'area') && <div className='p-12 py-20'>
                     <div className='flex flex-col items-center justify-center relative'>
                         <div className='z-20 absolute top-[-48px] font-bold text-xl text-orange-600'>
-                            {`Từ ${persent1 <= persent2 ? convert100to15(persent1) : convert100to15(persent2)} đến ${persent2 >= persent1 ? convert100to15(persent2) : convert100to15(persent1)} triệu +`}
+                            {(persent1 === 100 && persent2 === 100)
+                                ? `Trên ${convert100toTarget(persent1)} ${name === 'price' ? 'triệu' : 'm2'} +`
+                                : `Từ ${persent1 <= persent2
+                                    ? convert100toTarget(persent1)
+                                    : convert100toTarget(persent2)} đến ${persent2 >= persent1
+                                        ? convert100toTarget(persent2)
+                                        : convert100toTarget(persent1)} ${name === 'price' ? 'triệu' : 'm2'}
+                                `}
                         </div>
                         <div onClick={handleClickTrack} id='track' className='silder-track h-[5px] absolute top-0 bottom-0 w-full bg-gray-300 rounded-full'></div>
-                        <div onClick={handleClickTrack} id='track-active' className='silder-track-active h-[5px] absolute top-0 bottom-0 bg-orange-500 rounded-full'></div>
+                        <div onClick={handleClickTrack} id='track-active' className='silder-track-active h-[5px] absolute top-0 bottom-0 bg-secondary3 rounded-full'></div>
                         <input
                             max='100'
                             min='0'
@@ -84,7 +167,10 @@ const Modal = ({ setIsShowModal, content, name }) => {
                             type='range'
                             value={persent1}
                             className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
-                            onChange={(e) => setPersent1(+e.target.value)}
+                            onChange={(e) => {
+                                setPersent1(+e.target.value)
+                                activedEl && setActivedEl('')
+                            }}
                         />
                         <input
                             max='100'
@@ -93,7 +179,10 @@ const Modal = ({ setIsShowModal, content, name }) => {
                             type='range'
                             value={persent2}
                             className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
-                            onChange={(e) => setPersent2(+e.target.value)}
+                            onChange={(e) => {
+                                setPersent2(+e.target.value)
+                                activedEl && setActivedEl('')
+                            }}
                         />
                         <div className='absolute z-30 top-6 left-0 right-0 flex justify-between items-center'>
                             <span
@@ -112,15 +201,39 @@ const Modal = ({ setIsShowModal, content, name }) => {
                                     handleClickTrack(e, 100)
                                 }}
                             >
-                                15 triệu +
+                                {name === 'price' ? '15 triệu +' : name === 'area' ? 'Trên 90 m2' : ''}
                             </span>
+                        </div>
+                    </div>
+                    <div className='mt-20'>
+                        <h4 className='font-medium mb-4'>Chọn nhanh:</h4>
+                        <div className='flex gap-2 items-center flex-wrap w-full'>
+                            {content?.map(item => {
+                                return (
+                                    <button
+                                        key={item.code}
+                                        onClick={() => handlActive(item.code, item.value)}
+                                        className={`px-4 py-2 bg-gray-200 rounded-md cursor-pointer ${item.code === activedEl ? 'bg-secondary1 text-white' : ''}`}
+                                    >
+                                        {item.value}
+                                    </button>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
                 }
+                {(name === 'price' || name === 'area') &&
+                    <button
+                        type='button'
+                        className='w-full absolute bottom-0 bg-secondary3 py-2 font-medium rounded-bl-md rounded-br-md'
+                        onClick={handleBeforeSubmit}
+                    >
+                        Áp dụng
+                    </button>}
             </div>
         </div>
     )
 }
 
-export default Modal
+export default memo(Modal)

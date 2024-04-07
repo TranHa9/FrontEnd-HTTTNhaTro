@@ -4,9 +4,11 @@ import { BsChevronRight, BsBookmarkStarFill } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import { TbReportMoney } from "react-icons/tb";
 import { RiCrop2Line, RiHeartLine, RiHeartFill } from "react-icons/ri";
-import { MdLocationCity } from "react-icons/md";
+import { MdLocationCity, MdOutlinePostAdd, MdLogout } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
-
+import { ImPencil2 } from "react-icons/im";
+import { FaUserTag } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
 
 
 const icons = {
@@ -24,6 +26,11 @@ const icons = {
     BsBookmarkStarFill,
     GrLinkNext,
     GrLinkPrevious,
+    ImPencil2,
+    MdOutlinePostAdd,
+    FaUserTag,
+    MdLogout,
+    IoIosArrowDown
 }
 
 export default icons

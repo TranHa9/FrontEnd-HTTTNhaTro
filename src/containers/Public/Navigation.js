@@ -9,7 +9,7 @@ import * as actions from '../../store/actions'
 const notActive = 'hover:bg-secondary2 px-4 h-full flex items-center bg-secondary1'
 const active = 'hover:bg-secondary2 px-4 h-full flex items-center  bg-secondary2'
 
-const Navigate = () => {
+const Navigation = () => {
     const dispatch = useDispatch()
     const { categories } = useSelector(state => state.app)
     useEffect(() => {
@@ -26,7 +26,7 @@ const Navigate = () => {
                 {categories?.length > 0 && categories.map((item) => {
                     return (
                         <div key={item.code} className="h-full flex justify-center items-center">
-                            <NavLink to={`${formatVietnameseToString(item.value)}`}
+                            <NavLink to={`/${formatVietnameseToString(item.value)}`}
                                 className={({ isActive }) => isActive ? active : notActive}
                             >
                                 {item.value}
@@ -38,4 +38,4 @@ const Navigate = () => {
         </div>
     )
 }
-export default Navigate
+export default Navigation

@@ -1,23 +1,30 @@
 import React, { useEffect } from "react";
 import Header from './Header';
 import { Outlet } from "react-router-dom";
-import { Navigate, Search } from "./index";
+import { Navigation, Search } from "./index";
 import { Contact, Intro } from "../../components";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as action from '../../store/actions';
 
 const Home = () => {
     const dispatch = useDispatch()
+    const { isLoggedIn } = useSelector(state => state.auth)
+
     useEffect(() => {
         dispatch(action.getPrices())
         dispatch(action.getArea())
         dispatch(action.getProvince())
     }, [])
+    useEffect(() => {
+        setTimeout(() => {
+            isLoggedIn && dispatch(action.getCurrent())
+        }, 1000)
+    }, [isLoggedIn])
     return (
         <div className="w-full flex gap-4 flex-col items-center h-full ">
             <Header />
-            <Navigate />
-            <Search />
+            <Navigation />
+            {isLoggedIn && <Search />}
             <div className="w-4/5 lg:w-3/4 flex flex-col items-start justify-start mt-3">
                 <Outlet />
             </div>
