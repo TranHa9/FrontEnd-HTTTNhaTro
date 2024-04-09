@@ -15,11 +15,7 @@ const Home = () => {
         dispatch(action.getArea())
         dispatch(action.getProvince())
     }, [])
-    useEffect(() => {
-        setTimeout(() => {
-            isLoggedIn && dispatch(action.getCurrent())
-        }, 1000)
-    }, [isLoggedIn])
+
     return (
         <div className="w-full flex gap-4 flex-col items-center h-full ">
             <Header />

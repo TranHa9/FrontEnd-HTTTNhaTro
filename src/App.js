@@ -2,9 +2,24 @@ import { Route, Routes } from "react-router-dom";
 import { Home, Login, Rental, HomePage, DetailPost, SearchDetail } from "./containers/Public";
 import { path } from "./ultils/constant";
 import { CreatePost, System } from "./containers/System";
+import * as action from './store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from "react";
+
+
 
 
 function App() {
+
+  const dispatch = useDispatch()
+  const { isLoggedIn } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    setTimeout(() => {
+      isLoggedIn && dispatch(action.getCurrent())
+    }, 1000)
+  }, [isLoggedIn])
+
   return (
     <div className="bg-primary">
       <Routes>

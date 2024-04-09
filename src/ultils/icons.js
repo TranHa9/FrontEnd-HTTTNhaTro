@@ -8,7 +8,7 @@ import { MdLocationCity, MdOutlinePostAdd, MdLogout } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 import { ImPencil2 } from "react-icons/im";
 import { FaUserTag } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosCamera } from "react-icons/io";
 
 
 const icons = {
@@ -30,7 +30,8 @@ const icons = {
     MdOutlinePostAdd,
     FaUserTag,
     MdLogout,
-    IoIosArrowDown
+    IoIosArrowDown,
+    IoIosCamera
 }
 
 export default icons

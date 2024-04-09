@@ -6,7 +6,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { path } from "../../ultils/constant";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from '../../store/actions';
-import menuManage from "../../ultils/menuManage";
+import { menuManage } from "../../ultils/menuManage";
 
 
 const { AiOutlinePlusCircle, MdLogout, IoIosArrowDown } = icons
