@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import Select from './Select';
 import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '../services/app';
 import InputReadOnly from './InputReadOnly';
 
-const Address = () => {
+const Address = ({ setPayload }) => {
 
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
-    const [province, setProvince] = useState();
-    const [district, setDistrict] = useState();
-    const [ward, setWard] = useState();
+    const [province, setProvince] = useState('');
+    const [district, setDistrict] = useState('');
+    const [ward, setWard] = useState('');
     const [reset, setReset] = useState(false)
 
     useEffect(() => {
@@ -46,6 +46,15 @@ const Address = () => {
         !district ? setReset(true) : setReset(false)
         !district && setWards([])
     }, [district])
+
+    useEffect(() => {
+        setPayload(prev => ({
+            ...prev,
+            address: `${ward ? `${wards?.find(item => item.wards_id === +ward)?.name},` : ''} ${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""} ${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`,
+            province: province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''
+        }))
+
+    }, [province, district, ward])
     return (
         <div>
             <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
@@ -64,4 +73,4 @@ const Address = () => {
     )
 }
 
-export default Address
+export default memo(Address)
