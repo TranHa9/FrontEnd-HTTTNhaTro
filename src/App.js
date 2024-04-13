@@ -20,8 +20,14 @@ function App() {
     }, 1000)
   }, [isLoggedIn])
 
+  useEffect(() => {
+    dispatch(action.getPrices())
+    dispatch(action.getArea())
+    dispatch(action.getProvince())
+  }, [])
+
   return (
-    <div className="bg-primary">
+    <div className="bg-primary overflow-hidden">
       <Routes>
         <Route path={path.HOME} element={<Home />} >
           <Route path="*" element={<HomePage />} />

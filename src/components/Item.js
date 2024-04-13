@@ -66,7 +66,7 @@ const Item = ({ images, user, title, star, description, address, attributes, id 
                             type='button'
                             className='bg-blue-700 text-white p-1 rounded-md'
                         >
-                            {`Gọi ${user?.zalo}`}
+                            {`Gọi ${user?.phone}`}
                         </button>
                         <button
                             type='button'

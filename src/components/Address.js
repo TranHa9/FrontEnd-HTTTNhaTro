@@ -3,7 +3,7 @@ import Select from './Select';
 import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '../services/app';
 import InputReadOnly from './InputReadOnly';
 
-const Address = ({ setPayload }) => {
+const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
 
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
@@ -23,7 +23,7 @@ const Address = ({ setPayload }) => {
         fetchPublicProvince()
     }, [])
     useEffect(() => {
-        setDistrict(null)
+        setDistrict('')
         const fetchPublicDistrict = async () => {
             const response = await apiGetPublicDistrict(province)
             if (response?.status === 200) {
@@ -35,7 +35,7 @@ const Address = ({ setPayload }) => {
         !province && setDistricts([])
     }, [province])
     useEffect(() => {
-        setWard(null)
+        setWard('')
         const fetchPublicWard = async () => {
             const response = await apiGetPublicWard(district)
             if (response?.status === 200) {
@@ -50,7 +50,7 @@ const Address = ({ setPayload }) => {
     useEffect(() => {
         setPayload(prev => ({
             ...prev,
-            address: `${ward ? `${wards?.find(item => item.wards_id === +ward)?.name},` : ''} ${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""} ${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`,
+            address: `${ward ? `${wards?.find(item => item.wards_id === +ward)?.name},` : ''}${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""}${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`,
             province: province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''
         }))
 
@@ -60,9 +60,26 @@ const Address = ({ setPayload }) => {
             <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <Select type='province' value={province} setValue={setProvince} options={provinces} label='Tỉnh/Thành phố' />
-                    <Select reset={reset} type='district' value={district} setValue={setDistrict} options={districts} label='Quận/Huyện' />
-                    <Select reset={reset} type='ward' value={ward} setValue={setWard} options={wards} label='Phường/Xã' />
+                    <Select invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        type='province' value={province}
+                        setValue={setProvince}
+                        options={provinces}
+                        label='Tỉnh/Thành phố'
+                    />
+                    <Select
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        reset={reset} type='district'
+                        value={district} setValue={setDistrict}
+                        options={districts} label='Quận/Huyện'
+                    />
+                    <Select invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        reset={reset} type='ward' value={ward}
+                        setValue={setWard} options={wards}
+                        label='Phường/Xã'
+                    />
                 </div>
                 <InputReadOnly
                     label={'Địa chỉ đã chọn'}

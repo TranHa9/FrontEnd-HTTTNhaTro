@@ -11,11 +11,11 @@ const System = () => {
     if (!isLoggedIn) return <Navigate to={`/${path.LOGIN}`} replace={true} />
 
     return (
-        <div className='w-full flex flex-col items-center bg-white'>
+        <div className='w-full h-screen flex flex-col items-center bg-white'>
             <Header />
-            <div className='flex w-full flex-auto'>
+            <div className='flex w-full h-screen flex-auto'>
                 <Sidebar />
-                <div className='flex-auto p-4'>
+                <div className='flex-auto p-4 overflow-y-scroll'>
                     <Outlet />
                 </div>
             </div>
