@@ -1,4 +1,4 @@
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { GrNext, GrStar, GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 import { BsChevronRight, BsBookmarkStarFill } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
@@ -32,7 +32,9 @@ const icons = {
     MdLogout,
     IoIosArrowDown,
     IoIosCamera,
-    ImBin
+    ImBin,
+    AiOutlineEdit,
+    AiOutlineDelete
 }
 
 export default icons

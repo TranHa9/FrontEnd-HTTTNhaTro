@@ -33,7 +33,7 @@ const validate = (payload, setInvalidFields) => {
                 break;
             case 'priceNumber':
             case 'areaNumber':
-                if (+item[1] == 0) {
+                if (+item[1] === 0) {
                     setInvalidFields(prev => [...prev, {
                         name: item[0],
                         message: 'Bạn chưa nhập giá trị cho trường này'

@@ -4,6 +4,7 @@ const initState = {
     msg: '',
     count: 0,
     newPosts: [],
+    postOfCurrent: [],
 }
 
 const postReducer = (state = initState, action) => {
@@ -20,6 +21,12 @@ const postReducer = (state = initState, action) => {
             return {
                 ...state,
                 newPosts: action.newPosts || [],
+                msg: action.msg || '',
+            }
+        case actionTypes.GET_POSTS_ADMIN:
+            return {
+                ...state,
+                postOfCurrent: action.posts || [],
                 msg: action.msg || '',
             }
 
