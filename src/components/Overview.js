@@ -10,6 +10,7 @@ const targets = [
 
 
 const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
+    const { dataEdit } = useSelector(state => state.post)
     const { categories } = useSelector(state => state.app)
     const { currentData } = useSelector(state => state.user)
     return (

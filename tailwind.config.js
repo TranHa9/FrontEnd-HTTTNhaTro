@@ -15,6 +15,7 @@ module.exports = {
         secondary1: '#1266dd',
         secondary2: '#f73859',
         secondary3: '#febb02',
+        secondary4: '#23A8F2',
         'overlay-30': 'rgb(0,0,0,0.3)',
         'overlay-50': 'rgb(0,0,0,0.5)',
       },

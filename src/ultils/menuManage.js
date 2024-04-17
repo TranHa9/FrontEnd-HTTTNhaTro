@@ -37,8 +37,8 @@ const menuSidebar = [
     },
     {
         id: 3,
-        text: "Sửa thông tin cá nhân",
-        path: "/he-thong/sua-thong-tin-ca-nha",
+        text: "Thông tin tài khoản",
+        path: "/he-thong/thong-tin-tai-khoan",
         icon: <FaUserTag />
     },
     {

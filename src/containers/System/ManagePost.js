@@ -1,17 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import *as actions from '../../store/actions';
 import { formatDate } from '../../ultils/Common/formatDate';
-import { Button } from '../../components'
+import { UpdatePost } from '../../components'
 import icons from '../../ultils/icons';
+import { apiDeletePost } from '../../services';
+import Swal from 'sweetalert2';
 
 const ManagePost = () => {
     const { AiOutlineEdit, AiOutlineDelete } = icons
+
     const dispatch = useDispatch()
-    const { postOfCurrent } = useSelector(state => state.post)
+    const { postOfCurrent, dataEdit } = useSelector(state => state.post)
+    const [isEdit, setIsEdit] = useState(false)
+    const [updateData, setUpdateData] = useState(false)
+    const [posts, setPosts] = useState([])
+    const [status, setStatus] = useState('0')
+
+
     useEffect(() => {
-        dispatch(actions.getPostsLimitAdmin())
-    }, [])
+        !dataEdit && dispatch(actions.getPostsLimitAdmin())
+    }, [dataEdit, updateData])
+
+    useEffect(() => {
+        !dataEdit && setIsEdit(false)
+    }, [dataEdit])
+
+    useEffect(() => {
+        setPosts(postOfCurrent)
+    }, [postOfCurrent])
 
     const checkExpiration = (isoDateString) => {
         const expiryDate = new Date(isoDateString);
@@ -22,49 +39,85 @@ const ManagePost = () => {
             return "Đã hết hạn";
         }
     }
+    const handleDeletePost = async (postId) => {
+        const response = await apiDeletePost(postId)
+        if (response?.data.err === 0) {
+            Swal.fire('Thông báo!', 'Xóa thành công!', 'success')
+            setUpdateData(prev => !prev)
+        } else {
+            Swal.fire('Lỗi!', 'Xóa tin đăng thất bại', 'error')
+        }
+    }
 
+    useEffect(() => {
+        if (status === 1) {
+            const activePost = postOfCurrent?.filter(item => checkExpiration(item?.overviews?.expired) === "Đang hoạt động")
+            setPosts(activePost)
+        } else if (status === 2) {
+            const expriedPost = postOfCurrent?.filter(item => checkExpiration(item?.overviews?.expired) === "Đã hết hạn")
+            setPosts(expriedPost)
+        } else {
+            setPosts(postOfCurrent)
+        }
+    }, [status])
     return (
         <div className='flex flex-col gap-6'>
             <div className='py-4 border-b border-gray-300 flex items-center justify-between'>
                 <h1 className='text-3xl font-medium'>Quản lý tin đăng</h1>
-                <select className='outline-none border p-2 border-gray-300 rounded-md'>
-                    <option value=''>Lọc theo trạng thái</option>
+                <select
+                    onChange={e => setStatus(+e.target.value)}
+                    value={status}
+                    className='outline-none border p-2 border-gray-300 rounded-md'>
+                    <option value='0'>Lọc theo trạng thái</option>
+                    <option value='1'>Đang hoạt động</option>
+                    <option value='2'>Đã hết hạn</option>
                 </select>
             </div>
             <div className="">
-                <table className="">
+                <table className="w-full">
                     <thead>
-                        <tr>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Mã tin</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Ảnh đại diện</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Tiêu đề</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Giá</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Ngày bắt đầu</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Ngày hết hạn</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Trạng thái</th>
-                            <th className="px-4 py-3 bg-gray-50 text-center text-xs font-bold uppercase">Hoạt động</th>
+                        <tr className='bg-secondary4 text-white'>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Mã tin</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Tiêu đề</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Giá</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ngày bắt đầu</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ngày hết hạn</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Trạng thái</th>
+                            <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Hoạt động</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {!postOfCurrent ? (
+                        {posts?.length === 0 ? (
                             <tr>
-                                <td className="px-4 py-3 whitespace-no-wrap">Bạn chưa có tin đăng nào</td>
+                                <td className="px-4 py-3">Bạn chưa có tin đăng nào</td>
                             </tr>
                         ) : (
-                            postOfCurrent.map(item => (
+                            posts.map(item => (
                                 <tr key={item.id}>
-                                    <td className="px-4 py-3 whitespace-no-wrap">{item?.overviews?.code}</td>
-                                    <td className="px-4 py-3 whitespace-no-wrap flex items-center justify-center">
+                                    <td className="px-4 py-3">{item?.overviews?.code}</td>
+                                    <td className="px-4 py-3 flex items-center justify-center">
                                         <img src={JSON.parse(item?.images?.image)[0] || ''} alt='ảnh của bài đăng' className='w-10 h-10 object-cover rounded-md' />
                                     </td>
-                                    <td className="px-4 py-3 whitespace-no-wrap">{item?.title}</td>
-                                    <td className="px-4 py-3 whitespace-no-wrap">{item?.attributes?.price}</td>
-                                    <td className="px-4 py-3 whitespace-no-wrap">{formatDate(item?.overviews?.created)}</td>
-                                    <td className="px-4 py-3 whitespace-no-wrap">{formatDate(item?.overviews?.expired)}</td>
-                                    <td className="px-4 py-3 whitespace-no-wrap">{checkExpiration(item?.overviews?.expired)}</td>
-                                    <td className="px-4 py-3 whitespace-no-wrap">
-                                        <AiOutlineEdit />
-                                        <AiOutlineDelete />
+                                    <td className="px-4 py-3">{item?.title}</td>
+                                    <td className="px-4 py-3">{item?.attributes?.price}</td>
+                                    <td className="px-4 py-3">{formatDate(item?.overviews?.created)}</td>
+                                    <td className="px-4 py-3">{formatDate(item?.overviews?.expired)}</td>
+                                    <td className="px-4 py-3">{checkExpiration(item?.overviews?.expired)}</td>
+                                    <td className="px-4 py-3">
+                                        <div className='flex items-center justify-center gap-2'>
+                                            <AiOutlineEdit size={24}
+                                                onClick={() => {
+                                                    dispatch(actions.editData(item))
+                                                    setIsEdit(true)
+                                                }}
+                                            />
+                                            <AiOutlineDelete
+                                                size={24}
+                                                color='red'
+                                                onClick={() => handleDeletePost(item.id)}
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))
@@ -72,6 +125,7 @@ const ManagePost = () => {
                     </tbody>
                 </table>
             </div>
+            {isEdit && <UpdatePost setIsEdit={setIsEdit} />}
         </div>
     );
 }
