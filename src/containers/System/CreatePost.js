@@ -14,32 +14,33 @@ const CreatePost = ({ isEdit }) => {
     const dispatch = useDispatch()
 
     const { dataEdit } = useSelector(state => state.post)
+    console.log(dataEdit)
     const [payload, setPayload] = useState(() => {
         const initData = {
-            categoryCode: dataEdit?.categoryCode || '',
-            title: dataEdit?.title || '',
-            priceNumber: dataEdit?.priceNumber * 1000000 || 0,
-            areaNumber: dataEdit?.areaNumber || 0,
-            images: dataEdit?.images?.image ? JSON.parse(dataEdit?.images?.image) : '',
+            categoryId: dataEdit?.categoryId || '',
+            name: dataEdit?.name || '',
+            price: dataEdit?.price || 0,
+            area: dataEdit?.area || 0,
+            images: dataEdit?.images ? JSON.parse(dataEdit?.images) : '',
             address: dataEdit?.address || '',
-            priceCode: dataEdit?.priceCode || '',
-            areaCode: dataEdit?.areaCode || '',
-            description: dataEdit?.description ? JSON.parse(dataEdit?.description) : '',
-            target: dataEdit?.overviews?.target || '',
-            province: dataEdit?.province || '',
+            description: dataEdit?.description || '',
+            target: dataEdit?.target || '',
+            provinceId: dataEdit?.provinceId || '',
+            districtId: dataEdit?.districtId || '',
+            wardId: dataEdit?.wardId || '',
+            expired: dataEdit?.expired || '',
         }
 
         return initData
     })
     const [imagesPreview, setImagesPreview] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const { prices, areas, categories, provinces } = useSelector(state => state.app)
     const { currentData } = useSelector(state => state.user)
     const [invalidFields, setInvalidFields] = useState([])
 
     useEffect(() => {
-        if (dataEdit && dataEdit.images && dataEdit.images.image) {
-            let images = JSON.parse(dataEdit?.images?.image)
+        if (dataEdit && dataEdit.images && dataEdit.images) {
+            let images = JSON.parse(dataEdit?.images)
             images && setImagesPreview(images)
         }
     }, [dataEdit])
@@ -72,27 +73,15 @@ const CreatePost = ({ isEdit }) => {
     }
 
     const handleSubmit = async () => {
-        let priceCodeArr = getCodes(+payload.priceNumber / Math.pow(10, 6), prices, 1, 15)
-        let priceCode = priceCodeArr[0]?.code
-        let areaCodeArr = getCodesArea(+payload.areaNumber, areas, 0, 90)
-        let areaCode = areaCodeArr[0]?.code
 
         let finalPayload = {
             ...payload,
-            priceCode,
-            areaCode,
             useId: currentData.id,
-            priceNumber: +payload.priceNumber / Math.pow(10, 6),
-            label: `${categories?.find(item => item.code === payload?.categoryCode)?.value} ${payload?.address?.split(',')[1]}`
         }
         const result = validate(finalPayload, setInvalidFields)
         if (result === 0) {
             if (dataEdit) {
                 finalPayload.postId = dataEdit?.id
-                finalPayload.attributesId = dataEdit?.attributesId
-                finalPayload.imagesId = dataEdit?.imagesId
-                finalPayload.overviewId = dataEdit?.overviewId
-
                 const response = await apiUpdatePost(finalPayload)
                 if (response?.data.err === 0) {
                     Swal.fire("Thông báo", "Đã sửa thành công", "success").then(() => {
@@ -117,17 +106,14 @@ const CreatePost = ({ isEdit }) => {
     }
     const resetPayload = () => {
         setPayload({
-            categoryCode: "",
+            categoryId: "",
             title: '',
-            priceNumber: 0,
-            areaNumber: 0,
+            price: 0,
+            area: 0,
             images: '',
             address: '',
-            priceCode: '',
-            areaCode: '',
             description: '',
             target: '',
-            province: ''
         })
     }
     return (

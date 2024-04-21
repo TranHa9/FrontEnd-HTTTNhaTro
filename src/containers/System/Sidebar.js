@@ -5,6 +5,7 @@ import { menuSidebar } from '../../ultils/menuManage';
 import { NavLink } from 'react-router-dom';
 import icons from "../../ultils/icons";
 import * as action from '../../store/actions';
+import { blobToBase64 } from '../../ultils/Common/toBase64';
 
 const { MdLogout } = icons
 
@@ -20,7 +21,7 @@ const Sidebar = () => {
         <div className='w-[19%] shadow-lg bg-gray-150 p-4 flex flex-col gap-8'>
             <div className='flex flex-col gap-3'>
                 <div className='flex items-center justify-start gap-4'>
-                    <img src={Avatar} alt='avatar' className='w-14 h-15 object-cover rounded-full' />
+                    <img src={blobToBase64(currentData?.avatar) || Avatar} alt='avatar' className='w-12 h-12 object-cover rounded-full' />
                     <div className='flex flex-col'>
                         <span className='font-semibold'>{currentData?.name || currentData?.username}</span>
                         <small>{currentData?.phone}</small>

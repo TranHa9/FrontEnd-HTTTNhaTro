@@ -2,15 +2,13 @@ import React, { memo } from 'react';
 import icons from '../ultils/icons';
 import { formatVietnameseToString } from '../ultils/Common/formatVietnameseToString';
 import { Link } from 'react-router-dom';
-import * as action from "../store/actions";
-import { useDispatch } from 'react-redux';
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 
 const { GrNext } = icons
 
 const ItemSidebar = ({ content, title, isDouble, type }) => {
 
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -26,11 +24,23 @@ const ItemSidebar = ({ content, title, isDouble, type }) => {
         })
         return formatContent
     }
-    const handleFilterPosts = (code) => {
+    const handleFilterPosts = (data) => {
+        let min = 0;
+        let max = 0
+        if (data.min !== 0 && data.type === "price") {
+            min = data.min * 1000000
+        } else {
+            min = data.min
+        }
+        if (data.type === "price") {
+            max = data.max * 1000000
+        } else {
+            max = data.max
+        }
         navigate({
             pathname: location?.pathname,
             search: createSearchParams({
-                [type]: code,
+                [`${type}`]: [min, max],
             }).toString()
         });
     }
@@ -43,11 +53,11 @@ const ItemSidebar = ({ content, title, isDouble, type }) => {
                 {content?.length > 0 && content.map(item => {
                     return (
                         <Link
-                            to={`${formatVietnameseToString(item.value)}`}
-                            key={item.code}
+                            to={`${formatVietnameseToString(item.name)}`}
+                            key={item.id}
                             className='flex gap-2 items-center cursor-pointer hover:text-orange-600 border-b border-dashed border-gray-200 pb-1'>
                             <GrNext size={10} color='#C5C5C5' />
-                            <p>{item.value}</p>
+                            <p>{item.name}</p>
                         </Link>
                     )
                 })}
@@ -58,14 +68,14 @@ const ItemSidebar = ({ content, title, isDouble, type }) => {
                         <div key={index} className=''>
                             <div className='flex items-center justify-around'>
                                 <div className='flex flex-1 gap-2 items-center cursor-pointer hover:text-orange-600 border-b border-dashed border-gray-200 pb-1'
-                                    onClick={() => handleFilterPosts(item.left.code)}
+                                    onClick={() => handleFilterPosts(item.left)}
                                 >
                                     <GrNext size={10} color='#C5C5C5' />
                                     <p>{item.left.value}</p>
                                 </div>
                                 <div
                                     className='flex flex-1 gap-2 items-center cursor-pointer hover:text-orange-600 border-b border-dashed border-gray-200 pb-1'
-                                    onClick={() => handleFilterPosts(item.right.code)}
+                                    onClick={() => handleFilterPosts(item.right)}
                                 >
                                     <GrNext size={10} color='#C5C5C5' />
                                     <p>{item.right.value}</p>

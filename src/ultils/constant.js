@@ -9,6 +9,9 @@ export const path = {
     TIM_NGUOI_O_GHEP: 'tim-nguoi-o-ghep',
     DETAIL_POST__TITLE__POSTID: 'chi-tiet/:title/:postId',
     SEARCH: 'tim-kiem',
+    CONTACT: 'lien-he',
+    DETAIL: '/chi-tiet/',
+    DETAIL_ALL: 'chi-tiet/*',
 
     SYSTEM: '/he-thong/*',
     CREATE_POST: 'tao-moi-bai-dang',

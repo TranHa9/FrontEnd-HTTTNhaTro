@@ -1,14 +1,17 @@
 import React, { memo } from 'react';
 import moment from 'moment';
 import 'moment/locale/vi';
+import { Link } from 'react-router-dom';
+import { formatVietnameseToString } from '../ultils/Common/formatVietnameseToString';
+import { path } from '../ultils/constant';
 
-const Sitem = ({ title, price, image, createdAt }) => {
+const Sitem = ({ title, price, image, createdAt, id }) => {
     const formatTime = (createdAt) => {
         moment.locale('vi');
         return moment(createdAt).fromNow()
     }
     return (
-        <div className='w-full flex items-center gap-2 py-2 border-b border-gray-300'>
+        <Link to={`${path.DETAIL}${formatVietnameseToString(title.replaceAll('/', '-'))}/${id}`} className='w-full flex items-center gap-2 py-2 border-b border-gray-300'>
             <img
                 src={image[0]}
                 alt="anh"
@@ -21,7 +24,7 @@ const Sitem = ({ title, price, image, createdAt }) => {
                     <span className='text-sm text-gray-300'>{formatTime(createdAt)}</span>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

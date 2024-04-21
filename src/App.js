@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Home, Login, Rental, HomePage, DetailPost, SearchDetail } from "./containers/Public";
+import { Home, Login, Rental, HomePage, DetailPost, SearchDetail, Contact } from "./containers/Public";
 import { path } from "./ultils/constant";
 import { CreatePost, EditAccount, ManagePost, System } from "./containers/System";
 import * as action from './store/actions';
@@ -20,11 +20,11 @@ function App() {
     }, 1000)
   }, [isLoggedIn])
 
-  useEffect(() => {
-    dispatch(action.getPrices())
-    dispatch(action.getArea())
-    dispatch(action.getProvince())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(action.getPrices())
+  //   dispatch(action.getArea())
+  //   dispatch(action.getProvince())
+  // }, [])
 
   return (
     <div className="bg-primary overflow-hidden">
@@ -39,7 +39,8 @@ function App() {
           <Route path={path.TIM_NGUOI_O_GHEP} element={<Rental />} />
           <Route path={path.SEARCH} element={<SearchDetail />} />
           <Route path={path.DETAIL_POST__TITLE__POSTID} element={<DetailPost />} />
-          <Route path={'chi-tiet/*'} element={<DetailPost />} />
+          <Route path={path.CONTACT} element={<Contact />} />
+          {/* <Route path={path.DETAIL_ALL} element={<DetailPost />} /> */}
         </Route>
         <Route path={path.SYSTEM} element={<System />}>
           <Route path={path.CREATE_POST} element={<CreatePost />} />

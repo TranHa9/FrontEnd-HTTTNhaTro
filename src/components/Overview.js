@@ -3,9 +3,9 @@ import { InputFormV2, InputReadOnly, Select } from './';
 import { useSelector } from "react-redux";
 
 const targets = [
-    { code: 'Nam', value: 'Nam' },
-    { code: 'Nữ', value: 'Nữ' },
-    { code: 'Tất cả', value: 'Tất cả' },
+    { code: 'Nam', name: 'Nam' },
+    { code: 'Nữ', name: 'Nữ' },
+    { code: 'Tất cả', name: 'Tất cả' },
 ]
 
 
@@ -19,9 +19,9 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
             <div className='w-full flex flex-col gap-4'>
                 <div className='w-1/2'>
                     <Select
-                        value={payload.categoryCode}
+                        value={payload.categoryId}
                         setValue={setPayload}
-                        name='categoryCode'
+                        name='categoryId'
                         options={categories}
                         label='Loại chuyên mục'
                         invalidFields={invalidFields}
@@ -29,9 +29,9 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                     />
                 </div>
                 <InputFormV2
-                    value={payload.title}
+                    value={payload.name}
                     setValue={setPayload}
-                    name='title'
+                    name='name'
                     label={'Tiêu đề'}
                     invalidFields={invalidFields}
                     setInvalidFields={setInvalidFields}
@@ -58,18 +58,18 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                         small='Nhập đầy đủ số, ví dụ 1 triệu thì nhập là 1000000'
                         label={'Giá cho thuê'}
                         unit={'đồng'}
-                        value={payload.priceNumber}
+                        value={payload.price}
                         setValue={setPayload}
-                        name='priceNumber'
+                        name='price'
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                     />
                     <InputFormV2
                         label={'Diện tích'}
                         unit={'m2'}
-                        value={payload.areaNumber}
+                        value={payload.area}
                         setValue={setPayload}
-                        name='areaNumber'
+                        name='area'
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                     />
@@ -82,6 +82,17 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                     />
+                    <label htmlFor={'expired'} className="text-sm">Thời hạn bài đăng</label>
+                    <input
+                        type='date'
+                        id={'expired'}
+                        className="outline-none bg-[#e8f0fe] p-2 rounded-md w-full"
+                        value={payload.deadline}
+                        onChange={(e) => setPayload(prev => ({ ...prev, expired: e.target.value }))}
+                    />
+                    <small className='text-red-500 block w-full'>
+                        {invalidFields?.some(item => item.name === 'expired') && invalidFields?.find(item => item.name === 'expired')?.message}
+                    </small>
                 </div>
             </div>
         </div>

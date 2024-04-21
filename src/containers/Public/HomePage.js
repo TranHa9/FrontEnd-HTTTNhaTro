@@ -3,9 +3,10 @@ import { text } from '../../ultils/constant'
 import { Province, ItemSidebar, RelatedPost } from '../../components'
 import { List, Pagination } from './index';
 import { useSelector } from 'react-redux';
+import { dataAreas, dataPrices } from '../../ultils/data';
 
 const HomePage = () => {
-    const { categories, prices, areas } = useSelector(state => state.app)
+    const { categories } = useSelector(state => state.app)
     return (
         <div className='flex flex-col gap-3'>
             <div>
@@ -20,8 +21,8 @@ const HomePage = () => {
                 </div>
                 <div className='w-[30%] flex flex-col gap-4 justify-start items-center'>
                     <ItemSidebar content={categories} title='Danh sách cho thuê' />
-                    <ItemSidebar isDouble={true} type='priceCode' content={prices} title='Xem theo giá' />
-                    <ItemSidebar isDouble={true} type='areaCode' content={areas} title='Xem theo diện tích' />
+                    <ItemSidebar isDouble={true} type='price' content={dataPrices} title='Xem theo giá' />
+                    <ItemSidebar isDouble={true} type='area' content={dataAreas} title='Xem theo diện tích' />
                     <RelatedPost />
                 </div>
             </div>

@@ -1,13 +1,14 @@
 import React from 'react'
 import { useSelector } from "react-redux"
-import avatar from "../assets/avatar.png"
+import avatar from "../assets/avatar.png";
+import { blobToBase64 } from '../ultils/Common/toBase64';
 
 const User = () => {
     const { currentData } = useSelector(state => state.user)
 
     return (
         <div className='flex items-center gap-2'>
-            <img src={currentData?.avatar || avatar} alt='avatar' className='w-14 h-15 object-cover rounded-full' />
+            <img src={blobToBase64(currentData?.avatar) || avatar} alt='avatar' className='w-12 h-12 rounded-full object-cover' />
             <div className='flex flex-col'>
                 <span>
                     Xin chào,

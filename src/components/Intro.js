@@ -20,11 +20,11 @@ const Intro = () => {
                     {categories?.length > 0 && categories.map(item => {
                         return (
                             <Link
-                                to={`/${formatVietnameseToString(item.value)}`}
-                                key={item.code}
+                                to={`/${formatVietnameseToString(item.name)}`}
+                                key={item.id}
                                 className='text-blue-600 font-medium hover:text-orange-600'
                             >
-                                {`${item.value.toLowerCase()}, `}
+                                {`${item.name.toLowerCase()}, `}
                             </Link>
                         )
                     })}

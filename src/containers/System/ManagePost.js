@@ -51,10 +51,10 @@ const ManagePost = () => {
 
     useEffect(() => {
         if (status === 1) {
-            const activePost = postOfCurrent?.filter(item => checkExpiration(item?.overviews?.expired) === "Đang hoạt động")
+            const activePost = postOfCurrent?.filter(item => checkExpiration(item?.expired) === "Đang hoạt động")
             setPosts(activePost)
         } else if (status === 2) {
-            const expriedPost = postOfCurrent?.filter(item => checkExpiration(item?.overviews?.expired) === "Đã hết hạn")
+            const expriedPost = postOfCurrent?.filter(item => checkExpiration(item?.expired) === "Đã hết hạn")
             setPosts(expriedPost)
         } else {
             setPosts(postOfCurrent)
@@ -95,15 +95,15 @@ const ManagePost = () => {
                         ) : (
                             posts.map(item => (
                                 <tr key={item.id}>
-                                    <td className="px-4 py-3">{item?.overviews?.code}</td>
+                                    <td className="px-4 py-3">{item?.id}</td>
                                     <td className="px-4 py-3 flex items-center justify-center">
-                                        <img src={JSON.parse(item?.images?.image)[0] || ''} alt='ảnh của bài đăng' className='w-10 h-10 object-cover rounded-md' />
+                                        <img src={JSON.parse(item?.images)[0] || ''} alt='ảnh của bài đăng' className='w-10 h-10 object-cover rounded-md' />
                                     </td>
-                                    <td className="px-4 py-3">{item?.title}</td>
-                                    <td className="px-4 py-3">{item?.attributes?.price}</td>
-                                    <td className="px-4 py-3">{formatDate(item?.overviews?.created)}</td>
-                                    <td className="px-4 py-3">{formatDate(item?.overviews?.expired)}</td>
-                                    <td className="px-4 py-3">{checkExpiration(item?.overviews?.expired)}</td>
+                                    <td className="px-4 py-3">{item?.name}</td>
+                                    <td className="px-4 py-3">{item?.price}</td>
+                                    <td className="px-4 py-3">{formatDate(item?.created)}</td>
+                                    <td className="px-4 py-3">{formatDate(item?.expired)}</td>
+                                    <td className="px-4 py-3">{checkExpiration(item?.expired)}</td>
                                     <td className="px-4 py-3">
                                         <div className='flex items-center justify-center gap-2'>
                                             <AiOutlineEdit size={24}

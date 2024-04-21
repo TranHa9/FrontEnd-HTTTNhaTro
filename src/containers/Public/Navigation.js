@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from 'react-router-dom';
 import { formatVietnameseToString } from "../../ultils/Common/formatVietnameseToString";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from '../../store/actions'
+import * as actions from '../../store/actions';
+import { path } from '../../ultils/constant'
 
 
 
@@ -25,15 +26,20 @@ const Navigation = () => {
                 </NavLink>
                 {categories?.length > 0 && categories.map((item) => {
                     return (
-                        <div key={item.code} className="h-full flex justify-center items-center">
-                            <NavLink to={`/${formatVietnameseToString(item.value)}`}
+                        <div key={item.id} className="h-full flex justify-center items-center">
+                            <NavLink to={`/${formatVietnameseToString(item.name)}`}
                                 className={({ isActive }) => isActive ? active : notActive}
                             >
-                                {item.value}
+                                {item.name}
                             </NavLink>
                         </div>
                     )
                 })}
+                <NavLink to={path.CONTACT}
+                    className={({ isActive }) => isActive ? active : notActive}
+                >
+                    Liên hệ
+                </NavLink>
             </div>
         </div>
     )

@@ -5,36 +5,39 @@ import { List, Pagination } from './index';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { formatVietnameseToString } from '../../ultils/Common/formatVietnameseToString';
+import { dataAreas, dataPrices } from '../../ultils/data';
 
 const Rentail = () => {
-    const { prices, areas, categories } = useSelector(state => state.app);
+    const { categories } = useSelector(state => state.app);
     const [categoryCurrent, setCategoryCurrent] = useState('')
-    const [categoryCode, setCategoryCode] = useState('none');
+    const [categoryId, setCategoryId] = useState('none');
     const location = useLocation()
 
     useEffect(() => {
-        const category = categories?.find(item => `/${formatVietnameseToString(item.value)}` === location.pathname)
+        const category = categories?.find(item => `/${formatVietnameseToString(item.name)}` === location.pathname)
         setCategoryCurrent(category)
         if (category) {
-            setCategoryCode(category.code)
+            setCategoryId(category.id)
         }
+        console.log(category)
     }, [location])
 
     return (
         <div className='flex flex-col gap-3'>
             <div>
-                <h1 className='text-[28px] font-bold'>{categoryCurrent?.header}</h1>
-                <p className='text-sm text-gray-700'>{categoryCurrent?.subheader}</p>
+                <h1 className='text-[28px] font-bold'>{categoryCurrent?.title}</h1>
+                <p className='text-sm text-gray-700'>{categoryCurrent?.description}</p>
             </div>
             <Province />
             <div className='w-full flex gap-4'>
                 <div className='w-[70%]'>
-                    <List categoryCode={categoryCode} />
+                    <List categoryId={categoryId} />
                     <Pagination />
                 </div>
                 <div className='w-[30%] flex flex-col gap-4 justify-start items-center'>
-                    <ItemSidebar isDouble={true} type='priceCode' content={prices} title='Xem theo giá' />
-                    <ItemSidebar isDouble={true} type='areaCode' content={areas} title='Xem theo diện tích' />
+                    <ItemSidebar content={categories} title='Danh sách cho thuê' />
+                    <ItemSidebar isDouble={true} type='price' content={dataPrices} title='Xem theo giá' />
+                    <ItemSidebar isDouble={true} type='area' content={dataAreas} title='Xem theo diện tích' />
                     <RelatedPost />
                 </div>
             </div>

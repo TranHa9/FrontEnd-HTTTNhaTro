@@ -4,7 +4,7 @@ import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '..
 import InputReadOnly from './InputReadOnly';
 import { useSelector } from 'react-redux';
 
-const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
+const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
 
     const { dataEdit } = useSelector(state => state.post)
 
@@ -15,6 +15,8 @@ const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
     const [district, setDistrict] = useState('');
     const [ward, setWard] = useState('');
     const [reset, setReset] = useState(false)
+    const [addressValue, setAddressValue] = useState('');
+
 
     useEffect(() => {
         if (dataEdit?.address) {
@@ -75,19 +77,22 @@ const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
     }, [district])
 
     useEffect(() => {
-        setPayload(prev => ({
+        setPayload && setPayload(prev => ({
             ...prev,
-            address: `${ward ? `${wards?.find(item => item.wards_id === +ward)?.name},` : ''}${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""}${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`,
-            province: province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''
+            address: `${addressValue ? `${addressValue}, ` : ''}${ward ? `${wards?.find(item => item.wards_id === +ward)?.name}, ` : ""}${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""}${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`,
+            provinceId: province ? `${provinces?.find(item => item.province_id === +province)?.province_id}` : '',
+            districtId: district ? `${districts?.find(item => item.district_id === +district)?.district_id}` : '',
+            wardId: ward ? `${wards?.find(item => item.wards_id === +ward)?.wards_id}` : ''
         }))
 
-    }, [province, district, ward])
+    }, [province, district, ward, addressValue])
     return (
         <div>
             <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <Select invalidFields={invalidFields}
+                    <Select
+                        invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                         type='province' value={province}
                         setValue={setProvince}
@@ -101,16 +106,28 @@ const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
                         value={district} setValue={setDistrict}
                         options={districts} label='Quận/Huyện'
                     />
-                    <Select invalidFields={invalidFields}
+                    <Select
+                        invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                         reset={reset} type='ward' value={ward}
                         setValue={setWard} options={wards}
                         label='Phường/Xã'
                     />
                 </div>
+                {!type &&
+                    <div>
+                        <label htmlFor={'address-number'} className="text-sm">Số nhà đường phố</label>
+                        <input
+                            type={'text'}
+                            id={'address-number'}
+                            className="outline-none bg-[#e8f0fe] p-2 rounded-md w-full"
+                            value={addressValue}
+                            onChange={(e) => setAddressValue(e.target.value)}
+                        />
+                    </div>}
                 <InputReadOnly
                     label={'Địa chỉ đã chọn'}
-                    value={`${ward ? `${wards?.find(item => item.wards_id === +ward)?.name},` : ''} ${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""} ${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`}
+                    value={`${addressValue ? `${addressValue},` : ''} ${ward ? `${wards?.find(item => item.wards_id === +ward)?.name},` : ''} ${district ? `${districts?.find(item => item.district_id === +district)?.name},` : ""} ${province ? `${provinces?.find(item => item.province_id === +province)?.name}` : ''}`}
                 />
             </div>
         </div>

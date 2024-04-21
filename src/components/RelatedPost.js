@@ -19,10 +19,11 @@ const RelatedPost = () => {
                     return (
                         <Sitem
                             key={item.id}
-                            image={JSON.parse(item?.images?.image)}
-                            title={item?.title}
-                            price={item?.attributes?.price}
+                            image={JSON.parse(item?.images)}
+                            title={item?.name}
+                            price={item?.price}
                             createdAt={item.createdAt}
+                            id={item?.id}
                         />
                     )
                 })}

@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useState } from 'react';
 import icons from '../ultils/icons';
 import { getNumbersArea, getNumbersPrice } from '../ultils/Common/getNumbers';
-import { getCodes, getCodesArea } from '../ultils/Common/getCodes';
+import Address from './Address';
 
 const { GrLinkPrevious } = icons;
 
-const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax, defaultText }) => {
+const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax, defaultText, setQueries }) => {
+
 
     const [persent1, setPersent1] = useState(
         name === 'price' && arrMinMax?.priceArr
@@ -17,8 +18,8 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
             ? arrMinMax?.priceArr[1]
             : name === 'area' && arrMinMax?.areaArr ? arrMinMax?.areaArr[1] : 100
     )
-    const [activedEl, setActivedEl] = useState('')
 
+    const [activedEl, setActivedEl] = useState('')
     useEffect(() => {
         const activedTrackEl = document.getElementById('track-active')
         if (activedTrackEl) {
@@ -74,16 +75,35 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
             setPersent2(convertto100(arrMaxMin[1]))
         }
     }
+
+    const handleSubmitAddress = (e) => {
+        e.stopPropagation()
+        setQueries({
+            ...queries,
+            address: addressPayload.address,
+            provinceId: addressPayload.provinceId,
+            districtId: addressPayload.districtId,
+            wardId: addressPayload.wardId
+        });
+        setIsShowModal(false);
+    }
+    const [addressPayload, setAddressPayload] = useState(null);
+
+    const handleAddressChange = (payload) => {
+        setAddressPayload(payload);
+    }
+
     const handleBeforeSubmit = (e) => {
         let min = persent1 <= persent2 ? persent1 : persent2
         let max = persent1 <= persent2 ? persent2 : persent1
-        let arrMinMax = [convert100toTarget(min), convert100toTarget(max)]
-        // const gaps = name === 'price'
-        //     ? getCodes(arrMinMax, content)
-        //     : name === 'area' ? getCodesArea(arrMinMax, content) : []
+
+        const convertedMin = name === 'price' ? convert100toTarget(min) * 1000000 : convert100toTarget(min);
+        const convertedMax = name === 'price' ? convert100toTarget(max) * 1000000 : convert100toTarget(max);
+
+        let arrMinMax = [convertedMin, convertedMax]
         handleSubmit(e, {
-            [`${name}Number`]: arrMinMax,
-            [name]: `Từ ${convert100toTarget(min)} - ${convert100toTarget(max)} ${name === 'price' ? 'triệu' : 'm2'}`
+            [`${name}Number`]: `Từ ${convert100toTarget(min)} - ${convert100toTarget(max)} ${name === 'price' ? 'triệu' : 'm2'}`,
+            [name]: arrMinMax
         }, {
             [`${name}Arr`]: [min, max]
         })
@@ -100,7 +120,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                     e.stopPropagation()
                     setIsShowModal(true)
                 }}
-                className='w-2/5 h-[500px] bg-white rounded-md relative'
+                className='w-2/5 h-[500px] bg-white rounded-md relative overflow-y-auto'
             >
                 <div className='h-[45px] px-4 flex items-center border-b border-gray-100'>
                     <span
@@ -113,39 +133,53 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                         < GrLinkPrevious size={24} />
                     </span>
                 </div>
-                {(name === 'category' || name === 'province') && <div className='p-4 flex flex-col'>
-                    <span
-                        className='py-2 flex gap-2 items-center border-b border-gray-300'
-                    >
-                        <input
-                            type='radio'
-                            name={name}
-                            id='default'
-                            value={defaultText || ''}
-                            checked={!queries[`${name}Code`] ? true : false}
-                            onChange={(e) => handleSubmit(e, { [name]: defaultText, [`${name}Code`]: null })}
-                        />
-                        <label htmlFor='default'>{defaultText}</label>
-                    </span>
-                    {content?.map(item => {
-                        return (
-                            <span
-                                key={item.code}
-                                className='py-2 flex gap-2 items-center border-b border-gray-300'
+                {(name === 'category')
+                    && <div className='p-4 flex flex-col'>
+                        <span
+                            className='py-2 flex gap-2 items-center border-b border-gray-300'
+                        >
+                            <input
+                                type='radio'
+                                name={name}
+                                id='default'
+                                value={defaultText || ''}
+                                checked={!queries[`${name}Id`] ? true : false}
+                                onChange={(e) => handleSubmit(e, { [name]: defaultText, [`${name}Id`]: null })}
+                            />
+                            <label htmlFor='default'>{defaultText}</label>
+                        </span>
+                        {content?.map(item => {
+                            return (
+                                <span
+                                    key={item.id}
+                                    className='py-2 flex gap-2 items-center border-b border-gray-300'
+                                >
+                                    <input
+                                        type='radio'
+                                        name={name}
+                                        id={item.id}
+                                        value={item.id}
+                                        checked={item.id === queries[`${name}Id`] ? true : false}
+                                        onChange={(e) => handleSubmit(e, { [name]: item.name, [`${name}Id`]: item.id })}
+                                    />
+                                    <label htmlFor={item.id}>{item.name}</label>
+                                </span>
+                            )
+                        })}
+                    </div>}
+                {(name === 'province')
+                    && <div className='p-4 flex flex-col'>
+                        <Address type setPayload={handleAddressChange} />
+                        {(name === 'province') &&
+                            <button
+                                type='button'
+                                className='w-full absolute bottom-0 bg-secondary3 py-2 font-medium rounded-bl-md rounded-br-md'
+                                onClick={handleSubmitAddress}
                             >
-                                <input
-                                    type='radio'
-                                    name={name}
-                                    id={item.code}
-                                    value={item.code}
-                                    checked={item.code === queries[`${name}Code`] ? true : false}
-                                    onChange={(e) => handleSubmit(e, { [name]: item.value, [`${name}Code`]: item.code })}
-                                />
-                                <label htmlFor={item.code}>{item.value}</label>
-                            </span>
-                        )
-                    })}
-                </div>}
+                                Áp dụng
+                            </button>}
+
+                    </div>}
                 {(name === 'price' || name === 'area') && <div className='p-12 py-20'>
                     <div className='flex flex-col items-center justify-center relative'>
                         <div className='z-20 absolute top-[-48px] font-bold text-xl text-orange-600'>

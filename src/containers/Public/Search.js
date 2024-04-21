@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, SearchItem } from '../../components';
+import { Address, Modal, SearchItem } from '../../components';
 import icons from '../../ultils/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
 import { path } from '../../ultils/constant';
+import { dataAreas, dataPrices } from '../../ultils/data';
+import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '../../services';
 
 const { BsChevronRight, CiLocationOn, TbReportMoney, RiCrop2Line, MdLocationCity, FiSearch } = icons
 
@@ -13,10 +15,11 @@ const Search = () => {
     const [isShowModal, setIsShowModal] = useState(false);
     const [content, setContent] = useState([]);
     const [name, setName] = useState('')
-    const { provinces, areas, prices, categories } = useSelector(state => state.app)
+    const { categories } = useSelector(state => state.app)
     const [queries, setQueries] = useState({});
     const [arrMinMax, setArrMinMax] = useState({})
     const [defaultText, setDefaultText] = useState('');
+    const [provinces, setProvinces] = useState([]);
 
     useEffect(() => {
         if (!location?.pathname.includes(path.SEARCH)) {
@@ -39,20 +42,20 @@ const Search = () => {
     }
 
     const handleSearch = () => {
-        const queryCodes = Object.entries(queries).filter(item => item[0].includes('Number') || item[0].includes('Code')).filter(item => item[1])
+        const queryCodes = Object.entries(queries).filter(([key, value]) => (key.includes('Id') || key === 'price' || key === 'area') && value);
         let queryCodesObj = {}
         queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1] })
-        const queryText = Object.entries(queries).filter(item => !item[0].includes('Code') || !item[0].includes('Number'))
+        const queryText = Object.entries(queries).filter(item => !item[0].includes('Id') || !item[0].includes('Number'))
         let queryTextObj = {}
         queryText.forEach(item => { queryTextObj[item[0]] = item[1] })
         let titleSearch = `${queryTextObj.category
             ? queryTextObj.category
-            : 'Cho thuê tất cả'} ${queryTextObj.province
-                ? `tỉnh ${queryTextObj.province}`
+            : 'Cho thuê tất cả'}${queryTextObj.address
+                ? `, Khu vực ${queryTextObj.address}`
                 : ''} ${queryTextObj.price
-                    ? `giá ${queryTextObj.price}`
-                    : ''} ${queryTextObj.area
-                        ? `diện tích ${queryTextObj.area}` : ''} `
+                    ? `giá từ ${queryTextObj.price[0]} đồng đến ${queryTextObj.price[1]} đồng`
+                    : ''}${queryTextObj.area
+                        ? `, diện tích từ ${queryTextObj.area[0]} m2 đến ${queryTextObj.area[1]} m2` : ''} `
         navigate({
             pathname: path.SEARCH,
             search: createSearchParams(queryCodesObj).toString(),
@@ -65,13 +68,13 @@ const Search = () => {
                     <SearchItem IconBefore={<MdLocationCity />} fontWeight IconAfter={<BsChevronRight color='#777' />} text={queries.category} defaultText={'Tìm tất cả'} />
                 </span>
                 <span onClick={() => handleShowModal(provinces, 'province', 'Toàn quốc')} className='cursor-pointer flex-1'>
-                    <SearchItem IconBefore={<CiLocationOn />} IconAfter={<BsChevronRight color='#777' />} text={queries.province} defaultText={'Toàn quốc'} />
+                    <SearchItem IconBefore={<CiLocationOn />} IconAfter={<BsChevronRight color='#777' />} text={queries.address} defaultText={'Toàn quốc'} />
                 </span>
-                <span onClick={() => handleShowModal(prices, 'price', 'Chọn giá')} className='cursor-pointer flex-1'>
-                    <SearchItem IconBefore={<TbReportMoney />} IconAfter={<BsChevronRight color='#777' />} text={queries.price} defaultText={'Chọn giá'} />
+                <span onClick={() => handleShowModal(dataPrices, 'price', 'Chọn giá')} className='cursor-pointer flex-1'>
+                    <SearchItem IconBefore={<TbReportMoney />} IconAfter={<BsChevronRight color='#777' />} text={queries.priceNumber} defaultText={'Chọn giá'} />
                 </span>
-                <span onClick={() => handleShowModal(areas, 'area', 'Chọn diện tích')} className='cursor-pointer flex-1'>
-                    <SearchItem IconBefore={<RiCrop2Line />} IconAfter={<BsChevronRight color='#777' />} text={queries.area} defaultText={'Chọn diện tích'} />
+                <span onClick={() => handleShowModal(dataAreas, 'area', 'Chọn diện tích')} className='cursor-pointer flex-1'>
+                    <SearchItem IconBefore={<RiCrop2Line />} IconAfter={<BsChevronRight color='#777' />} text={queries.areaNumber} defaultText={'Chọn diện tích'} />
                 </span>
                 <button
                     type='button'
@@ -85,9 +88,12 @@ const Search = () => {
             {isShowModal && <Modal
                 handleSubmit={handleSubmit}
                 queries={queries}
+                setQueries={setQueries}
                 arrMinMax={arrMinMax}
                 content={content}
+                setContent={setContent}
                 name={name}
+                setName={setName}
                 setIsShowModal={setIsShowModal}
                 defaultText={defaultText}
             />}

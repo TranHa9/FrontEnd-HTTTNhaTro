@@ -48,3 +48,33 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]::-moz-range-thumb:active {
     box-shadow: 0px 0px 5px 0px red;
 }
+
+button.slick-arrow::before {
+    font-size: 40px !important;
+    color: yellow !important;
+}
+
+.slick-next:before {
+    color: yellow !important;
+}
+
+.slick-next {
+    right: 30px !important;
+    z-index: 10 !important;
+    top: 50% !important;
+}
+
+
+.slick-prev {
+    left: 10px !important;
+    z-index: 10 !important;
+    top: 50% !important;
+}
+
+.slick-dots {
+    bottom: 10px !important;
+}
+
+.slick-dots li button:before {
+    color: white !important;
+}

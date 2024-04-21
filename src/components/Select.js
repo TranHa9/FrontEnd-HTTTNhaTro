@@ -17,16 +17,16 @@ const Select = ({ label, options, value, setValue, type, reset, name, invalidFie
                 value={reset ? '' : value}
                 id='select-address'
                 onChange={(e) => !name ? setValue(e.target.value) : setValue(prev => ({ ...prev, [name]: e.target.value }))}
-                onFocus={() => setInvalidFields([])}
+                onFocus={() => setInvalidFields && setInvalidFields([])}
             >
                 <option value="">{`--Chọn ${label}--`}</option>
                 {options?.map(item => {
                     return (
                         <option
-                            key={(type === 'province') ? item?.province_id : (type === 'district') ? item?.district_id : (type === 'ward') ? item?.wards_id : item?.code}
-                            value={(type === 'province') ? item?.province_id : (type === 'district') ? item?.district_id : (type === 'ward') ? item?.wards_id : item?.code}
+                            key={(type === 'province') ? item?.province_id : (type === 'district') ? item?.district_id : (type === 'ward') ? item?.wards_id : item?.id}
+                            value={(type === 'province') ? item?.province_id : (type === 'district') ? item?.district_id : (type === 'ward') ? item?.wards_id : item?.id}
                         >
-                            {(type === 'province' || type === 'district' || type === 'ward') ? item?.name : item.value}
+                            {(type === 'province' || type === 'district' || type === 'ward') ? item?.name : item.name}
                         </option>
                     )
                 })}
