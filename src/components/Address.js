@@ -43,6 +43,14 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
     }, [wards, dataEdit])
 
     useEffect(() => {
+        if (dataEdit?.address) {
+            let addressArr = dataEdit?.address?.split(',')
+            let foundRoad = `${addressArr[addressArr.length - 5] ? `${addressArr[addressArr.length - 5]?.trim()}, ` : ''}${addressArr[addressArr.length - 4] ? addressArr[addressArr.length - 4]?.trim() : ''}`
+            setAddressValue(foundRoad)
+        }
+    }, [provinces, dataEdit])
+
+    useEffect(() => {
         const fetchPublicProvince = async () => {
             const response = await apiGetPublicProvince()
             if (response?.status === 200) {
@@ -116,10 +124,11 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
                 </div>
                 {!type &&
                     <div>
-                        <label htmlFor={'address-number'} className="text-sm">Số nhà đường phố</label>
+                        <label htmlFor={'address-number'} className="text-sm">Số nhà đường phố:</label>
                         <input
                             type={'text'}
                             id={'address-number'}
+                            placeholder='VD: Số 30 An Đào A'
                             className="outline-none bg-[#e8f0fe] p-2 rounded-md w-full"
                             value={addressValue}
                             onChange={(e) => setAddressValue(e.target.value)}

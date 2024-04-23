@@ -14,7 +14,6 @@ const CreatePost = ({ isEdit }) => {
     const dispatch = useDispatch()
 
     const { dataEdit } = useSelector(state => state.post)
-    console.log(dataEdit)
     const [payload, setPayload] = useState(() => {
         const initData = {
             categoryId: dataEdit?.categoryId || '',

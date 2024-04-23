@@ -1,23 +1,21 @@
 import React, { memo } from 'react';
-import Sliders from "react-slick";
+import Slider from "react-slick";
 
 
-const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-};
-
-const Slider = ({ images }) => {
-
+const SliderCustom = ({ images }) => {
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+    };
     return (
         <div className='w-full'>
-            <Sliders {...settings}>
+            <Slider {...settings}>
                 {images?.length > 0 && images?.map((item, index) => {
                     return (
-                        <div key={index} className='bg-black flex justify-center h-[320px] px-12'>
+                        <div key={index} className='bg-black flex justify-center h-[320px]'>
                             <img
                                 src={item}
                                 alt='ảnh'
@@ -26,9 +24,9 @@ const Slider = ({ images }) => {
                         </div>
                     )
                 })}
-            </Sliders>
-        </div>
+            </Slider>
+        </div >
     )
 }
 
-export default memo(Slider)
+export default memo(SliderCustom)
