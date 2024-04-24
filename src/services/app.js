@@ -69,3 +69,15 @@ export const apiGetPublicWard = (districtId) => new Promise(async (resolve, reje
         reject(error)
     }
 })
+
+export const apiGetPublicMap = (address) => new Promise(async (resolve, reject) => {
+    try {
+        const response = await axiosDefault({
+            method: 'get',
+            url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

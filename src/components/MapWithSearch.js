@@ -1,47 +1,45 @@
-import axios from 'axios';
-import React, { useState, useEffect, memo } from 'react';
+import React, { useEffect, useState } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import iconMap from "../assets/map.png"
+import { apiGetPublicMap } from '../services';
+import Loading from './Loading';
 
 const MapWithSearch = ({ address }) => {
-    const [addressMarker, setAddressMarker] = useState({})
-    const [loading, setLoading] = useState(true);
+    const [coords, setCoords] = useState({ longitude: 105.8542, latitude: 21.0285 })
     useEffect(() => {
-        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`)
-            .then(function (response) {
-                if (response.status === 200) {
-                    setAddressMarker({
-                        address,
+        const fetchPublicProvince = async () => {
+            if (address) {
+                const response = await apiGetPublicMap(address);
+                if (response?.status === 200 && response?.data?.features?.length > 0) {
+                    setCoords({
                         longitude: response?.data?.features[0]?.center[0],
                         latitude: response?.data?.features[0]?.center[1]
                     });
-                    setLoading(false);
                 }
-            })
-            .catch(function (error) {
-                console.error(error);
-                setLoading(false);
-            });
-    }, [address])
-    if (!addressMarker.address || !addressMarker.longitude || !addressMarker.latitude) {
-        return <div>Loading...</div>;
-    }
-    console.log(addressMarker)
+            }
+        };
+        address && fetchPublicProvince();
+    }, [address]);
     return (
-        <div className='w-full'>
+        <div className='w-full relative'>
+            <div className='absolute top-0 left-0 z-20 bg-white shadow-md p-1'>
+                Địa chỉ: {address}
+            </div>
             <Map
                 mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
                 initialViewState={{
-                    longitude: addressMarker.longitude ? addressMarker.longitude : 105.8542,
-                    latitude: addressMarker.latitude ? addressMarker.latitude : 21.0285,
-                    zoom: 10
+                    longitude: 105.8542,
+                    latitude: 21.0285,
+                    zoom: 12
                 }}
+                longitude={coords.longitude}
+                latitude={coords.latitude}
                 style={{ width: '100%', height: 400 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
             >
                 <Marker
-                    latitude={addressMarker.latitude ? addressMarker.latitude : 105.8542}
-                    longitude={addressMarker.longitude ? addressMarker.longitude : 105.8542}
+                    latitude={coords.latitude}
+                    longitude={coords.longitude}
                     offsetLeft={-20}
                     offsetTop={30}
                 >
@@ -52,6 +50,7 @@ const MapWithSearch = ({ address }) => {
             </Map>
         </div >
     );
+
 }
 
-export default memo(MapWithSearch);
+export default MapWithSearch;

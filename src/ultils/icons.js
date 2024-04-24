@@ -7,9 +7,10 @@ import { RiCrop2Line, RiHeartLine, RiHeartFill } from "react-icons/ri";
 import { MdLocationCity, MdOutlinePostAdd, MdLogout, MdAccessTime } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 import { ImPencil2, ImBin } from "react-icons/im";
-import { FaUserTag } from "react-icons/fa";
+import { FaUserTag, FaPhoneAlt } from "react-icons/fa";
 import { IoIosArrowDown, IoIosCamera } from "react-icons/io";
 import { GoHash } from "react-icons/go";
+import { SiZalo } from "react-icons/si";
 
 
 const icons = {
@@ -37,7 +38,9 @@ const icons = {
     AiOutlineEdit,
     AiOutlineDelete,
     MdAccessTime,
-    GoHash
+    GoHash,
+    FaPhoneAlt,
+    SiZalo
 }
 
 export default icons

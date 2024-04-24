@@ -3,11 +3,11 @@ import { Address, Overview, Loading, Button } from '../../components';
 import icons from '../../ultils/icons';
 import { apiUpdatePost, apiUploadImages } from '../../services';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCodes, getCodesArea } from '../../ultils/Common/getCodes';
 import { apiCreateNewPost } from '../../services';
 import Swal from 'sweetalert2';
 import validate from '../../ultils/Common/validateField';
 import { resetDataEdit } from '../../store/actions';
+import MapWithSearch from '../../components/MapWithSearch';
 
 const CreatePost = ({ isEdit }) => {
     const { IoIosCamera, ImBin } = icons;
@@ -175,9 +175,8 @@ const CreatePost = ({ isEdit }) => {
                     />
                     <div className='h-[500px]'></div>
                 </div>
-                <div className='w-[30%]'>
-                    map
-                    <Loading />
+                <div className='w-[30%] pt-12'>
+                    <MapWithSearch address={payload.address} />
                 </div>
             </div>
         </div>

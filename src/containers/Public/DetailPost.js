@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostsLimit } from '../../store/actions';
-import { SliderCustom } from '../../components';
+import { Button, RelatedPost, SliderCustom } from '../../components';
 import icons from '../../ultils/icons';
 import { formatDate } from '../../ultils/Common/formatDate';
 import moment from 'moment';
 import 'moment/locale/vi';
 import { formatVietnameseToString } from '../../ultils/Common/formatVietnameseToString';
 import MapWithSearch from '../../components/MapWithSearch';
+import avatar from '../../assets/avatar.png'
+import { blobToBase64 } from '../../ultils/Common/toBase64';
+
 
 const DetailPost = () => {
 
-    const { CiLocationOn, TbReportMoney, RiCrop2Line, MdAccessTime, GoHash } = icons
+    const { CiLocationOn, TbReportMoney, RiCrop2Line, MdAccessTime, GoHash, FaPhoneAlt, SiZalo, RiHeartLine, RiHeartFill } = icons
 
     const { postId } = useParams()
     const dispatch = useDispatch()
@@ -125,12 +128,40 @@ const DetailPost = () => {
                     </div>
                     <div className='mt-8'>
                         <h3 className='font-semibold text-xl my-4'>Bản đồ</h3>
-                        <MapWithSearch address={posts[0]?.address} />
+                        {posts && <MapWithSearch address={posts[0]?.address} />}
                     </div>
                 </div>
             </div>
-            <div className='w-[30%]'>
-
+            <div className='w-[30%] flex flex-col gap-5'>
+                <div className='w-full bg-yellow-500 rounded-md flex flex-col items-center p-4 gap-4'>
+                    <img
+                        className='w-16 h-16 object-contain rounded-full'
+                        src={blobToBase64(posts[0]?.user?.avatar) || avatar}
+                        alt='Ảnh đại diện'
+                    />
+                    <h3 className='font-bold text-xl'>{posts[0]?.user?.name}</h3>
+                    <a
+                        className='w-full text-white font-bold text-lg bg-green-600 py-2 flex items-center justify-center gap-2 rounded-md'
+                        href=''
+                    >
+                        <FaPhoneAlt />
+                        {posts[0]?.user?.phone}
+                    </a>
+                    <a
+                        className='w-full font-bold text-lg bg-white py-2 flex items-center justify-center gap-2 rounded-md'
+                        href={`https://zalo.me/${posts[0]?.user.zalo}`}
+                    >
+                        <SiZalo size={24} color='blue' />
+                        {'Nhắn Zalo'}
+                    </a>
+                    <Button
+                        text={'Yêu thích'}
+                        bgColor={"bg-white text-lg font-bold"}
+                        fullwidth
+                        IcBefore={RiHeartLine}
+                    />
+                </div>
+                <RelatedPost />
             </div>
         </div>
     )
