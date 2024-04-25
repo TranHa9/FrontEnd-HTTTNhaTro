@@ -12,6 +12,7 @@ export const path = {
     CONTACT: 'lien-he',
     DETAIL: '/chi-tiet/',
     DETAIL_ALL: 'chi-tiet/*',
+    POST_SAVED: 'tin-da-luu/*',
 
     SYSTEM: '/he-thong/*',
     CREATE_POST: 'tao-moi-bai-dang',

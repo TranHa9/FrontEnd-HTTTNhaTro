@@ -3,14 +3,14 @@ import { InputFormV2, InputReadOnly, Select } from './';
 import { useSelector } from "react-redux";
 
 const targets = [
-    { code: 'Nam', name: 'Nam' },
-    { code: 'Nữ', name: 'Nữ' },
-    { code: 'Tất cả', name: 'Tất cả' },
+    { id: 'Tất cả', name: 'Tất cả' },
+    { id: 'Nam', name: 'Nam' },
+    { id: 'Nữ', name: 'Nữ' },
 ]
 
 
 const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
-    const { dataEdit } = useSelector(state => state.post)
+    //const { dataEdit } = useSelector(state => state.post)
     const { categories } = useSelector(state => state.app)
     const { currentData } = useSelector(state => state.user)
     return (
@@ -87,7 +87,7 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                         type='date'
                         id={'expired'}
                         className="outline-none bg-[#e8f0fe] p-2 rounded-md w-full"
-                        value={payload.deadline}
+                        value={payload.expired.split('T')[0]}
                         onChange={(e) => setPayload(prev => ({ ...prev, expired: e.target.value }))}
                     />
                     <small className='text-red-500 block w-full'>

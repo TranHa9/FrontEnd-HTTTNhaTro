@@ -2,7 +2,6 @@ import actionTypes from "../actions/actionTypes";
 
 const initState = {
     currentData: {
-
     }
 }
 const userReduces = (state = initState, action) => {

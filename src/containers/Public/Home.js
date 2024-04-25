@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from './Header';
 import { Outlet, useLocation } from "react-router-dom";
 import { Navigation, Search } from "./index";
@@ -9,6 +9,7 @@ import { path } from "../../ultils/constant";
 const Home = () => {
     const { isLoggedIn } = useSelector(state => state.auth)
     const location = useLocation()
+
 
     return (
         <div className="w-full flex gap-4 flex-col items-center h-full ">

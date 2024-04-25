@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import logo from '../../assets/logo.png';
-import { Button, User } from '../../components';
+import { Button, PostSave, User } from '../../components';
 import icons from "../../ultils/icons";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { path } from "../../ultils/constant";
@@ -9,7 +9,7 @@ import * as action from '../../store/actions';
 import { menuManage } from "../../ultils/menuManage";
 
 
-const { AiOutlinePlusCircle, MdLogout, IoIosArrowDown } = icons
+const { AiOutlinePlusCircle, MdLogout, IoIosArrowDown, RiHeartLine } = icons
 
 const Header = () => {
     const navigate = useNavigate()
@@ -18,6 +18,7 @@ const Header = () => {
     const headerRef = useRef()
     const { isLoggedIn } = useSelector(state => state.auth)
     const [isShowMenu, setIsShowMenu] = useState(false)
+    const heartPosts = useSelector(state => state.heart.heartArr)
     const goLogin = useCallback((flag) => {
         navigate(path.LOGIN, { state: { flag } })
     }, [])
@@ -46,6 +47,15 @@ const Header = () => {
                     </div>}
                     {isLoggedIn && <div className="flex items-center gap-3 relative">
                         <User />
+                        <Link to={'/tin-da-luu'}>
+                            <div className='flex items-center justify-center gap-1'>
+                                <RiHeartLine size={24} />
+                                <div className='flex items-center gap-1'>
+                                    <span className='text-red-500'>{`(${heartPosts.length})`}</span>
+                                    <span>Yêu thích</span>
+                                </div>
+                            </div>
+                        </Link>
                         <Button
                             text={'Quản lý tài khoản'}
                             textColor='text-white'
@@ -78,7 +88,13 @@ const Header = () => {
                                 </span>
                             </div>}
                     </div>}
-                    <Button text={'Đăng tin mới'} textColor='text-white' bgColor='bg-[#f73859]' IcAfter={AiOutlinePlusCircle} />
+                    <Button
+                        text={'Đăng tin mới'}
+                        textColor='text-white'
+                        bgColor='bg-[#f73859]'
+                        IcAfter={AiOutlinePlusCircle}
+                        onClick={() => navigate('/he-thong/tao-moi-bai-dang')}
+                    />
                 </div>
             </div>
         </div>

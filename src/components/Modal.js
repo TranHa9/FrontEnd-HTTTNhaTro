@@ -96,13 +96,31 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
     const handleBeforeSubmit = (e) => {
         let min = persent1 <= persent2 ? persent1 : persent2
         let max = persent1 <= persent2 ? persent2 : persent1
-
-        const convertedMin = name === 'price' ? convert100toTarget(min) * 1000000 : convert100toTarget(min);
-        const convertedMax = name === 'price' ? convert100toTarget(max) * 1000000 : convert100toTarget(max);
+        let convertedMin = 0;
+        let convertedMax = 0;
+        if (name === 'price') {
+            if (persent1 === persent2 && persent1 === 100) {
+                convertedMin = convert100toTarget(min) * 1000000;
+                convertedMax = 999999 * 1000000
+            } else {
+                convertedMin = convert100toTarget(min) * 1000000;
+                convertedMax = convert100toTarget(max) * 1000000
+            }
+        } else if (name === 'area') {
+            if (persent1 === persent2 && persent1 === 100) {
+                convertedMin = convert100toTarget(min);
+                convertedMax = 999999
+            } else {
+                convertedMin = convert100toTarget(min);
+                convertedMax = convert100toTarget(max)
+            }
+        }
 
         let arrMinMax = [convertedMin, convertedMax]
         handleSubmit(e, {
-            [`${name}Number`]: `Từ ${convert100toTarget(min)} - ${convert100toTarget(max)} ${name === 'price' ? 'triệu' : 'm2'}`,
+            [`${name}Number`]: `${(persent1 === persent2 && persent1 === 100) ? 'Trên ' : 'Từ '}${convert100toTarget(min)}${(persent1 === persent2 && persent1 === 100)
+                ? ''
+                : ` - ${convert100toTarget(max)}`} ${name === 'price' ? 'triệu' : 'm2'}`,
             [name]: arrMinMax
         }, {
             [`${name}Arr`]: [min, max]

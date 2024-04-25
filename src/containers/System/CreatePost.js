@@ -14,6 +14,7 @@ const CreatePost = ({ isEdit }) => {
     const dispatch = useDispatch()
 
     const { dataEdit } = useSelector(state => state.post)
+    const [resets, setResets] = useState(false)
     const [payload, setPayload] = useState(() => {
         const initData = {
             categoryId: dataEdit?.categoryId || '',
@@ -70,7 +71,6 @@ const CreatePost = ({ isEdit }) => {
             images: prev.images?.filter(item => item !== image)
         }))
     }
-
     const handleSubmit = async () => {
 
         let finalPayload = {
@@ -78,6 +78,7 @@ const CreatePost = ({ isEdit }) => {
             useId: currentData.id,
         }
         const result = validate(finalPayload, setInvalidFields)
+        console.log(finalPayload)
         if (result === 0) {
             if (dataEdit) {
                 finalPayload.postId = dataEdit?.id
@@ -85,6 +86,7 @@ const CreatePost = ({ isEdit }) => {
                 if (response?.data.err === 0) {
                     Swal.fire("Thông báo", "Đã sửa thành công", "success").then(() => {
                         resetPayload()
+                        setResets(true)
                         dispatch(resetDataEdit())
                     })
                 } else {
@@ -95,6 +97,7 @@ const CreatePost = ({ isEdit }) => {
                 if (response?.data.err === 0) {
                     Swal.fire("Thông báo", "Đã thêm bài đăng mới", "success").then(() => {
                         resetPayload()
+                        setResets(true)
                     })
                 }
                 else {
@@ -105,23 +108,40 @@ const CreatePost = ({ isEdit }) => {
     }
     const resetPayload = () => {
         setPayload({
-            categoryId: "",
-            title: '',
+            categoryId: '',
+            name: '',
             price: 0,
             area: 0,
             images: '',
             address: '',
             description: '',
             target: '',
+            provinceId: '',
+            districtId: '',
+            wardId: '',
+            expired: '',
         })
+        setImagesPreview([]);
     }
+    console.log(payload.address)
     return (
         <div className='px-6 '>
             <h1 className='text-3xl font-medium py-4 border-b border-gray-300'>{isEdit ? 'Sửa tin đăng' : 'Đăng tin mới'}</h1>
             <div className='flex gap-4'>
                 <div className='py-4 flex flex-col gap-8 flex-auto'>
-                    <Address invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} />
-                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} />
+                    <Address
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        payload={payload}
+                        setPayload={setPayload}
+                        resets={resets}
+                    />
+                    <Overview
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        payload={payload}
+                        setPayload={setPayload}
+                    />
                     <div className='w-full'>
                         <h2 className='font-semibold text-xl py-4'>Hình ảnh</h2>
                         <div className='w-full'>

@@ -4,7 +4,7 @@ import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '..
 import InputReadOnly from './InputReadOnly';
 import { useSelector } from 'react-redux';
 
-const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
+const Address = ({ setPayload, invalidFields, setInvalidFields, type, resets }) => {
 
     const { dataEdit } = useSelector(state => state.post)
 
@@ -24,7 +24,8 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
             let foundProvince = provinces?.length > 0 && provinces?.find(item => item.name.trim() === addressArr[addressArr.length - 1]?.trim())
             setProvince(foundProvince ? foundProvince.province_id : '')
         }
-    }, [provinces, dataEdit])
+        resets && setProvince('')
+    }, [provinces, dataEdit, resets])
 
     useEffect(() => {
         if (dataEdit?.address) {
@@ -32,7 +33,8 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
             let foundDistrict = districts?.length > 0 && districts?.find(item => item.name.trim() === addressArr[addressArr.length - 2]?.trim())
             setDistrict(foundDistrict ? foundDistrict.district_id : '')
         }
-    }, [districts, dataEdit])
+        resets && setDistrict('')
+    }, [districts, dataEdit, resets])
 
     useEffect(() => {
         if (dataEdit?.address) {
@@ -40,7 +42,8 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
             let foundWard = wards?.length > 0 && wards?.find(item => item.name.trim() === addressArr[addressArr.length - 3]?.trim())
             setWard(foundWard ? foundWard.wards_id : '')
         }
-    }, [wards, dataEdit])
+        resets && setWard('')
+    }, [wards, dataEdit, resets])
 
     useEffect(() => {
         if (dataEdit?.address) {
@@ -48,7 +51,8 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
             let foundRoad = `${addressArr[addressArr.length - 5] ? `${addressArr[addressArr.length - 5]?.trim()}, ` : ''}${addressArr[addressArr.length - 4] ? addressArr[addressArr.length - 4]?.trim() : ''}`
             setAddressValue(foundRoad)
         }
-    }, [provinces, dataEdit])
+        resets && setAddressValue('')
+    }, [provinces, dataEdit, resets])
 
     useEffect(() => {
         const fetchPublicProvince = async () => {
@@ -92,7 +96,6 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
             districtId: district ? `${districts?.find(item => item.district_id === +district)?.district_id}` : '',
             wardId: ward ? `${wards?.find(item => item.wards_id === +ward)?.wards_id}` : ''
         }))
-
     }, [province, district, ward, addressValue])
     return (
         <div>
@@ -102,7 +105,8 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
                     <Select
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
-                        type='province' value={province}
+                        type='province'
+                        value={province}
                         setValue={setProvince}
                         options={provinces}
                         label='Tỉnh/Thành phố'
@@ -110,9 +114,11 @@ const Address = ({ setPayload, invalidFields, setInvalidFields, type }) => {
                     <Select
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
-                        reset={reset} type='district'
+                        reset={reset}
+                        type='district'
                         value={district} setValue={setDistrict}
-                        options={districts} label='Quận/Huyện'
+                        options={districts}
+                        label='Quận/Huyện'
                     />
                     <Select
                         invalidFields={invalidFields}

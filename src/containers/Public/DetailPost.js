@@ -142,7 +142,7 @@ const DetailPost = () => {
                     <h3 className='font-bold text-xl'>{posts[0]?.user?.name}</h3>
                     <a
                         className='w-full text-white font-bold text-lg bg-green-600 py-2 flex items-center justify-center gap-2 rounded-md'
-                        href=''
+                        href={`tel:${posts[0]?.user.zalo}`}
                     >
                         <FaPhoneAlt />
                         {posts[0]?.user?.phone}
@@ -150,6 +150,7 @@ const DetailPost = () => {
                     <a
                         className='w-full font-bold text-lg bg-white py-2 flex items-center justify-center gap-2 rounded-md'
                         href={`https://zalo.me/${posts[0]?.user.zalo}`}
+                        target='_blank'
                     >
                         <SiZalo size={24} color='blue' />
                         {'Nhắn Zalo'}
