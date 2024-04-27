@@ -1,16 +1,59 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import icons from '../ultils/icons';
 import { Link } from 'react-router-dom';
 import { formatVietnameseToString } from '../ultils/Common/formatVietnameseToString';
 import { path } from '../ultils/constant';
-import { useSelector, useDispatch } from 'react-redux';
-import { addPostHeart, deletePostHeart } from '../store/reducers/postSaveReduces';
+import { useDispatch, useSelector } from 'react-redux';
+import { apiDeleteSavePost, apiaddSavePost } from '../services';
+import Swal from 'sweetalert2';
+import { getSavePostsLimit } from '../store/actions';
 
 const { RiHeartLine, RiHeartFill } = icons
 
-const Item = ({ images, user, name, description, address, area, price, id, item }) => {
-    const [isHoverHeart, setIsHoverHeart] = useState(false)
+const Item = ({ images, user, name, description, address, area, price, id }) => {
+    const { currentData } = useSelector(state => state.user)
+    const [isSaved, setIsSaved] = useState(false);
+    const { savePosts } = useSelector(state => state.post)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        const isPostSaved = savePosts.some(item => item.postId === id);
+        setIsSaved(isPostSaved);
+    }, [savePosts]);
+
+    const handleAddSavePost = async (postId) => {
+        try {
+            const userId = currentData.id;
+            const response = await apiaddSavePost({ postId, userId })
+            if (response?.data.err === 0) {
+                dispatch(getSavePostsLimit())
+                setIsSaved(true);
+                Swal.fire("Thông báo", "Đã lưu đăng", "success")
+            }
+            else {
+                Swal.fire("Thông báo", "Đã có lỗi", 'error')
+            }
+        } catch (error) {
+            console.error("lỗi lưu bài đăng:", error);
+            Swal.fire("Thông báo", "Đã xảy ra lỗi", 'error');
+        }
+    }
+
+    const handleDeleteSavedPost = async (savePostId) => {
+        try {
+            const response = await apiDeleteSavePost(savePostId);
+            if (response?.data.err === 0) {
+                dispatch(getSavePostsLimit())
+                setIsSaved(false);
+                Swal.fire("Thông báo", "Đã xóa bài đã lưu", "success");
+            } else {
+                Swal.fire("Thông báo", "Đã có lỗi", 'error');
+            }
+        } catch (error) {
+            console.error("Error deleting saved post:", error);
+            Swal.fire("Thông báo", "Đã xảy ra lỗi", 'error');
+        }
+    };
 
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
@@ -22,11 +65,17 @@ const Item = ({ images, user, name, description, address, area, price, id, item 
                     <span className='bg-overlay-50 text-white px-2 rounded-md absolute left-1 bottom-4'>{`${images.length} ảnh`}</span>
                 </Link>
                 <span className=' absolute right-5 bottom-1'
-                    onMouseEnter={() => setIsHoverHeart(true)}
-                    onMouseLeave={() => setIsHoverHeart(false)}
                 >
-                    <span onClick={() => dispatch(addPostHeart(item))}>
-                        {isHoverHeart ? <RiHeartFill size={24} color='red' /> : <RiHeartLine size={24} color='white' />}
+                    <span
+                        onClick={() => {
+                            if (isSaved) {
+                                handleDeleteSavedPost(id);
+                            } else {
+                                handleAddSavePost(id);
+                            }
+                        }}
+                    >
+                        {isSaved ? <RiHeartFill size={24} color='red' /> : <RiHeartLine size={24} color='white' />}
                     </span>
                 </span>
             </div>

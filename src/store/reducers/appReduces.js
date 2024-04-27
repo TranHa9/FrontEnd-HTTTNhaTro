@@ -2,9 +2,6 @@ import actionTypes from "../actions/actionTypes";
 const initState = {
     msg: '',
     categories: [],
-    prices: [],
-    areas: [],
-    //provinces: [],
 }
 
 const appReducer = (state = initState, action) => {

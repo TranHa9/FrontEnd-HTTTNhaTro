@@ -25,7 +25,6 @@ const ManagePost = () => {
     useEffect(() => {
         !dataEdit && setIsEdit(false)
     }, [dataEdit])
-
     useEffect(() => {
         setPosts(postOfCurrent)
     }, [postOfCurrent])

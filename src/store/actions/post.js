@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { apiGetNewPosts, apiGetPosts, apiGetPostsLimit, apiGetPostsLimitAdmin } from '../../services/post';
+import { apiGetNewPosts, apiGetPosts, apiGetPostsLimit, apiGetPostsLimitAdmin, apiGetSavePostsLimit, apiaddSavePost } from '../../services/post';
 
 export const getPosts = () => async (dispatch) => {
     try {
@@ -43,6 +43,29 @@ export const getPostsLimit = (query) => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_POSTS_LIMIT,
             posts: null
+        })
+    }
+}
+
+export const getSavePostsLimit = (query) => async (dispatch) => {
+    try {
+        const response = await apiGetSavePostsLimit(query)
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_SAVE_POST,
+                savePosts: response.data.response?.rows,
+                countSavePost: response.data.response?.count,
+            })
+        } else {
+            dispatch({
+                type: actionTypes.GET_SAVE_POST,
+                msg: response.data.msg
+            })
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_SAVE_POST,
+            savePosts: null
         })
     }
 }

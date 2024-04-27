@@ -1,24 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Item } from '../../components'
 import { useSelector } from 'react-redux'
 
 const PostSaved = () => {
-    const heartPosts = useSelector(state => state.heart.heartArr)
+    const { savePosts } = useSelector(state => state.post)
     return (
         <div>
-            {heartPosts?.length > 0 && heartPosts.map(item => {
+            {savePosts?.length > 0 && savePosts.map(item => {
                 return (
                     <Item
                         key={item?.id}
-                        address={item?.address}
-                        price={item.price}
-                        area={item?.area}
-                        description={item?.description}
-                        images={JSON.parse(item?.images)}
-                        name={item?.name}
-                        user={item?.user}
-                        id={item?.id}
-                        item={item}
+                        address={item?.post?.address}
+                        price={item?.post?.price}
+                        area={item?.post?.area}
+                        description={item?.post?.description}
+                        images={JSON.parse(item?.post?.images)}
+                        name={item?.post?.name}
+                        user={item?.post?.user}
+                        id={item?.postId}
                     />
                 )
             })}

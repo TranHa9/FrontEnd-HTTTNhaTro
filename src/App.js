@@ -17,14 +17,9 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       isLoggedIn && dispatch(action.getCurrent())
+      isLoggedIn && dispatch(action.getSavePostsLimit())
     }, 1000)
   }, [isLoggedIn])
-
-  // useEffect(() => {
-  //   dispatch(action.getPrices())
-  //   dispatch(action.getArea())
-  //   dispatch(action.getProvince())
-  // }, [])
 
   return (
     <div className="bg-primary overflow-hidden">

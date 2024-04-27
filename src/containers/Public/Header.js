@@ -18,13 +18,17 @@ const Header = () => {
     const headerRef = useRef()
     const { isLoggedIn } = useSelector(state => state.auth)
     const [isShowMenu, setIsShowMenu] = useState(false)
-    const heartPosts = useSelector(state => state.heart.heartArr)
+    const { savePosts, countSavePost } = useSelector(state => state.post)
+
     const goLogin = useCallback((flag) => {
         navigate(path.LOGIN, { state: { flag } })
     }, [])
+
+
     useEffect(() => {
         headerRef.current.scrollIntoView({ block: 'start' })
     }, [searchParam.get('page')])
+
     return (
         <div ref={headerRef} className="w-3/4">
             <div className="w-full flex items-center justify-between">
@@ -51,7 +55,7 @@ const Header = () => {
                             <div className='flex items-center justify-center gap-1'>
                                 <RiHeartLine size={24} />
                                 <div className='flex items-center gap-1'>
-                                    <span className='text-red-500'>{`(${heartPosts.length})`}</span>
+                                    <span className='text-red-500'>{`(${countSavePost})`}</span>
                                     <span>Yêu thích</span>
                                 </div>
                             </div>
