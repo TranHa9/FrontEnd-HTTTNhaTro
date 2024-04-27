@@ -78,7 +78,6 @@ const CreatePost = ({ isEdit }) => {
             useId: currentData.id,
         }
         const result = validate(finalPayload, setInvalidFields)
-        console.log(finalPayload)
         if (result === 0) {
             if (dataEdit) {
                 finalPayload.postId = dataEdit?.id
@@ -123,7 +122,6 @@ const CreatePost = ({ isEdit }) => {
         })
         setImagesPreview([]);
     }
-    console.log(payload.address)
     return (
         <div className='px-6 '>
             <h1 className='text-3xl font-medium py-4 border-b border-gray-300'>{isEdit ? 'Sửa tin đăng' : 'Đăng tin mới'}</h1>

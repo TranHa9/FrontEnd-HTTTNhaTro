@@ -27,7 +27,7 @@ const Sidebar = () => {
                         <small>{currentData?.phone}</small>
                     </div>
                 </div>
-                <span className='truncate'>Mã thành viên:<span className='font-medium'>{currentData?.id}</span></span>
+                <span className='truncate'>Mã thành viên: <span className='font-medium'>{currentData?.id}</span></span>
             </div>
             <div>
                 {menuSidebar.map(item => {

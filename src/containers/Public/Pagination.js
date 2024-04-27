@@ -6,14 +6,17 @@ import { useSearchParams } from 'react-router-dom';
 
 const { GrLinkNext } = icons;
 
-const Pagination = () => {
+const Pagination = ({ type }) => {
     const { count, posts } = useSelector(state => state.post);
+    const { postOfCurrent, postCount } = useSelector(state => state.post)
     const [arrPage, setArrPage] = useState([]);
     const [currentPage, setCurrentPage] = useState(1)
     const [isHideEnd, setIsHideEnd] = useState(false)
     const [isHideStart, setIsHideStart] = useState(false)
     const [searchParams] = useSearchParams()
 
+    const postsCover = type ? postOfCurrent : posts
+    const countCover = type ? postCount : count
     useEffect(() => {
         let page = searchParams.get('page')
         page && +page !== currentPage && setCurrentPage(+page)
@@ -21,7 +24,7 @@ const Pagination = () => {
     }, [searchParams])
 
     useEffect(() => {
-        let maxPage = Math.ceil(count / process.env.REACT_APP_LIMIT_POSTS)
+        let maxPage = Math.ceil(countCover / process.env.REACT_APP_LIMIT_POSTS)
         let end = (currentPage + 2) > maxPage ? maxPage : (currentPage + 2)
         let start = (currentPage - 2) <= 1 ? 1 : (currentPage - 2)
         let temp = []
@@ -29,7 +32,7 @@ const Pagination = () => {
         setArrPage(temp)
         currentPage >= (maxPage - 2) ? setIsHideEnd(true) : setIsHideEnd(false)
         currentPage <= 3 ? setIsHideStart(true) : setIsHideStart(false)
-    }, [count, posts, currentPage])
+    }, [countCover, postsCover, currentPage])
 
     return (
         <div className='flex items-center justify-center gap-2 py-5'>
@@ -46,7 +49,7 @@ const Pagination = () => {
                 )
             })}
             {!isHideEnd && <PageNumber text={'...'} />}
-            {!isHideEnd && <PageNumber icon={<GrLinkNext />} setCurrentPage={setCurrentPage} text={Math.floor(count / posts.length)} />}
+            {!isHideEnd && <PageNumber icon={<GrLinkNext />} setCurrentPage={setCurrentPage} text={Math.ceil(countCover / postsCover.length)} />}
         </div>
     )
 }

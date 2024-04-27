@@ -41,6 +41,7 @@ const prices = [
         min: 10,
         max: 15,
         value: 'Từ 10 - 15 triệu',
+        type: 'price'
     },
     {
         min: 15,

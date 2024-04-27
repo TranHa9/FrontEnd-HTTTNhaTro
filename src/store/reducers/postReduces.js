@@ -5,6 +5,7 @@ const initState = {
     count: 0,
     newPosts: [],
     postOfCurrent: [],
+    postCount: 0,
     dataEdit: null,
     savePosts: [],
     countSavePost: 0
@@ -27,7 +28,7 @@ const postReducer = (state = initState, action) => {
                 msg: action.msg || '',
                 countSavePost: action.countSavePost || 0,
             }
-        case actionTypes.RERSET_SAVE_POST:
+        case actionTypes.LOGOUT:
             return {
                 ...state,
                 savePosts: [],
@@ -45,6 +46,7 @@ const postReducer = (state = initState, action) => {
                 ...state,
                 postOfCurrent: action.posts || [],
                 msg: action.msg || '',
+                postCount: action.postCount || 0,
             }
         case actionTypes.EDIT_DATA:
             return {

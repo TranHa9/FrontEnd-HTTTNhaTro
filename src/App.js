@@ -36,7 +36,6 @@ function App() {
           <Route path={path.DETAIL_POST__TITLE__POSTID} element={<DetailPost />} />
           <Route path={path.CONTACT} element={<Contact />} />
           <Route path={path.POST_SAVED} element={<PostSaved />} />
-          {/* <Route path={path.DETAIL_ALL} element={<DetailPost />} /> */}
         </Route>
         <Route path={path.SYSTEM} element={<System />}>
           <Route path={path.CREATE_POST} element={<CreatePost />} />

@@ -100,7 +100,7 @@ export const getPostsLimitAdmin = (query) => async (dispatch) => {
             dispatch({
                 type: actionTypes.GET_POSTS_ADMIN,
                 posts: response.data.response?.rows,
-                count: response.data.response?.count,
+                postCount: response.data.response?.count,
             })
         } else {
             dispatch({

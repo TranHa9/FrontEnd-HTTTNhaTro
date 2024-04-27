@@ -17,6 +17,7 @@ export const path = {
     SYSTEM: '/he-thong/*',
     CREATE_POST: 'tao-moi-bai-dang',
     MANAGE_POST: 'quan-ly-bai-dang',
+    MANAGE_POST__PAGE: ':page',
     Edit_ACCOUNT: 'thong-tin-tai-khoan'
 }
 
