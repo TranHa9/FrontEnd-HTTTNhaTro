@@ -17,6 +17,7 @@ const authConfig = {
     key: 'auth',
     whilelist: ['isLoggedIn', 'token']
 }
+
 const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReduces),
     user: userReduces,

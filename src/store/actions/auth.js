@@ -28,7 +28,8 @@ export const login = (payload) => async (dispatch) => {
         if (response?.data.err === 0) {
             dispatch({
                 type: actionTypes.LOGIN_SUCCESS,
-                data: response.data.token
+                data: response.data.token,
+                userInfo: response.data.user
             })
         } else {
             dispatch({

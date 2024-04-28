@@ -27,3 +27,29 @@ export const getCurrent = () => async (dispatch) => {
         dispatch({ type: actionTypes.LOGOUT })
     }
 }
+
+
+export const apiGetAllUser = (query) => async (dispatch) => {
+    try {
+        const response = await apis.apiGetAllUser(query)
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_USERS_LIMIT,
+                users: response.data.response?.rows,
+                count: response.data.response?.count,
+            })
+        } else {
+            dispatch({
+                type: actionTypes.GET_USERS_LIMIT,
+                msg: response.data.msg
+            })
+        }
+
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_USERS_LIMIT,
+            users: null,
+            msg: error
+        })
+    }
+}

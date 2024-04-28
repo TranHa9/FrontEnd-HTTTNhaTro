@@ -47,6 +47,12 @@ const menuSidebar = [
         path: "/lien-he",
         icon: <FaUserTag />
     },
+    {
+        id: 5,
+        text: "Thông tin người dùng",
+        path: "/he-thong/thong-tin-nguoi-dung",
+        icon: <FaUserTag />
+    },
 
 ]
 

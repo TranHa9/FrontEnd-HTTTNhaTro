@@ -18,7 +18,9 @@ export const path = {
     CREATE_POST: 'tao-moi-bai-dang',
     MANAGE_POST: 'quan-ly-bai-dang',
     MANAGE_POST__PAGE: ':page',
-    Edit_ACCOUNT: 'thong-tin-tai-khoan'
+    Edit_ACCOUNT: 'thong-tin-tai-khoan',
+    MANAGE_USER: 'thong-tin-nguoi-dung',
+    MANAGE_USER__PAGE: ':page',
 }
 
 export const text = {

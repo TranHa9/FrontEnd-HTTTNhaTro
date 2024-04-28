@@ -4,6 +4,7 @@ const initState = {
     isLoggedIn: false,
     token: null,
     msg: '',
+    userInfo: [],
     update: false
 }
 const authReduces = (state = initState, action) => {
@@ -14,7 +15,8 @@ const authReduces = (state = initState, action) => {
                 ...state,
                 isLoggedIn: true,
                 token: action.data,
-                msg: ''
+                msg: '',
+                userInfo: action.userInfo
             }
         case actionTypes.REGISTER_FAIL:
         case actionTypes.LOGIN_FAIL:
