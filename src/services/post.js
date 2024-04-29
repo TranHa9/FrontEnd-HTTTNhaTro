@@ -155,3 +155,16 @@ export const apiDeleteSavePost = (savePostId) => new Promise(async (resolve, rej
         reject(error)
     }
 })
+
+export const apiGetPostsStatus = (query) => new Promise(async (resolve, reject) => {
+    try {
+        const response = await axiosConfig({
+            method: 'get',
+            url: `/api/v1/post/status-post`,
+            params: query
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

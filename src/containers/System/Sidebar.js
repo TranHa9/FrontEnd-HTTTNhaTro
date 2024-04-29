@@ -15,7 +15,18 @@ const notAcivieStyle = 'flex items-center hover:bg-gray-200 rounded-md py-2 gap-
 
 const Sidebar = () => {
     const { currentData } = useSelector(state => state.user)
+    const { userInfo } = useSelector(state => state.auth)
     const dispatch = useDispatch()
+
+    const filterMenuByRole = (menuSidebar, userRoleId) => {
+        return menuSidebar.filter(item => {
+            if (item.permissions) {
+                return item.permissions.includes(userRoleId);
+            }
+            return true;
+        });
+    };
+    const filteredMenu = filterMenuByRole(menuSidebar, userInfo.roleId);
 
     return (
         <div className='w-[19%] shadow-lg bg-gray-150 p-4 flex flex-col gap-8'>
@@ -30,7 +41,7 @@ const Sidebar = () => {
                 <span className='truncate'>Mã thành viên: <span className='font-medium'>{currentData?.id}</span></span>
             </div>
             <div>
-                {menuSidebar.map(item => {
+                {filteredMenu.map(item => {
                     return (
                         <NavLink
                             className={({ isActive }) => isActive ? activeStyle : notAcivieStyle}

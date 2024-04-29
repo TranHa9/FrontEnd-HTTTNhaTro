@@ -6,8 +6,9 @@ import { useSearchParams } from 'react-router-dom';
 
 const { GrLinkNext } = icons;
 
-const Pagination = ({ type }) => {
+const Pagination = ({ type, typeUser }) => {
     const { count, posts } = useSelector(state => state.post);
+    const { users, countUser } = useSelector(state => state.user)
     const { postOfCurrent, postCount } = useSelector(state => state.post)
     const [arrPage, setArrPage] = useState([]);
     const [currentPage, setCurrentPage] = useState(1)
@@ -15,8 +16,9 @@ const Pagination = ({ type }) => {
     const [isHideStart, setIsHideStart] = useState(false)
     const [searchParams] = useSearchParams()
 
-    const postsCover = type ? postOfCurrent : posts
-    const countCover = type ? postCount : count
+    const postsCover = type ? postOfCurrent : typeUser ? users : posts
+    const countCover = type ? postCount : typeUser ? countUser : count
+
     useEffect(() => {
         let page = searchParams.get('page')
         page && +page !== currentPage && setCurrentPage(+page)

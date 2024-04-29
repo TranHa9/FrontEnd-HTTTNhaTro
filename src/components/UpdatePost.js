@@ -1,5 +1,7 @@
 import React from 'react';
 import { CreatePost } from '../containers/System'
+import { FaXmark } from 'react-icons/fa6';
+import { GrLinkNext, GrLinkPrevious } from 'react-icons/gr';
 
 const UpdatePost = ({ setIsEdit }) => {
     return (
@@ -14,9 +16,20 @@ const UpdatePost = ({ setIsEdit }) => {
                 className='bg-white max-w-1100 w-full overflow-y-auto'
                 onClick={e => e.stopPropagation()}
             >
-                <CreatePost isEdit />
+                <div className='relative'>
+                    <span
+                        onClick={e => {
+                            e.stopPropagation()
+                            setIsEdit(false)
+                        }}
+                        className='cursor-pointer absolute top-5 right-10 bottom-0'
+                    ><FaXmark size={30} color='red' /></span>
+                    <div className=''>
+                        <CreatePost isEdit />
+                    </div>
+                </div>
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Home, Login, Rental, HomePage, DetailPost, SearchDetail, Contact, PostSaved } from "./containers/Public";
 import { path } from "./ultils/constant";
-import { CreatePost, EditAccount, ManagePost, ManageUser, System } from "./containers/System";
+import { ConfirmDetailPost, ConfirmPost, CreatePost, EditAccount, ManagePost, ManageUser, MangePostAll, System } from "./containers/System";
 import * as action from './store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from "react";
@@ -40,8 +40,11 @@ function App() {
         <Route path={path.SYSTEM} element={<System />}>
           <Route path={path.CREATE_POST} element={<CreatePost />} />
           <Route path={path.MANAGE_POST} element={<ManagePost />} />
+          <Route path={path.MANAGE_POST_ALL} element={<MangePostAll />} />
           <Route path={path.Edit_ACCOUNT} element={<EditAccount />} />
           <Route path={path.MANAGE_USER} element={<ManageUser />} />
+          <Route path={path.CONFIRM_POST} element={<ConfirmPost />} />
+          <Route path={`${path.CONFIRM_POST}/${path.CONFIRM_POST_DETAIL_POST__TITLE__POSTSTAUSID}`} element={<ConfirmDetailPost />} />
         </Route>
       </Routes>
     </div>

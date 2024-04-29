@@ -17,10 +17,14 @@ export const path = {
     SYSTEM: '/he-thong/*',
     CREATE_POST: 'tao-moi-bai-dang',
     MANAGE_POST: 'quan-ly-bai-dang',
+    MANAGE_POST_ALL: 'quan-ly-tat-ca-bai-dang',
     MANAGE_POST__PAGE: ':page',
     Edit_ACCOUNT: 'thong-tin-tai-khoan',
-    MANAGE_USER: 'thong-tin-nguoi-dung',
+    MANAGE_USER: 'quan-ly-nguoi-dung',
     MANAGE_USER__PAGE: ':page',
+    CONFIRM_POST: 'duyet-bai-dang',
+    CONFIRM_POST_DETAIL: 'chi-tiet-bai-dang-cho-duyet/',
+    CONFIRM_POST_DETAIL_POST__TITLE__POSTSTAUSID: 'chi-tiet-bai-dang-cho-duyet/:title/:postStatusId'
 }
 
 export const text = {

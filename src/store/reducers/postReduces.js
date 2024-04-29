@@ -8,7 +8,9 @@ const initState = {
     postCount: 0,
     dataEdit: null,
     savePosts: [],
-    countSavePost: 0
+    countSavePost: 0,
+    postsStatus: [],
+    countStatus: 0
 }
 
 const postReducer = (state = initState, action) => {
@@ -20,6 +22,13 @@ const postReducer = (state = initState, action) => {
                 posts: action.posts || [],
                 msg: action.msg || '',
                 count: action.count || 0,
+            }
+        case actionTypes.GET_STATUS_POST:
+            return {
+                ...state,
+                postsStatus: action.postsStatus || [],
+                msg: action.msg || '',
+                countStatus: action.countStatus || 0,
             }
         case actionTypes.GET_SAVE_POST:
             return {

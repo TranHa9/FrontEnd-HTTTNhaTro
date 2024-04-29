@@ -10,7 +10,7 @@ import { getSavePostsLimit } from '../store/actions';
 
 const { RiHeartLine, RiHeartFill } = icons
 
-const Item = ({ images, user, name, description, address, area, price, id }) => {
+const Item = ({ images, user, name, description, address, area, price, id, type }) => {
     const { currentData } = useSelector(state => state.user)
     const [isSaved, setIsSaved] = useState(false);
     const { savePosts } = useSelector(state => state.post)
@@ -20,7 +20,6 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
         const isPostSaved = savePosts.some(item => item.postId === id);
         setIsSaved(isPostSaved);
     }, [savePosts]);
-
     const handleAddSavePost = async (postId) => {
         try {
             const userId = currentData.id;
@@ -58,7 +57,7 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
             <div className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
-                <Link to={`${path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='w-full'>
+                <Link to={`${type ? path.CONFIRM_POST_DETAIL : path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='w-full'>
                     {images.length > 0 &&
                         <img src={images[0]} alt='perview' className='w-[95%] h-[250px] object-cover' />
                     }
@@ -81,7 +80,7 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
             </div>
             <div className='w-3/5'>
                 <div className='flex justify-between gap-4 w-full'>
-                    <Link to={`${path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='text-red-600 font-bold text-lg'>
+                    <Link to={`${type ? path.CONFIRM_POST_DETAIL : path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='text-red-600 font-bold text-lg'>
                         {name}
                     </Link>
                 </div>

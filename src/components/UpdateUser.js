@@ -1,38 +1,75 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import InputFormV2 from './InputFormV2'
 import Button from './Button'
 import validate from '../ultils/Common/validateField'
 import Swal from 'sweetalert2'
-import { apiCreateNewUser } from '../services'
+import { apiCreateNewUser, apiUpdateUserData } from '../services';
+import *as actions from '../store/actions';
 import InputForm from './InputForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetDataUserEdit } from '../store/actions'
+import icons from '../ultils/icons'
 
-const UpdateUser = ({ setIsCreate }) => {
+const UpdateUser = ({ setIsCreate, setIsEdit }) => {
+    const { FaXmark } = icons
 
+    const { dataUserEdit } = useSelector(state => state.user)
+    const dispatch = useDispatch()
     const [payload, setPayload] = useState(() => {
         const initData = {
-            name: '',
-            password: '',
-            phone: '',
-            roleId: '',
+            name: dataUserEdit?.name || '',
+            password: dataUserEdit?.password || '',
+            phone: dataUserEdit?.phone || '',
+            roleId: dataUserEdit?.roleId || '',
         }
 
         return initData
     })
     const [invalidFields, setInvalidFields] = useState([])
 
+    // useEffect(() => {
+    //     if (setIsEdit) {
+    //         delete payload.password;
+    //     }
+    // }, [setIsEdit]);
+
+    useEffect(() => {
+        if (setIsEdit && dataUserEdit) {
+            setPayload({
+                name: dataUserEdit.name || '',
+                phone: dataUserEdit.phone || '',
+                roleId: dataUserEdit.roleId || '',
+            });
+            delete payload.password;
+        } else {
+            resetPayload();
+        }
+    }, [setIsEdit, dataUserEdit]);
     const handleSubmit = async () => {
         const result = validate(payload, setInvalidFields)
-        console.log(payload)
-        console.log(result)
         if (result === 0) {
-            const response = await apiCreateNewUser(payload)
-            if (response?.data.err === 0) {
-                Swal.fire("Thông báo", "Đã thêm bài đăng mới", "success").then(() => {
-                    resetPayload()
-                })
-            }
-            else {
-                Swal.fire("Thông báo", "Đã có lỗi", 'error')
+            if (dataUserEdit) {
+                payload.userId = dataUserEdit?.id
+                const response = await apiUpdateUserData(payload)
+                if (response?.data.err === 0) {
+                    Swal.fire("Thông báo", "Đã sửa thành công", "success").then(() => {
+                        resetPayload()
+                        dispatch(resetDataUserEdit())
+                    })
+                } else {
+                    Swal.fire("Thông báo", "Đã có lỗi", 'error')
+                }
+            } else {
+                const response = await apiCreateNewUser(payload)
+                if (response?.data.err === 0) {
+                    Swal.fire("Thông báo", "Đã thêm bài đăng mới", "success").then(() => {
+                        resetPayload()
+                        dispatch(actions.apiGetAllUser())
+                    })
+                }
+                else {
+                    Swal.fire("Thông báo", "Đã có lỗi", 'error')
+                }
             }
         }
     }
@@ -50,7 +87,7 @@ const UpdateUser = ({ setIsCreate }) => {
             className='absolute top-0 left-0 right-0 bottom-0 bg-overlay-50 flex justify-end'
             onClick={e => {
                 e.stopPropagation()
-                setIsCreate(false)
+                setIsEdit ? setIsEdit(false) : setIsCreate(false)
             }}
         >
             <div
@@ -59,7 +96,14 @@ const UpdateUser = ({ setIsCreate }) => {
             >
                 <div className='p-5 flex flex-col gap-6'>
                     <div className='py-4 border-b border-gray-300 flex items-center justify-between'>
-                        <h1 className='text-3xl font-medium'>Thêm người dùng</h1>
+                        <h1 className='text-3xl font-medium'>{setIsEdit ? 'Sửa thông tin người dùng' : 'Thêm người dùng'}</h1>
+                        <span
+                            onClick={e => {
+                                e.stopPropagation()
+                                setIsEdit ? setIsEdit(false) : setIsCreate(false)
+                            }}
+                            className='cursor-pointer'
+                        ><FaXmark size={30} color='red' /></span>
                     </div>
                     <div>
                         <div className='mb-4'>
@@ -72,8 +116,7 @@ const UpdateUser = ({ setIsCreate }) => {
                                 setInvalidFields={setInvalidFields}
                             />
                         </div>
-
-                        <div className='mb-4'>
+                        {!setIsEdit && <div className='mb-4'>
                             <InputForm
                                 invalidFields={invalidFields}
                                 setInvalidFields={setInvalidFields}
@@ -83,7 +126,7 @@ const UpdateUser = ({ setIsCreate }) => {
                                 keyPayload={'password'}
                                 type='password'
                             />
-                        </div>
+                        </div>}
 
                         <div className='mb-4'>
                             <InputFormV2
@@ -115,10 +158,10 @@ const UpdateUser = ({ setIsCreate }) => {
                         </div>
                         <Button
                             onClick={handleSubmit}
-                            //text={isEdit ? 'Cập nhật' : 'Tạo mới'}
-                            text={'tạo mới'}
+                            text={setIsEdit ? 'Cập nhật' : 'Tạo mới'}
                             bgColor={'bg-secondary1'}
                             textColor={'text-white'}
+                            fullwidth
                         />
                     </div>
                 </div>

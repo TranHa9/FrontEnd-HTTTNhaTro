@@ -11,6 +11,7 @@ import { FaUserTag, FaPhoneAlt, FaRegQuestionCircle } from "react-icons/fa";
 import { IoIosArrowDown, IoIosCamera } from "react-icons/io";
 import { GoHash } from "react-icons/go";
 import { SiZalo } from "react-icons/si";
+import { FaXmark } from "react-icons/fa6";
 
 
 const icons = {
@@ -41,7 +42,8 @@ const icons = {
     GoHash,
     FaPhoneAlt,
     SiZalo,
-    FaRegQuestionCircle
+    FaRegQuestionCircle,
+    FaXmark
 }
 
 export default icons

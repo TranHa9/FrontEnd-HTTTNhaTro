@@ -4,7 +4,8 @@ const initState = {
     currentData: {},
     users: [],
     msg: '',
-    count: 0,
+    countUser: 0,
+    dataUserEdit: null,
 }
 const userReduces = (state = initState, action) => {
     switch (action.type) {
@@ -18,7 +19,17 @@ const userReduces = (state = initState, action) => {
                 ...state,
                 users: action.users || [],
                 msg: action.msg || '',
-                count: action.count || 0,
+                countUser: action.countUser || 0,
+            }
+        case actionTypes.EDIT_USER_DATA:
+            return {
+                ...state,
+                dataUserEdit: action.dataUserEdit || null
+            }
+        case actionTypes.RESET_DATA_USER_EDIT:
+            return {
+                ...state,
+                dataUserEdit: null,
             }
         case actionTypes.LOGOUT:
             return {

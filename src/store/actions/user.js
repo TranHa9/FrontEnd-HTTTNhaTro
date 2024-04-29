@@ -36,7 +36,7 @@ export const apiGetAllUser = (query) => async (dispatch) => {
             dispatch({
                 type: actionTypes.GET_USERS_LIMIT,
                 users: response.data.response?.rows,
-                count: response.data.response?.count,
+                countUser: response.data.response?.count,
             })
         } else {
             dispatch({
@@ -53,3 +53,12 @@ export const apiGetAllUser = (query) => async (dispatch) => {
         })
     }
 }
+
+export const editUserData = (dataUserEdit) => ({
+    type: actionTypes.EDIT_USER_DATA,
+    dataUserEdit
+})
+
+export const resetDataUserEdit = () => ({
+    type: actionTypes.RESET_DATA_USER_EDIT,
+})
