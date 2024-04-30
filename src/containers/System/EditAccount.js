@@ -13,7 +13,6 @@ const EditAccount = () => {
     const [payload, setPayload] = useState({
         name: currentData?.name || '',
         avatar: blobToBase64(currentData?.avatar) || '',
-        fbUrl: currentData?.fbUrl || '',
         zalo: currentData?.zalo || ''
     })
 
@@ -63,13 +62,6 @@ const EditAccount = () => {
                         direction={'flex-row'}
                         label={'Zalo'}
                         value={payload.zalo}
-                    />
-                    <InputFormV2
-                        setValue={setPayload}
-                        name={'fbUrl'}
-                        direction={'flex-row'}
-                        label={'FaceBook'}
-                        value={payload.fbUrl}
                     />
                     <div className='flex'>
                         <label className='w-48 flex-none' htmlFor='password'>Mật khẩu</label>

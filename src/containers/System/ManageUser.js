@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Pagination } from '../Public';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import avatar from '../../assets/avatar.png'
+import { blobToBase64 } from '../../ultils/Common/toBase64';
 
 const ManageUser = () => {
     const { AiOutlineEdit, AiOutlineDelete } = icons
@@ -104,11 +105,11 @@ const ManageUser = () => {
                                         <tr key={item.id}>
                                             <td className="px-4 py-3">{item?.id}</td>
                                             <td className="px-4 py-3 flex items-center justify-center">
-                                                <img src={item?.avatar || avatar} alt='avatar' className='w-10 h-10 object-cover rounded-md' />
+                                                <img src={blobToBase64(item?.avatar) || avatar} alt='avatar' className='w-10 h-10 object-cover rounded-md' />
                                             </td>
                                             <td className="px-4 py-3">{item?.name}</td>
                                             <td className="px-4 py-3">{item?.phone}</td>
-                                            <td className="px-4 py-3">{item?.roleId}</td>
+                                            <td className="px-4 py-3">{item?.role}</td>
                                             <td className="px-4 py-3">
                                                 <div className='flex items-center justify-center gap-2'>
                                                     <AiOutlineEdit size={24}

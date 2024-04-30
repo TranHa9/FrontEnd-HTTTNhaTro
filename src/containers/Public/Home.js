@@ -21,10 +21,6 @@ const Home = () => {
             </div>
             <Intro />
             <Contact />
-            <div className="h-[500px]">
-
-            </div>
-
         </div>
     )
 }

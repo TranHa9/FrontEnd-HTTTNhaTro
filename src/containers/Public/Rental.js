@@ -18,7 +18,6 @@ const Rentail = () => {
         if (category) {
             setCategoryId(category.id)
         }
-        console.log(category)
     }, [location])
 
     return (

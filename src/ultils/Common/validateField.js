@@ -12,6 +12,24 @@ const validate = (payload, setInvalidFields) => {
         }
     })
     fields.forEach(item => {
+        if (item[1] === "0") {
+            setInvalidFields(prev => [...prev, {
+                name: item[0],
+                message: 'Bạn không được bỏ trống trường này'
+            }])
+            invalids++
+        }
+    })
+    fields.forEach(item => {
+        if (item[1] === 0) {
+            setInvalidFields(prev => [...prev, {
+                name: item[0],
+                message: 'Bạn không được bỏ trống trường này'
+            }])
+            invalids++
+        }
+    })
+    fields.forEach(item => {
         switch (item[0]) {
             case 'password':
                 if (item[1].length < 6) {

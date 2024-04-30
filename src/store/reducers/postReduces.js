@@ -10,7 +10,9 @@ const initState = {
     savePosts: [],
     countSavePost: 0,
     postsStatus: [],
-    countStatus: 0
+    countStatus: 0,
+    postAll: [],
+    countAll: 0
 }
 
 const postReducer = (state = initState, action) => {
@@ -22,6 +24,13 @@ const postReducer = (state = initState, action) => {
                 posts: action.posts || [],
                 msg: action.msg || '',
                 count: action.count || 0,
+            }
+        case actionTypes.GET_STATUS_ALL_POST:
+            return {
+                ...state,
+                postAll: action.postAll || [],
+                msg: action.msg || '',
+                countAll: action.countAll || 0,
             }
         case actionTypes.GET_STATUS_POST:
             return {
@@ -53,7 +62,7 @@ const postReducer = (state = initState, action) => {
         case actionTypes.GET_POSTS_ADMIN:
             return {
                 ...state,
-                postOfCurrent: action.posts || [],
+                postOfCurrent: action.postOfCurrent || [],
                 msg: action.msg || '',
                 postCount: action.postCount || 0,
             }

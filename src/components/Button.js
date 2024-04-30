@@ -8,7 +8,7 @@ const Button = ({ text, textColor, bgColor, IcAfter, IcBefore, onClick, fullwidt
             className={`py-2 px-4 ${px} ${textColor} ${bgColor} ${fullwidth && 'w-full'} outline-none rounded-md hover:underline flex items-center justify-center gap-1`}
             onClick={onClick}
         >
-            {IcBefore && <IcBefore />}
+            {IcBefore && <IcBefore size={24} />}
             {text}
             {IcAfter && <IcAfter />}
         </button>

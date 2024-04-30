@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPostsLimit, getPostsStatus } from '../../store/actions';
-import { Button, RelatedPost, SliderCustom } from '../../components';
+import { getPostsStatus } from '../../store/actions';
+import { Button, SliderCustom } from '../../components';
 import icons from '../../ultils/icons';
 import { formatDate } from '../../ultils/Common/formatDate';
 import moment from 'moment';
@@ -11,6 +11,10 @@ import { formatVietnameseToString } from '../../ultils/Common/formatVietnameseTo
 import MapWithSearch from '../../components/MapWithSearch';
 import avatar from '../../assets/avatar.png'
 import { blobToBase64 } from '../../ultils/Common/toBase64';
+import * as action from "../../store/actions"
+import Swal from 'sweetalert2';
+import { apiUpdatePost } from '../../services';
+import { createBrowserHistory } from 'history';
 
 
 const ConfirmDetailPost = () => {
@@ -18,8 +22,14 @@ const ConfirmDetailPost = () => {
     const { CiLocationOn, TbReportMoney, RiCrop2Line, MdAccessTime, GoHash, FaPhoneAlt, SiZalo, RiHeartLine, RiHeartFill } = icons
     const { postStatusId } = useParams()
     const dispatch = useDispatch()
+    const history = createBrowserHistory()
     const { postsStatus } = useSelector(state => state.post)
-    console.log(postStatusId)
+    const [payload, setPayload] = useState({
+        status: 'Đã duyệt'
+    })
+    const [refuse, setRefuse] = useState({
+        status: 'Đã hủy'
+    })
     useEffect(() => {
         postStatusId && dispatch(getPostsStatus({ id: postStatusId }))
     }, [postStatusId])
@@ -29,6 +39,37 @@ const ConfirmDetailPost = () => {
         return moment(createdAt).fromNow()
     }
 
+    const handleSubmit = async (id) => {
+        payload.postId = id
+        const response = await apiUpdatePost(payload)
+        if (response?.data.err === 0) {
+            Swal.fire("Thông báo", "Đã duyệt", "success").then(() => {
+                setPayload({
+                    status: 'Đã duyệt'
+                })
+                dispatch(action.getPostsStatus())
+                history.back();
+            })
+        } else {
+            Swal.fire("Thông báo", "Đã có lỗi", 'error')
+        }
+    }
+
+    const handleRefuseSubmit = async (id) => {
+        refuse.postId = id
+        const response = await apiUpdatePost(refuse)
+        if (response?.data.err === 0) {
+            Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
+                setRefuse({
+                    status: 'Đã hủy'
+                })
+                dispatch(action.getPostsStatus())
+                history.back();
+            })
+        } else {
+            Swal.fire("Thông báo", "Đã có lỗi", 'error')
+        }
+    }
     return (
         <div className='w-full flex gap-4'>
             <div className='w-[70%]'>
@@ -160,8 +201,19 @@ const ConfirmDetailPost = () => {
                         fullwidth
                         IcBefore={RiHeartLine}
                     />
+                    <Button
+                        text={"Phê duyệt"}
+                        bgColor={"bg-blue-600 text-white"}
+                        onClick={() => handleSubmit(postsStatus[0]?.id)}
+                        fullwidth
+                    />
+                    <Button
+                        text={"Từ chối"}
+                        bgColor={"bg-gray-300"}
+                        onClick={() => handleRefuseSubmit(postsStatus[0]?.id)}
+                        fullwidth
+                    />
                 </div>
-                <RelatedPost />
             </div>
         </div>
     )

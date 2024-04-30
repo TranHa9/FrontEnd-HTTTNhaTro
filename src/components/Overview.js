@@ -63,8 +63,10 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                         name='price'
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
+                        type={'number'}
                     />
                     <InputFormV2
+                        small='ví dụ nhập là 20.5'
                         label={'Diện tích'}
                         unit={'m2'}
                         value={payload.area}
@@ -72,6 +74,7 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                         name='area'
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
+                        type={'number'}
                     />
                     <Select
                         options={targets}

@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { apiGetNewPosts, apiGetPosts, apiGetPostsLimit, apiGetPostsLimitAdmin, apiGetPostsStatus, apiGetSavePostsLimit, apiaddSavePost } from '../../services/post';
+import { apiGetNewPosts, apiGetPosts, apiGetPostsAllStatus, apiGetPostsLimit, apiGetPostsLimitAdmin, apiGetPostsStatus, apiGetSavePostsLimit, apiaddSavePost } from '../../services/post';
 
 export const getPosts = () => async (dispatch) => {
     try {
@@ -47,6 +47,29 @@ export const getPostsLimit = (query) => async (dispatch) => {
     }
 }
 
+export const getPostsAllStatus = (query) => async (dispatch) => {
+    try {
+        const response = await apiGetPostsAllStatus(query)
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_STATUS_ALL_POST,
+                postAll: response.data.response?.rows,
+                countAll: response.data.response?.count,
+            })
+        } else {
+            dispatch({
+                type: actionTypes.GET_STATUS_ALL_POST,
+                msg: response.data.msg
+            })
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_STATUS_ALL_POST,
+            postAll: null
+        })
+    }
+}
+
 export const getPostsStatus = (query) => async (dispatch) => {
     try {
         const response = await apiGetPostsStatus(query)
@@ -65,7 +88,7 @@ export const getPostsStatus = (query) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: actionTypes.GET_STATUS_POST,
-            posts: null
+            countStatus: null
         })
     }
 }
@@ -122,20 +145,20 @@ export const getPostsLimitAdmin = (query) => async (dispatch) => {
         if (response?.data.err === 0) {
             dispatch({
                 type: actionTypes.GET_POSTS_ADMIN,
-                posts: response.data.response?.rows,
+                postOfCurrent: response.data.response?.rows,
                 postCount: response.data.response?.count,
             })
         } else {
             dispatch({
                 type: actionTypes.GET_POSTS_ADMIN,
                 msg: response.data.msg,
-                posts: null
+                postOfCurrent: null
             })
         }
     } catch (error) {
         dispatch({
             type: actionTypes.GET_POSTS_ADMIN,
-            posts: null
+            postOfCurrent: null
         })
     }
 }

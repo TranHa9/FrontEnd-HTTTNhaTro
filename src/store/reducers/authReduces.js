@@ -25,14 +25,16 @@ const authReduces = (state = initState, action) => {
                 isLoggedIn: false,
                 msg: action.data,
                 token: null,
-                update: !state.update
+                update: !state.update,
+                userInfo: []
             }
         case actionTypes.LOGOUT:
             return {
                 ...state,
                 isLoggedIn: false,
                 token: null,
-                msg: ''
+                msg: '',
+                userInfo: []
             }
         default:
             return state;

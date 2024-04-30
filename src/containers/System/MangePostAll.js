@@ -15,11 +15,11 @@ const ManagePostAll = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
-    const { posts, dataEdit } = useSelector(state => state.post)
+    const { postAll, dataEdit } = useSelector(state => state.post)
     const [searchParams] = useSearchParams()
     const [isEdit, setIsEdit] = useState(false)
     const [updateData, setUpdateData] = useState(false)
-    // const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([])
     const [status, setStatus] = useState('0')
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +41,7 @@ const ManagePostAll = () => {
         })
         //if (categoryId) searchParamsObject.categoryId = categoryId
         if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
-        dispatch(actions.getPostsLimit(searchParamsObject))
+        dispatch(actions.getPostsAllStatus(searchParamsObject))
             .then(() => {
                 setIsLoading(false);
             })
@@ -50,16 +50,12 @@ const ManagePostAll = () => {
             });
     }, [searchParams, sort, dataEdit, updateData])
 
-    // useEffect(() => {
-    //     !dataEdit && dispatch(actions.getPostsLimitAdmin())
-    // }, [dataEdit, updateData])
-
     useEffect(() => {
         !dataEdit && setIsEdit(false)
     }, [dataEdit])
-    // useEffect(() => {
-    //     setPosts(postOfCurrent)
-    // }, [postOfCurrent])
+    useEffect(() => {
+        setPosts(postAll)
+    }, [postAll])
 
     const checkExpiration = (isoDateString) => {
         const expiryDate = new Date(isoDateString);
@@ -85,7 +81,7 @@ const ManagePostAll = () => {
         navigate({
             pathname: location?.pathname,
             search: createSearchParams({
-                expired: parseInt(+e.target.value),
+                status: parseInt(+e.target.value),
             }).toString()
         });
     }
@@ -104,6 +100,8 @@ const ManagePostAll = () => {
                         <option value='0'>Lọc theo trạng thái</option>
                         <option value='1'>Đang hoạt động</option>
                         <option value='2'>Đã hết hạn</option>
+                        <option value='3'>Đang chờ duyệt</option>
+                        <option value='4'>Đã hủy</option>
                     </select>
                 </div>
             </div>
@@ -121,6 +119,7 @@ const ManagePostAll = () => {
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Giá</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ngày bắt đầu</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ngày hết hạn</th>
+                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Người đăng</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Trạng thái</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Hoạt động</th>
                             </tr>
@@ -141,7 +140,15 @@ const ManagePostAll = () => {
                                         <td className="px-4 py-3">{item?.price}</td>
                                         <td className="px-4 py-3">{formatDate(item?.created)}</td>
                                         <td className="px-4 py-3">{formatDate(item?.expired)}</td>
-                                        <td className="px-4 py-3">{checkExpiration(item?.expired)}</td>
+                                        <td className="px-4 py-3">{item?.user?.name}</td>
+                                        <td className="px-4 py-3">
+                                            {(item?.status === 'Đang chờ duyệt')
+                                                ? item?.status
+                                                : (item?.status === 'Đã hủy')
+                                                    ? item?.status
+                                                    :
+                                                    checkExpiration(item?.expired)}
+                                        </td>
                                         <td className="px-4 py-3">
                                             <div className='flex items-center justify-center gap-2'>
                                                 <AiOutlineEdit size={24}

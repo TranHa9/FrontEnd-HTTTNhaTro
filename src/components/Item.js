@@ -1,36 +1,49 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import icons from '../ultils/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatVietnameseToString } from '../ultils/Common/formatVietnameseToString';
 import { path } from '../ultils/constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiDeleteSavePost, apiaddSavePost } from '../services';
 import Swal from 'sweetalert2';
 import { getSavePostsLimit } from '../store/actions';
+import avatar from "../assets/avatar.png"
+import { blobToBase64 } from '../ultils/Common/toBase64';
 
 const { RiHeartLine, RiHeartFill } = icons
 
-const Item = ({ images, user, name, description, address, area, price, id, type }) => {
+const Item = ({ images, user, name, description, address, area, price, id }) => {
     const { currentData } = useSelector(state => state.user)
     const [isSaved, setIsSaved] = useState(false);
     const { savePosts } = useSelector(state => state.post)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { isLoggedIn } = useSelector(state => state.auth)
 
     useEffect(() => {
         const isPostSaved = savePosts.some(item => item.postId === id);
         setIsSaved(isPostSaved);
     }, [savePosts]);
+
+    const goLogin = useCallback((flag) => {
+        navigate(path.LOGIN, { state: { flag } })
+    }, [])
+
     const handleAddSavePost = async (postId) => {
         try {
-            const userId = currentData.id;
-            const response = await apiaddSavePost({ postId, userId })
-            if (response?.data.err === 0) {
-                dispatch(getSavePostsLimit())
-                setIsSaved(true);
-                Swal.fire("Thông báo", "Đã lưu đăng", "success")
-            }
-            else {
-                Swal.fire("Thông báo", "Đã có lỗi", 'error')
+            if (isLoggedIn) {
+                const userId = currentData.id;
+                const response = await apiaddSavePost({ postId, userId })
+                if (response?.data.err === 0) {
+                    dispatch(getSavePostsLimit())
+                    setIsSaved(true);
+                    Swal.fire("Thông báo", "Đã lưu đăng", "success")
+                }
+                else {
+                    Swal.fire("Thông báo", "Đã có lỗi", 'error')
+                }
+            } else {
+                goLogin(false)
             }
         } catch (error) {
             console.error("lỗi lưu bài đăng:", error);
@@ -40,13 +53,17 @@ const Item = ({ images, user, name, description, address, area, price, id, type 
 
     const handleDeleteSavedPost = async (savePostId) => {
         try {
-            const response = await apiDeleteSavePost(savePostId);
-            if (response?.data.err === 0) {
-                dispatch(getSavePostsLimit())
-                setIsSaved(false);
-                Swal.fire("Thông báo", "Đã xóa bài đã lưu", "success");
+            if (isLoggedIn) {
+                const response = await apiDeleteSavePost(savePostId);
+                if (response?.data.err === 0) {
+                    dispatch(getSavePostsLimit())
+                    setIsSaved(false);
+                    Swal.fire("Thông báo", "Đã xóa bài đã lưu", "success");
+                } else {
+                    Swal.fire("Thông báo", "Đã có lỗi", 'error');
+                }
             } else {
-                Swal.fire("Thông báo", "Đã có lỗi", 'error');
+                goLogin(false)
             }
         } catch (error) {
             console.error("Error deleting saved post:", error);
@@ -57,7 +74,7 @@ const Item = ({ images, user, name, description, address, area, price, id, type 
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
             <div className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
-                <Link to={`${type ? path.CONFIRM_POST_DETAIL : path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='w-full'>
+                <Link to={`${path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='w-full'>
                     {images.length > 0 &&
                         <img src={images[0]} alt='perview' className='w-[95%] h-[250px] object-cover' />
                     }
@@ -80,7 +97,7 @@ const Item = ({ images, user, name, description, address, area, price, id, type 
             </div>
             <div className='w-3/5'>
                 <div className='flex justify-between gap-4 w-full'>
-                    <Link to={`${type ? path.CONFIRM_POST_DETAIL : path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='text-red-600 font-bold text-lg'>
+                    <Link to={`${path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='text-red-600 font-bold text-lg'>
                         {name}
                     </Link>
                 </div>
@@ -94,7 +111,7 @@ const Item = ({ images, user, name, description, address, area, price, id, type 
                 <p className='text-gray-500 w-full h-[70px] overflow-hidden text-ellipsis'>{description}</p>
                 <div className='flex items-center justify-between my-7'>
                     <div className='flex items-center'>
-                        <img src='https://i.pinimg.com/736x/b7/91/44/b79144e03dc4996ce319ff59118caf65.jpg' alt='avatar' className='w-[30px] h-[30px] 
+                        <img src={blobToBase64(user.avatar) || avatar} alt='avatar' className='w-[30px] h-[30px] 
                         object-cover rounded-full' />
                         <p>{user?.name}</p>
                     </div>

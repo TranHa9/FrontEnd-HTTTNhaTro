@@ -78,12 +78,13 @@ const CreatePost = ({ isEdit }) => {
             useId: currentData.id,
         }
         const result = validate(finalPayload, setInvalidFields)
+        console.log(finalPayload)
         if (result === 0) {
             if (dataEdit) {
                 finalPayload.postId = dataEdit?.id
                 const response = await apiUpdatePost(finalPayload)
                 if (response?.data.err === 0) {
-                    Swal.fire("Thông báo", "Đã sửa thành công", "success").then(() => {
+                    Swal.fire("Thông báo", "Đã sửa thành công đang chờ duyệt", "success").then(() => {
                         resetPayload()
                         setResets(true)
                         dispatch(resetDataEdit())
@@ -94,7 +95,7 @@ const CreatePost = ({ isEdit }) => {
             } else {
                 const response = await apiCreateNewPost(finalPayload)
                 if (response?.data.err === 0) {
-                    Swal.fire("Thông báo", "Đã thêm bài đăng mới", "success").then(() => {
+                    Swal.fire("Thông báo", "Đã thêm bài đăng mới đang chờ duyệt", "success").then(() => {
                         resetPayload()
                         setResets(true)
                     })

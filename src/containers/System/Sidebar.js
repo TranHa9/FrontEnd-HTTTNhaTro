@@ -18,15 +18,15 @@ const Sidebar = () => {
     const { userInfo } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const filterMenuByRole = (menuSidebar, userRoleId) => {
+    const filterMenuByRole = (menuSidebar, userRole) => {
         return menuSidebar.filter(item => {
             if (item.permissions) {
-                return item.permissions.includes(userRoleId);
+                return item.permissions.includes(userRole);
             }
             return true;
         });
     };
-    const filteredMenu = filterMenuByRole(menuSidebar, userInfo.roleId);
+    const filteredMenu = filterMenuByRole(menuSidebar, userInfo.role);
 
     return (
         <div className='w-[19%] shadow-lg bg-gray-150 p-4 flex flex-col gap-8'>

@@ -1,76 +1,107 @@
 import icons from "./icons";
 
-const { ImPencil2, MdOutlinePostAdd, FaUserTag } = icons;
+const { FaPencilAlt, MdOutlinePostAdd, FaUserTag, MdOutlineContactMail, MdOutlineManageAccounts, GrUserManager, RiHeartFill } = icons;
 
 const menuManage = [
     {
-        id: 1,
-        text: "Đăng tin cho thuê",
-        path: "/he-thong/tao-moi-bai-dang",
-        icon: <ImPencil2 />
-    },
-    {
-        id: 2,
-        text: "Quản lý tin đăng",
-        path: "/he-thong/quan-ly-bai-dang",
-        icon: <MdOutlinePostAdd />
-    },
-    {
-        id: 3,
-        text: "Thông tin tài khoản",
-        path: "/he-thong/thong-tin-tai-khoan",
-        icon: <FaUserTag />
-    },
-]
-const menuSidebar = [
-    {
         id: '1',
         text: 'Đăng tin cho thuê',
-        permissions: ['R1', 'R2'],
+        permissions: ['admin', 'user'],
         path: "/he-thong/tao-moi-bai-dang",
-        icon: <ImPencil2 />
+        icon: <FaPencilAlt />
     },
     {
         id: '2',
         text: 'Quản lý tin đăng',
-        permissions: ['R2'],
+        permissions: ['user'],
         path: "/he-thong/quan-ly-bai-dang",
         icon: <MdOutlinePostAdd />
     },
     {
         id: '3',
         text: 'Quản lý tin đăng',
-        permissions: ['R1'],
+        permissions: ['admin'],
         path: "/he-thong/quan-ly-tat-ca-bai-dang",
         icon: <MdOutlinePostAdd />
     },
     {
         id: '4',
         text: "Quản lý người dùng",
-        permissions: ['R1'],
+        permissions: ['admin'],
         path: "/he-thong/quan-ly-nguoi-dung",
-        icon: <FaUserTag />
+        icon: <MdOutlineManageAccounts />
     },
     {
         id: '5',
         text: 'Thông tin tài khoản',
-        permissions: ['R1', 'R2'],
+        permissions: ['admin', 'user'],
         path: "/he-thong/thong-tin-tai-khoan",
-        icon: <FaUserTag />
+        icon: <GrUserManager />
     },
     {
         id: '6',
-        text: 'Liên hệ',
-        permissions: ['R1', 'R2'],
-        path: "/lien-he",
+        text: 'Duyệt bài đăng',
+        permissions: ['admin'],
+        path: "/he-thong/duyet-bai-dang",
         icon: <FaUserTag />
     },
     {
         id: '7',
+        text: 'Tin đã lưu',
+        permissions: ['admin', 'user'],
+        path: "/Tin đã lưu",
+        icon: <RiHeartFill />
+    },
+]
+const menuSidebar = [
+    {
+        id: '1',
+        text: 'Đăng tin cho thuê',
+        permissions: ['admin', 'user'],
+        path: "/he-thong/tao-moi-bai-dang",
+        icon: <FaPencilAlt />
+    },
+    {
+        id: '2',
+        text: 'Quản lý tin đăng',
+        permissions: ['user'],
+        path: "/he-thong/quan-ly-bai-dang",
+        icon: <MdOutlinePostAdd />
+    },
+    {
+        id: '3',
+        text: 'Quản lý tin đăng',
+        permissions: ['admin'],
+        path: "/he-thong/quan-ly-tat-ca-bai-dang",
+        icon: <MdOutlinePostAdd />
+    },
+    {
+        id: '4',
+        text: "Quản lý người dùng",
+        permissions: ['admin'],
+        path: "/he-thong/quan-ly-nguoi-dung",
+        icon: <MdOutlineManageAccounts />
+    },
+    {
+        id: '5',
+        text: 'Thông tin tài khoản',
+        permissions: ['admin', 'user'],
+        path: "/he-thong/thong-tin-tai-khoan",
+        icon: <GrUserManager />
+    },
+    {
+        id: '6',
         text: 'Duyệt bài đăng',
-        permissions: ['R1'],
+        permissions: ['admin'],
         path: "/he-thong/duyet-bai-dang",
         icon: <FaUserTag />
+    },
+    {
+        id: '7',
+        text: 'Liên hệ',
+        permissions: ['admin', 'user'],
+        path: "/lien-he",
+        icon: <MdOutlineContactMail />
     },
 
 ]

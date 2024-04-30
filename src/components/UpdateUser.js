@@ -20,7 +20,7 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
             name: dataUserEdit?.name || '',
             password: dataUserEdit?.password || '',
             phone: dataUserEdit?.phone || '',
-            roleId: dataUserEdit?.roleId || '',
+            role: dataUserEdit?.role || '',
         }
 
         return initData
@@ -38,7 +38,7 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
             setPayload({
                 name: dataUserEdit.name || '',
                 phone: dataUserEdit.phone || '',
-                roleId: dataUserEdit.roleId || '',
+                role: dataUserEdit.role || '',
             });
             delete payload.password;
         } else {
@@ -79,7 +79,7 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
             name: '',
             password: '',
             phone: '',
-            roleId: '',
+            role: '',
         })
     }
     return (
@@ -140,20 +140,20 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
                         </div>
 
                         <div className='mb-4'>
-                            <label htmlFor='roleId' className='block text-gray-700 font-bold mb-2'>Phân quyền:</label>
+                            <label htmlFor='role' className='block text-gray-700 font-bold mb-2'>Phân quyền:</label>
                             <select
-                                name='roleId'
+                                name='role'
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500'
-                                value={payload.roleId}
-                                onChange={(e) => setPayload({ ...payload, roleId: e.target.value })}
+                                value={payload.role}
+                                onChange={(e) => setPayload({ ...payload, role: e.target.value })}
                                 onFocus={() => setInvalidFields([])}
                             >
                                 <option value=''>Chọn quyền</option>
-                                <option value='R1'>Admin</option>
-                                <option value='R2'>User</option>
+                                <option value='admin'>Admin</option>
+                                <option value='user'>User</option>
                             </select>
                             {<small className='text-red-500 block w-full'>
-                                {invalidFields?.find(item => item.name === 'roleId')?.message}
+                                {invalidFields?.find(item => item.name === 'role')?.message}
                             </small>}
                         </div>
                         <Button

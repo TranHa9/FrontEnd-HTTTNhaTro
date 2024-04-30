@@ -85,7 +85,7 @@ const ManagePost = () => {
         navigate({
             pathname: location?.pathname,
             search: createSearchParams({
-                expired: parseInt(+e.target.value),
+                status: parseInt(+e.target.value),
             }).toString()
         });
     }
@@ -104,6 +104,8 @@ const ManagePost = () => {
                         <option value='0'>Lọc theo trạng thái</option>
                         <option value='1'>Đang hoạt động</option>
                         <option value='2'>Đã hết hạn</option>
+                        <option value='3'>Đang chờ duyệt</option>
+                        <option value='4'>Đã hủy</option>
                     </select>
                 </div>
             </div>
@@ -141,7 +143,14 @@ const ManagePost = () => {
                                         <td className="px-4 py-3">{item?.price}</td>
                                         <td className="px-4 py-3">{formatDate(item?.created)}</td>
                                         <td className="px-4 py-3">{formatDate(item?.expired)}</td>
-                                        <td className="px-4 py-3">{checkExpiration(item?.expired)}</td>
+                                        <td className="px-4 py-3">
+                                            {(item?.status === 'Đang chờ duyệt')
+                                                ? item?.status
+                                                : (item?.status === 'Đã hủy')
+                                                    ? item?.status
+                                                    :
+                                                    checkExpiration(item?.expired)}
+                                        </td>
                                         <td className="px-4 py-3">
                                             <div className='flex items-center justify-center gap-2'>
                                                 <AiOutlineEdit size={24}
