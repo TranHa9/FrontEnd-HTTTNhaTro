@@ -46,7 +46,7 @@ const ItemSidebar = ({ content, title, isDouble, type }) => {
     }
 
     return (
-        <div className='w-full p-4 rounded-md bg-white'>
+        <div className='w-full p-4 rounded-md bg-white shadow-lg'>
             <h3 className='text-lg font-semibold mb-4'>{title}</h3>
             {!isDouble && <div className='flex flex-col gap-2'>
                 {content?.length > 0 && content.map(item => {

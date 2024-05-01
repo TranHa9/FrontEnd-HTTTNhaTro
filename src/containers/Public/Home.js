@@ -12,14 +12,13 @@ const Home = () => {
 
 
     return (
-        <div className="w-full flex gap-4 flex-col items-center h-full ">
+        <div className="w-full flex flex-col items-center h-full ">
             <Header />
             <Navigation />
-            {isLoggedIn && location.pathname !== `/${path.CONTACT}` && !location.pathname.includes(path.DETAIL) && <Search />}
+            {location.pathname !== `/${path.LOGIN}` && location.pathname !== `/${path.CONTACT}` && !location.pathname.includes(path.DETAIL) && <Search />}
             <div className="w-4/5 lg:w-3/4 flex flex-col items-start justify-start mt-3">
                 <Outlet />
             </div>
-            <Intro />
             <Contact />
         </div>
     )

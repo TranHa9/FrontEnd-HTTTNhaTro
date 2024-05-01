@@ -7,11 +7,11 @@ const Loading = () => {
             visible={true}
             height="56"
             width="56"
-            color="#23A8F2"
+            color="#E03C31"
             strokeWidth="5"
             animationDuration="0.75"
             ariaLabel="rotating-lines-loading"
-            strokeColor="#23A8F2"
+            strokeColor="#E03C31"
         />
     )
 }

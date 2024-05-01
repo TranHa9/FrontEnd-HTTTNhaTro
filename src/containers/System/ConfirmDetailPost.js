@@ -24,6 +24,7 @@ const ConfirmDetailPost = () => {
     const dispatch = useDispatch()
     const history = createBrowserHistory()
     const { postsStatus } = useSelector(state => state.post)
+
     const [payload, setPayload] = useState({
         status: 'Đã duyệt'
     })
@@ -70,6 +71,7 @@ const ConfirmDetailPost = () => {
             Swal.fire("Thông báo", "Đã có lỗi", 'error')
         }
     }
+
     return (
         <div className='w-full flex gap-4'>
             <div className='w-[70%]'>
@@ -171,9 +173,11 @@ const ConfirmDetailPost = () => {
                         {postsStatus && <MapWithSearch address={postsStatus[0]?.address} />}
                     </div>
                 </div>
+                <div className='h-[120px]'>
+                </div>
             </div>
             <div className='w-[30%] flex flex-col gap-5'>
-                <div className='w-full bg-yellow-500 rounded-md flex flex-col items-center p-4 gap-4'>
+                <div className='w-full rounded-md shadow-md flex flex-col items-center p-4 gap-4'>
                     <img
                         className='w-16 h-16 object-contain rounded-full'
                         src={blobToBase64(postsStatus[0]?.user?.avatar) || avatar}
@@ -181,14 +185,14 @@ const ConfirmDetailPost = () => {
                     />
                     <h3 className='font-bold text-xl'>{postsStatus[0]?.user?.name}</h3>
                     <a
-                        className='w-full text-white font-bold text-lg bg-green-600 py-2 flex items-center justify-center gap-2 rounded-md'
+                        className='w-full text-white font-bold text-lg bg-green-700 py-2 flex items-center justify-center gap-2 rounded-md'
                         href={`tel:${postsStatus[0]?.user.zalo}`}
                     >
                         <FaPhoneAlt />
                         {postsStatus[0]?.user?.phone}
                     </a>
                     <a
-                        className='w-full font-bold text-lg bg-white py-2 flex items-center justify-center gap-2 rounded-md'
+                        className='w-full font-bold text-lg border-2 bg-white border-black py-2 flex items-center justify-center gap-2 rounded-md'
                         href={`https://zalo.me/${postsStatus[0]?.user.zalo}`}
                         target='_blank'
                     >
@@ -196,14 +200,8 @@ const ConfirmDetailPost = () => {
                         {'Nhắn Zalo'}
                     </a>
                     <Button
-                        text={'Yêu thích'}
-                        bgColor={"bg-white text-lg font-bold"}
-                        fullwidth
-                        IcBefore={RiHeartLine}
-                    />
-                    <Button
                         text={"Phê duyệt"}
-                        bgColor={"bg-blue-600 text-white"}
+                        bgColor={"bg-redcover text-white"}
                         onClick={() => handleSubmit(postsStatus[0]?.id)}
                         fullwidth
                     />

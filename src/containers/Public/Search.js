@@ -6,6 +6,7 @@ import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
 import { path } from '../../ultils/constant';
 import { dataAreas, dataPrices } from '../../ultils/data';
 import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '../../services';
+import bg from '../../assets/bg.png'
 
 const { BsChevronRight, CiLocationOn, TbReportMoney, RiCrop2Line, MdLocationCity, FiSearch } = icons
 
@@ -62,8 +63,15 @@ const Search = () => {
         }, { state: { titleSearch } })
     }
     return (
-        <>
-            <div className='w-3/4 my-3 p-[10px] bg-secondary3 rounded-lg flex-col lg:flex-row flex gap-2 items-center justify-around'>
+        <div className='w-full flex flex-col items-center justify-center relative'>
+            <div className='w-full'>
+                <img
+                    src={bg}
+                    alt='backgound'
+                />
+            </div>
+
+            <div className='w-3/4 my-3 p-[15px] bg-black bg-opacity-40 rounded-lg flex-col lg:flex-row flex gap-2 items-center justify-around absolute top-3'>
                 <span onClick={() => handleShowModal(categories, 'category', 'Tìm tất cả')} className='cursor-pointer flex-1'>
                     <SearchItem IconBefore={<MdLocationCity />} fontWeight IconAfter={<BsChevronRight color='#777' />} text={queries.category} defaultText={'Tìm tất cả'} />
                 </span>
@@ -79,11 +87,15 @@ const Search = () => {
                 <button
                     type='button'
                     onClick={handleSearch}
-                    className='outline-none py-2 px4 flex-1 bg-secondary1 text-sm rounded-lg flex items-center justify-center gap-2 text-white font-medium'
+                    className='outline-none py-2 px4 flex-1 bg-redcover text-sm rounded-lg flex items-center justify-center gap-2 text-white font-medium'
                 >
                     <FiSearch />
                     Tìm kiếm
                 </button>
+                <div className='absolute top-[100px] left-0 w-[50%]'>
+                    <h1 className='text-[30px] font-bold text-white'>Thông tin phòng trọ</h1>
+                    <p className='text-lg text-white'>Đăng ký ngày hôm này! Miễn phí cho đăng tin cho thuê nhà chọ, phòng trọ,...</p>
+                </div>
             </div>
             {isShowModal && <Modal
                 handleSubmit={handleSubmit}
@@ -97,7 +109,7 @@ const Search = () => {
                 setIsShowModal={setIsShowModal}
                 defaultText={defaultText}
             />}
-        </>
+        </div>
     )
 }
 

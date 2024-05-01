@@ -2,14 +2,18 @@ import React from 'react';
 import { CreatePost } from '../containers/System'
 import { FaXmark } from 'react-icons/fa6';
 import { GrLinkNext, GrLinkPrevious } from 'react-icons/gr';
+import { resetDataEdit } from '../store/actions';
+import { useDispatch } from 'react-redux';
 
-const UpdatePost = ({ setIsEdit }) => {
+const ModalPost = ({ setIsEdit }) => {
+    const dispatch = useDispatch()
     return (
         <div
             className='absolute top-0 left-0 right-0 bottom-0 bg-overlay-50 flex justify-end'
             onClick={e => {
                 e.stopPropagation()
                 setIsEdit(false)
+                dispatch(resetDataEdit())
             }}
         >
             <div
@@ -21,6 +25,7 @@ const UpdatePost = ({ setIsEdit }) => {
                         onClick={e => {
                             e.stopPropagation()
                             setIsEdit(false)
+                            dispatch(resetDataEdit())
                         }}
                         className='cursor-pointer absolute top-5 right-10 bottom-0'
                     ><FaXmark size={30} color='red' /></span>
@@ -33,4 +38,4 @@ const UpdatePost = ({ setIsEdit }) => {
     )
 }
 
-export default UpdatePost
+export default ModalPost

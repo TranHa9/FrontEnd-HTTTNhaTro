@@ -186,12 +186,14 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                         })}
                     </div>}
                 {(name === 'province')
-                    && <div className='p-4 flex flex-col'>
-                        <Address type setPayload={handleAddressChange} />
+                    && <div className=' flex flex-col'>
+                        <div className='px-6'>
+                            <Address type setPayload={handleAddressChange} />
+                        </div>
                         {(name === 'province') &&
                             <button
                                 type='button'
-                                className='w-full absolute bottom-0 bg-secondary3 py-2 font-medium rounded-bl-md rounded-br-md'
+                                className='w-full absolute bottom-0 bg-redcover py-2 font-medium rounded-bl-md rounded-br-md'
                                 onClick={handleSubmitAddress}
                             >
                                 Áp dụng
@@ -211,7 +213,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                                 `}
                         </div>
                         <div onClick={handleClickTrack} id='track' className='silder-track h-[5px] absolute top-0 bottom-0 w-full bg-gray-300 rounded-full'></div>
-                        <div onClick={handleClickTrack} id='track-active' className='silder-track-active h-[5px] absolute top-0 bottom-0 bg-secondary3 rounded-full'></div>
+                        <div onClick={handleClickTrack} id='track-active' className='silder-track-active h-[5px] absolute top-0 bottom-0 bg-redcover rounded-full'></div>
                         <input
                             max='100'
                             min='0'
@@ -265,7 +267,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                                     <button
                                         key={item.code}
                                         onClick={() => handlActive(item.code, item.value)}
-                                        className={`px-4 py-2 bg-gray-200 rounded-md cursor-pointer ${item.code === activedEl ? 'bg-secondary1 text-white' : ''}`}
+                                        className={`px-4 py-2 bg-gray-200 rounded-md cursor-pointer ${item.code === activedEl ? 'bg-redcover text-white' : ''}`}
                                     >
                                         {item.value}
                                     </button>
@@ -278,7 +280,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                 {(name === 'price' || name === 'area') &&
                     <button
                         type='button'
-                        className='w-full absolute bottom-0 bg-secondary3 py-2 font-medium rounded-bl-md rounded-br-md'
+                        className='w-full absolute bottom-0 bg-redcover py-2 font-medium rounded-bl-md rounded-br-md'
                         onClick={handleBeforeSubmit}
                     >
                         Áp dụng

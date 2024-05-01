@@ -39,11 +39,11 @@ const User = () => {
                     </span>
                 </div>
                 {isShowMenu &&
-                    <div className="absolute min-w-200 top-full right-0 bg-white shadow-md rounded-md p-4 flex flex-col">
+                    <div className="absolute min-w-200 top-full right-0 bg-white shadow-md rounded-md p-4 flex flex-col z-50">
                         {filteredMenu.map(item => {
                             return (
                                 <Link
-                                    className="flex items-center gap-3 hover:text-orange-500 border-b border-gray-200 py-2"
+                                    className="flex items-center gap-3 hover:text-[#E03C31] border-b border-gray-200 py-2"
                                     key={item.id}
                                     to={item?.path}>
                                     {item?.icon}

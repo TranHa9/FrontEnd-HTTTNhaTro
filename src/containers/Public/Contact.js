@@ -26,7 +26,7 @@ const Contact = () => {
         <div className='w-full'>
             <h1 className='text-2xl font-semibold my-6'>Liên hệ</h1>
             <div className='flex gap-4'>
-                <div className='flex-1 flex flex-col gap-4 h-fit bg-secondary4 rounded-3xl p-4 text-white bg-gradient-to-br from-[#0040E4] to-[#03CCF0]'>
+                <div className='flex-1 flex flex-col gap-4 h-fit bg-redcover rounded-3xl p-4 text-white bg-gradient-to-br from-[#E03C31] to-[#af82b2ee]'>
                     <h4 className='font-medium'>Thông tin liên hệ</h4>
                     <span>Cảm ơn đã chọn chúng tôi</span>
                     <span>Điện thoại: 0123 456 789</span>
@@ -35,8 +35,8 @@ const Contact = () => {
                     <span>Viber: 0123 456 789</span>
                     <span>Địa chỉ: Trâu Qùy - Gia Lâm - Hà Nội</span>
                 </div>
-                <div className='flex-1 bg-white shadow-md rounded-lg p-4 mb-6'>
-                    <h4 className='font-medium text-lg'>Liên hệ trực tuyến</h4>
+                <div className='flex-1 bg-white shadow-md rounded-3xl pt-5 pb-8 px-8 mb-8'>
+                    <h4 className='font-bold text-xl mb-6'>Liên hệ trực tuyến</h4>
                     <div className=' flex flex-col gap-5'>
                         <InputForm
                             label={'Họ và tên'}
@@ -68,7 +68,7 @@ const Contact = () => {
                             {invalidFields?.some(i => i.name === 'content') && <small className="text-red-500">{invalidFields.find(i => i.name === 'content')?.message}</small>}
                         </div>
                         <Button text={'Gửi liên hệ'}
-                            bgColor={'bg-secondary4'}
+                            bgColor={'bg-redcover'}
                             textColor={'text-white'}
                             fullwidth
                             onClick={handleSubmit}

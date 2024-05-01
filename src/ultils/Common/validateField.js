@@ -32,6 +32,8 @@ const validate = (payload, setInvalidFields) => {
     fields.forEach(item => {
         switch (item[0]) {
             case 'password':
+            case 'newPassword':
+            case 'confirmPassword':
                 if (item[1].length < 6) {
                     setInvalidFields(prev => [...prev, {
                         name: item[0],

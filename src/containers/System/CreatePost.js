@@ -124,7 +124,7 @@ const CreatePost = ({ isEdit }) => {
         setImagesPreview([]);
     }
     return (
-        <div className='px-6 '>
+        <div className='px-6 w-full'>
             <h1 className='text-3xl font-medium py-4 border-b border-gray-300'>{isEdit ? 'Sửa tin đăng' : 'Đăng tin mới'}</h1>
             <div className='flex gap-4'>
                 <div className='py-4 flex flex-col gap-8 flex-auto'>
@@ -151,7 +151,7 @@ const CreatePost = ({ isEdit }) => {
                                 {isLoading
                                     ? <Loading />
                                     : <span className='flex flex-col items-center justify-center'>
-                                        <IoIosCamera size={60} color='#23A8F2' />
+                                        <IoIosCamera size={60} color='#E03C31' />
                                         Thêm ảnh
                                     </span>
                                 }
@@ -189,7 +189,7 @@ const CreatePost = ({ isEdit }) => {
                     <Button
                         onClick={handleSubmit}
                         text={isEdit ? 'Cập nhật' : 'Tạo mới'}
-                        bgColor={'bg-secondary1'}
+                        bgColor={'bg-redcover'}
                         textColor={'text-white'}
                     />
                     <div className='h-[500px]'></div>

@@ -17,11 +17,15 @@ const Sitem = ({ title, price, image, createdAt, id }) => {
                 alt="anh"
                 className='w-[65px] h-[65px] object-cover flex-none rounded-md'
             />
-            <div className='w-full flex-auto flex flex-col justify-between gap-1'>
-                <h4 className='text-blue-600 text-[14px]'>{`${title?.slice(0, 45)}...`}</h4>
+            <div className='w-full flex-auto flex flex-col justify-between gap-3'>
+                <div class="overflow-hidden">
+                    <h1 class="text-[#E03C31]" style={{ lineHeight: '1.5em', WebkitLineClamp: 1, display: '-webkit-box', WebkitBoxOrient: 'vertical' }}>
+                        {title}
+                    </h1>
+                </div>
                 <div className=' flex items-center justify-between w-full'>
                     <span className='text-sm font-medium text-green-500'>{price}</span>
-                    <span className='text-sm text-gray-300'>{formatTime(createdAt)}</span>
+                    <span className='text-sm text-gray-400'>{formatTime(createdAt)}</span>
                 </div>
             </div>
         </Link>

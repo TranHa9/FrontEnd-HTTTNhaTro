@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Avatar from "../../assets/avatar.png";
 import { useSelector, useDispatch } from "react-redux";
 import { menuSidebar } from '../../ultils/menuManage';
@@ -10,8 +10,8 @@ import { blobToBase64 } from '../../ultils/Common/toBase64';
 const { MdLogout } = icons
 
 
-const activeStyle = 'flex items-center hover:bg-gray-200 rounded-md py-2 font-bold bg-gray-300 gap-3 cursor-pointer';
-const notAcivieStyle = 'flex items-center hover:bg-gray-200 rounded-md py-2 gap-3 cursor-pointer';
+const activeStyle = 'flex items-center hover:bg-redcover text-white rounded-md p-2 font-bold bg-redcover gap-3 cursor-pointer';
+const notAcivieStyle = 'flex items-center hover:bg-redcover hover:text-white rounded-md p-2 gap-3 cursor-pointer';
 
 const Sidebar = () => {
     const { currentData } = useSelector(state => state.user)
@@ -27,9 +27,8 @@ const Sidebar = () => {
         });
     };
     const filteredMenu = filterMenuByRole(menuSidebar, userInfo.role);
-
     return (
-        <div className='w-[19%] shadow-lg bg-gray-150 p-4 flex flex-col gap-8'>
+        <div className='w-full h-screen shadow-lg bg-gray-200 p-4 flex flex-col gap-8'>
             <div className='flex flex-col gap-3'>
                 <div className='flex items-center justify-start gap-4'>
                     <img src={blobToBase64(currentData?.avatar) || Avatar} alt='avatar' className='w-12 h-12 object-cover rounded-full' />

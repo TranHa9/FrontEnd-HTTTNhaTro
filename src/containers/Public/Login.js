@@ -41,7 +41,7 @@ const Login = () => {
 
     return (
         <div className="w-full flex items-center justify-center">
-            <div className="bg-white w-[500px] p-[30px] pb-[100px] rounded=md shadow-sm">
+            <div className="bg-white w-[500px] p-[30px] pb-[50px] rounded-2xl shadow-xl">
                 <h3 className="font-semibold text-2xl mb-3">{isRegister ? 'Đăng ký tài khoản' : 'Đăng nhập'}</h3>
                 <div className="w-full flex flex-col gap-6">
                     {isRegister && <InputForm
@@ -71,7 +71,7 @@ const Login = () => {
                     />
                     <Button
                         text={isRegister ? 'Đăng ký' : 'Đăng nhập'}
-                        bgColor='bg-secondary1'
+                        bgColor='bg-redcover'
                         textColor='text-white'
                         fullwidth
                         onClick={handleSubmit}

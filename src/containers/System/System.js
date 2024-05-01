@@ -14,8 +14,10 @@ const System = () => {
         <div className='w-full h-screen flex flex-col items-center bg-white'>
             <Header />
             <div className='flex w-full h-screen flex-auto'>
-                <Sidebar />
-                <div className='flex-auto p-4 overflow-y-scroll'>
+                <div className='w-[18%]'>
+                    <Sidebar />
+                </div>
+                <div className='w-[92%] p-4 overflow-y-scroll'>
                     <Outlet />
                 </div>
             </div>

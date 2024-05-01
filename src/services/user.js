@@ -76,3 +76,16 @@ export const apiDeleteUser = (userId) => new Promise(async (resolve, reject) => 
         reject(error)
     }
 })
+
+export const apiUpdatePassword = (payload) => new Promise(async (resolve, reject) => {
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `/api/v1/user/update-password-user`,
+            data: payload
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, InputFormV2, InputReadOnly } from '../../components';
+import { Button, InputFormV2, InputReadOnly, ModalCurrent } from '../../components';
 import avatar from '../../assets/avatar.png'
 import { useSelector, useDispatch } from 'react-redux';
 import { apiUpdateUser } from '../../services';
@@ -15,6 +15,8 @@ const EditAccount = () => {
         avatar: blobToBase64(currentData?.avatar) || '',
         zalo: currentData?.zalo || ''
     })
+    const [isEditPhone, setIsEditPhone] = useState(false)
+    const [isEditPassword, setIsEditPassword] = useState(false)
 
     const handleSubmit = async () => {
         const response = await apiUpdateUser(payload)
@@ -54,23 +56,30 @@ const EditAccount = () => {
                         name={'name'}
                         direction={'flex-row'}
                         label={'Tên hiển thị'}
-                        value={payload.name}
+                        value={payload?.name}
                     />
                     <InputFormV2
                         setValue={setPayload}
                         name={'zalo'}
                         direction={'flex-row'}
                         label={'Zalo'}
-                        value={payload.zalo}
+                        value={payload?.zalo}
                     />
                     <div className='flex'>
                         <label className='w-48 flex-none' htmlFor='password'>Mật khẩu</label>
-                        <small className='flex-auto h-12 text-blue-500 cursor-pointer'>Đổi mật khẩu</small>
+                        <small
+                            className='flex-auto h-12 text-[#E03C31] cursor-pointer'
+                            onClick={() => {
+                                setIsEditPassword(true)
+                            }}
+                        >
+                            Đổi mật khẩu
+                        </small>
                     </div>
                     <div className='flex mb-4'>
                         <label className='w-48 flex-none' htmlFor='avatar'>Ảnh đại diện</label>
                         <div>
-                            <img src={payload.avatar || avatar} alt='avatar' className='w-20 h-20 rounded-full object-cover' />
+                            <img src={payload?.avatar || avatar} alt='avatar' className='w-20 h-20 rounded-full object-cover' />
                             <input
                                 className='appearance-none my-4'
                                 type='file'
@@ -81,11 +90,13 @@ const EditAccount = () => {
                     </div>
                     <Button
                         text={'Cập nhật'}
-                        bgColor={'bg-secondary4'}
+                        bgColor={'bg-redcover'}
                         onClick={handleSubmit}
                     />
                 </div>
             </div>
+            {isEditPhone && <ModalCurrent setIsEditPhone={setIsEditPhone} />}
+            {isEditPassword && <ModalCurrent setIsEditPassword={setIsEditPassword} />}
         </div>
     )
 }

@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { resetDataUserEdit } from '../store/actions'
 import icons from '../ultils/icons'
 
-const UpdateUser = ({ setIsCreate, setIsEdit }) => {
+const ModalUser = ({ setIsCreate, setIsEdit }) => {
     const { FaXmark } = icons
 
     const { dataUserEdit } = useSelector(state => state.user)
@@ -55,6 +55,7 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
                     Swal.fire("Thông báo", "Đã sửa thành công", "success").then(() => {
                         resetPayload()
                         dispatch(resetDataUserEdit())
+                        dispatch(actions.getCurrent())
                     })
                 } else {
                     Swal.fire("Thông báo", "Đã có lỗi", 'error')
@@ -159,7 +160,7 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
                         <Button
                             onClick={handleSubmit}
                             text={setIsEdit ? 'Cập nhật' : 'Tạo mới'}
-                            bgColor={'bg-secondary1'}
+                            bgColor={'bg-redcover'}
                             textColor={'text-white'}
                             fullwidth
                         />
@@ -170,4 +171,4 @@ const UpdateUser = ({ setIsCreate, setIsEdit }) => {
     )
 }
 
-export default UpdateUser
+export default ModalUser

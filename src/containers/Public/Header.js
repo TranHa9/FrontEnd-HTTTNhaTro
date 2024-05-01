@@ -20,14 +20,14 @@ const Header = () => {
     }, [])
 
     return (
-        <div ref={headerRef} className="w-3/4">
+        <div ref={headerRef} className="w-[98%]">
             <div className="w-full flex items-center justify-between">
                 <Link to={'/'}>
-                    <img
-                        src={logo}
-                        alt="logo"
-                        className="w-[240px] h-[50px] object-contain"
-                    />
+                    <h1
+                        className="text-lg font-bold text-[#E03C31] ml-5"
+                    >
+                        Phòng Trọ SV
+                    </h1>
                 </Link>
                 <div className="flex items-center justify-center gap-1">
                     {!isLoggedIn && <div className="flex items-center justify-center">

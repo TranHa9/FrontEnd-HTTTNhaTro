@@ -7,8 +7,8 @@ import { path } from '../../ultils/constant'
 
 
 
-const notActive = 'hover:bg-secondary2 px-4 h-full flex items-center bg-secondary1'
-const active = 'hover:bg-secondary2 px-4 h-full flex items-center  bg-secondary2'
+const notActive = 'hover:border-b-2 hover:border-[#E03C31] px-4 h-full flex items-center '
+const active = 'border-b-2 px-4 h-full flex items-center border-[#E03C31]'
 
 const Navigation = () => {
     const dispatch = useDispatch()
@@ -17,8 +17,8 @@ const Navigation = () => {
         dispatch(actions.getCategories())
     }, [])
     return (
-        <div className="w-full flex justify-center items-center h-[40px] bg-secondary1 text-white">
-            <div className="w-3/4 flex h-full items-center text-sm font-medium">
+        <div className="w-full bg-gray-200 flex justify-center items-center h-[60px] mb-5 shadow-md">
+            <div className="w-3/4 flex h-full items-center font-medium ">
                 <NavLink to={'/'}
                     className={({ isActive }) => isActive ? active : notActive}
                 >

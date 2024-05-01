@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import *as actions from '../../store/actions';
-import { Button, Loading, UpdateUser } from '../../components'
+import { Button, Loading, ModalUser } from '../../components'
 import icons from '../../ultils/icons';
 import { apiDeleteUser } from '../../services';
 import Swal from 'sweetalert2';
@@ -11,7 +11,7 @@ import avatar from '../../assets/avatar.png'
 import { blobToBase64 } from '../../ultils/Common/toBase64';
 
 const ManageUser = () => {
-    const { AiOutlineEdit, AiOutlineDelete } = icons
+    const { AiOutlineEdit, AiOutlineDelete, AiOutlinePlusCircle } = icons
 
     const dispatch = useDispatch()
     const location = useLocation()
@@ -73,7 +73,8 @@ const ManageUser = () => {
                 <div className='flex items-center gap-2 my-2'>
                     <Button
                         text={"Thêm mới"}
-                        bgColor={"bg-blue-500 text-white"}
+                        bgColor={"bg-redcover text-white"}
+                        IcAfter={AiOutlinePlusCircle}
                         onClick={() => {
                             setIsCreate(true)
                         }}
@@ -86,7 +87,7 @@ const ManageUser = () => {
                     <div className="">
                         <table className="w-full">
                             <thead>
-                                <tr className='bg-secondary4 text-white'>
+                                <tr className='bg-redcover text-white'>
                                     <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Mã</th>
                                     <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
                                     <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Tên</th>
@@ -133,8 +134,8 @@ const ManageUser = () => {
                     </div>
                 }
             </div>
-            {isCreate && <UpdateUser setIsCreate={setIsCreate} />}
-            {isEdit && <UpdateUser setIsEdit={setIsEdit} />}
+            {isCreate && <ModalUser setIsCreate={setIsCreate} />}
+            {isEdit && <ModalUser setIsEdit={setIsEdit} />}
             <Pagination typeUser />
         </div>
     );

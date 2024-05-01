@@ -58,8 +58,8 @@ const ConfirmPost = () => {
     }
     return (
         <div>
-            <div className='py-4 border-b border-gray-300 flex items-center justify-between'>
-                <h1 className='text-3xl font-medium'>Duyệt bài đăng</h1>
+            <div className='py-4 flex items-center justify-between'>
+                <h1 className='w-full text-3xl font-medium py-4 border-b border-gray-300'>Duyệt bài đăng</h1>
             </div>
             {!postsStatus?.length
                 ?
@@ -68,7 +68,7 @@ const ConfirmPost = () => {
                 <div className="">
                     <table className="w-full">
                         <thead>
-                            <tr className='bg-secondary4 text-white'>
+                            <tr className='bg-redcover text-white'>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Mã tin</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Tiêu đề</th>
@@ -108,7 +108,7 @@ const ConfirmPost = () => {
                                         <td className="px-4 py-3">
                                             <Link
                                                 to={`${path.CONFIRM_POST_DETAIL}${formatVietnameseToString(item?.name.replaceAll('/', '-'))}/${item?.id}`}
-                                                className='w-full text-blue-600 hover:text-orange-600'>
+                                                className='w-full text-[#E03C31] hover:text-blue-600'>
                                                 Chi tiết
                                             </Link>
                                         </td>
@@ -116,7 +116,7 @@ const ConfirmPost = () => {
                                             <div className='flex items-center justify-center gap-2'>
                                                 <Button
                                                     text={"Phê duyệt"}
-                                                    bgColor={"bg-blue-600 text-white"}
+                                                    bgColor={"bg-redcover text-white"}
                                                     onClick={() => handleSubmit(item?.id)}
                                                 />
                                                 <Button

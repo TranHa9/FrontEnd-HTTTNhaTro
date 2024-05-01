@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPostsLimit } from '../../store/actions';
+import { getPostsLimit, getSavePostsLimit } from '../../store/actions';
 import { Button, RelatedPost, SliderCustom } from '../../components';
 import icons from '../../ultils/icons';
 import { formatDate } from '../../ultils/Common/formatDate';
@@ -11,6 +11,9 @@ import { formatVietnameseToString } from '../../ultils/Common/formatVietnameseTo
 import MapWithSearch from '../../components/MapWithSearch';
 import avatar from '../../assets/avatar.png'
 import { blobToBase64 } from '../../ultils/Common/toBase64';
+import { apiDeleteSavePost, apiaddSavePost } from '../../services';
+import Swal from 'sweetalert2';
+import { path } from '../../ultils/constant';
 
 
 const DetailPost = () => {
@@ -19,7 +22,12 @@ const DetailPost = () => {
 
     const { postId } = useParams()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { posts } = useSelector(state => state.post)
+    const { isLoggedIn } = useSelector(state => state.auth)
+    const { currentData } = useSelector(state => state.user)
+    const { savePosts } = useSelector(state => state.post)
+    const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         postId && dispatch(getPostsLimit({ id: postId }))
@@ -29,6 +37,56 @@ const DetailPost = () => {
         moment.locale('vi');
         return moment(createdAt).fromNow()
     }
+
+    const goLogin = useCallback((flag) => {
+        navigate(path.LOGIN, { state: { flag } })
+    }, [])
+
+    useEffect(() => {
+        const isPostSaved = savePosts.some(item => item.postId === +postId);
+        setIsSaved(isPostSaved);
+    }, [savePosts]);
+    const handleAddSavePost = async (postId) => {
+        try {
+            if (isLoggedIn) {
+                const userId = currentData.id;
+                const response = await apiaddSavePost({ postId, userId })
+                if (response?.data.err === 0) {
+                    dispatch(getSavePostsLimit())
+                    setIsSaved(true);
+                    Swal.fire("Thông báo", "Đã lưu đăng", "success")
+                }
+                else {
+                    Swal.fire("Thông báo", "Đã có lỗi", 'error')
+                }
+            } else {
+                goLogin(false)
+            }
+        } catch (error) {
+            console.error("lỗi lưu bài đăng:", error);
+            Swal.fire("Thông báo", "Đã xảy ra lỗi", 'error');
+        }
+    }
+
+    const handleDeleteSavedPost = async (savePostId) => {
+        try {
+            if (isLoggedIn) {
+                const response = await apiDeleteSavePost(savePostId);
+                if (response?.data.err === 0) {
+                    dispatch(getSavePostsLimit())
+                    setIsSaved(false);
+                    Swal.fire("Thông báo", "Đã xóa bài đã lưu", "success");
+                } else {
+                    Swal.fire("Thông báo", "Đã có lỗi", 'error');
+                }
+            } else {
+                goLogin(false)
+            }
+        } catch (error) {
+            console.error("Error deleting saved post:", error);
+            Swal.fire("Thông báo", "Đã xảy ra lỗi", 'error');
+        }
+    };
 
     return (
         <div className='w-full flex gap-4'>
@@ -42,7 +100,7 @@ const DetailPost = () => {
                             <span className='text-blue-600 underline font-medium hover:text-orange-600'>
                                 <Link
                                     to={`/${posts[0]?.category?.name && formatVietnameseToString(posts[0]?.category?.name)}`}
-                                    className='text-blue-600 font-medium hover:text-orange-600'
+                                    className='text-[#E03C31] font-medium hover:text-blue-600'
                                 >{posts[0]?.category?.name}</Link>
                             </span>
                         </div>
@@ -133,7 +191,7 @@ const DetailPost = () => {
                 </div>
             </div>
             <div className='w-[30%] flex flex-col gap-5'>
-                <div className='w-full bg-yellow-500 rounded-md flex flex-col items-center p-4 gap-4'>
+                <div className='w-full rounded-md shadow-md flex flex-col items-center p-3 gap-4'>
                     <img
                         className='w-16 h-16 object-contain rounded-full'
                         src={blobToBase64(posts[0]?.user?.avatar) || avatar}
@@ -141,26 +199,35 @@ const DetailPost = () => {
                     />
                     <h3 className='font-bold text-xl'>{posts[0]?.user?.name}</h3>
                     <a
-                        className='w-full text-white font-bold text-lg bg-green-600 py-2 flex items-center justify-center gap-2 rounded-md'
+                        className='w-full text-white font-bold text-lg bg-green-700 py-2 flex items-center justify-center gap-2 rounded-md'
                         href={`tel:${posts[0]?.user.zalo}`}
                     >
                         <FaPhoneAlt />
                         {posts[0]?.user?.phone}
                     </a>
                     <a
-                        className='w-full font-bold text-lg bg-white py-2 flex items-center justify-center gap-2 rounded-md'
+                        className='w-full font-bold text-lg border-2 bg-white border-black py-2 flex items-center justify-center gap-2 rounded-md'
                         href={`https://zalo.me/${posts[0]?.user.zalo}`}
                         target='_blank'
                     >
                         <SiZalo size={24} color='blue' />
                         {'Nhắn Zalo'}
                     </a>
-                    <Button
-                        text={'Yêu thích'}
-                        bgColor={"bg-white text-lg font-bold"}
-                        fullwidth
-                        IcBefore={RiHeartLine}
-                    />
+                    <div
+                        className='w-full py-2 rounded-md flex items-center justify-center gap-1 border-2 bg-white border-black cursor-pointer'
+                        onClick={() => {
+                            if (isSaved) {
+                                handleDeleteSavedPost(postId);
+                            } else {
+                                handleAddSavePost(postId);
+                            }
+                        }}
+                    >
+                        {isSaved ? <RiHeartFill size={24} color='red' /> : <RiHeartLine size={24} color='black' />}
+                        <span className='text-lg font-bold'>
+                            Yêu thích
+                        </span>
+                    </div>
                 </div>
                 <RelatedPost />
             </div>

@@ -36,7 +36,7 @@ const List = ({ categoryId }) => {
             });
     }, [searchParams, categoryId, sort])
     return (
-        <div className='w-full p-2 bg-white shadow-md rounded-md px-4'>
+        <div className='w-full p-2 bg-white shadow-lg rounded-md px-4'>
             <div className='flex items-center justify-between py-3'>
                 <h4 className='text-xl font-semibold'>Danh sách tin đăng</h4>
             </div>

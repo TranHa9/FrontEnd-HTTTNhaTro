@@ -80,7 +80,7 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
                     }
                     <span className='bg-overlay-50 text-white px-2 rounded-md absolute left-1 bottom-4'>{`${images.length} ảnh`}</span>
                 </Link>
-                <span className=' absolute right-5 bottom-1'
+                <span className='bg-overlay-30 rounded-md absolute right-5 bottom-4'
                 >
                     <span
                         onClick={() => {
@@ -108,22 +108,28 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
                         {`${address.split(',')[address.split(',').length - 2]}${address.split(',')[address.split(',').length - 1]}`}
                     </span>
                 </div>
-                <p className='text-gray-500 w-full h-[70px] overflow-hidden text-ellipsis'>{description}</p>
+                <div class="max-h-[200px] overflow-hidden">
+                    <p class="text-gray-500" style={{ lineHeight: '1.5em', WebkitLineClamp: 3, display: '-webkit-box', WebkitBoxOrient: 'vertical' }}>
+                        {description}
+                    </p>
+                </div>
                 <div className='flex items-center justify-between my-7'>
-                    <div className='flex items-center'>
-                        <img src={blobToBase64(user.avatar) || avatar} alt='avatar' className='w-[30px] h-[30px] 
-                        object-cover rounded-full' />
+                    <div className='flex items-center gap-2'>
+                        <img
+                            src={blobToBase64(user.avatar) || avatar} alt='avatar'
+                            className='w-[30px] h-[30px] object-cover rounded-full'
+                        />
                         <p>{user?.name}</p>
                     </div>
-                    <div className='flex items-center gap-1'>
+                    <div className='flex items-center gap-2'>
                         <a
-                            className='bg-blue-700 text-white p-1 rounded-md'
+                            className='bg-redcover text-white p-1 rounded-md'
                             href={`tel:${user?.zalo}`}
                         >
                             {`Gọi ${user?.phone}`}
                         </a>
                         <a
-                            className='text-blue-700 px-1 rounded-md border border-blue-700'
+                            className='text-[#E03C31] p-1 rounded-md border border-[#E03C31]'
                             href={`https://zalo.me/${user?.zalo}`}
                             target='_blank'
                         >

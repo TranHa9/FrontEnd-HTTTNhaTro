@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux'
 const PostSaved = () => {
     const { savePosts } = useSelector(state => state.post)
     return (
-        <div>
+        <div className='w-full'>
+            <div>
+                <h1 className='text-3xl font-medium py-4 border-b border-gray-300'>Tin đã lưu</h1>
+            </div>
             {
                 !savePosts?.length
                     ?

@@ -9,11 +9,10 @@ const HomePage = () => {
     const { categories } = useSelector(state => state.app)
     return (
         <div className='flex flex-col gap-3'>
-            <div>
+            {/* <div>
                 <h1 className='text-[28px] font-bold'>{text.HOME_TITLE}</h1>
                 <p className='text-sm text-gray-700'>{text.HOME_DESCRIPTION}</p>
-            </div>
-            <Province />
+            </div> */}
             <div className='w-full flex gap-4'>
                 <div className='w-[70%]'>
                     <List />

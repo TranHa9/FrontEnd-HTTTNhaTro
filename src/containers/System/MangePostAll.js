@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import *as actions from '../../store/actions';
 import { formatDate } from '../../ultils/Common/formatDate';
-import { Loading, UpdatePost } from '../../components'
+import { Loading, ModalPost } from '../../components'
 import icons from '../../ultils/icons';
 import { apiDeletePost } from '../../services';
 import Swal from 'sweetalert2';
@@ -112,7 +112,7 @@ const ManagePostAll = () => {
                 <div className="">
                     <table className="w-full">
                         <thead>
-                            <tr className='bg-secondary4 text-white'>
+                            <tr className='bg-redcover text-white'>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Mã tin</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
                                 <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Tiêu đề</th>
@@ -171,7 +171,7 @@ const ManagePostAll = () => {
                     </table>
                 </div>
             }
-            {isEdit && <UpdatePost setIsEdit={setIsEdit} />}
+            {isEdit && <ModalPost setIsEdit={setIsEdit} />}
             <Pagination type />
         </div>
     );
