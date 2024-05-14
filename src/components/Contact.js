@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Contact = () => {
     const navigate = useNavigate()
     return (
-        <div className='bg-white rounded-md shadow-md p-4 w-3/4 flex flex-col justify-center items-center gap-6 mt-6'>
+        <div className='bg-white rounded-md shadow-md p-4 w-full flex flex-col justify-center items-center gap-6 mt-6'>
             <img
                 src={text.image}
                 alt="thumbnal"

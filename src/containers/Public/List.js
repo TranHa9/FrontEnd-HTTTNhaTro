@@ -38,7 +38,7 @@ const List = ({ categoryId }) => {
     return (
         <div className='w-full p-2 bg-white shadow-lg rounded-md px-4'>
             <div className='flex items-center justify-between py-3'>
-                <h4 className='text-xl font-semibold'>Danh sách tin đăng</h4>
+                <h4 className='text-2xl font-semibold'>Danh sách tin đăng</h4>
             </div>
             <div className='flex items-center gap-2 my-2'>
                 <span>Sắp xếp:</span>

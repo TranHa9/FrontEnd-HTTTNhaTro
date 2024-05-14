@@ -108,8 +108,8 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
                         {`${address.split(',')[address.split(',').length - 2]}${address.split(',')[address.split(',').length - 1]}`}
                     </span>
                 </div>
-                <div class="max-h-[200px] overflow-hidden">
-                    <p class="text-gray-500" style={{ lineHeight: '1.5em', WebkitLineClamp: 3, display: '-webkit-box', WebkitBoxOrient: 'vertical' }}>
+                <div className="max-h-[200px] overflow-hidden">
+                    <p className="text-gray-500" style={{ lineHeight: '1.5em', WebkitLineClamp: 3, display: '-webkit-box', WebkitBoxOrient: 'vertical' }}>
                         {description}
                     </p>
                 </div>

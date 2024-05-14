@@ -49,7 +49,7 @@ const menuManage = [
         id: '7',
         text: 'Tin đã lưu',
         permissions: ['admin', 'user'],
-        path: "/Tin đã lưu",
+        path: "/tin-da-luu",
         icon: <RiHeartFill />
     },
 ]
