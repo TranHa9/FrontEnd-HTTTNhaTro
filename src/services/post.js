@@ -73,11 +73,11 @@ export const apiCreateNewPost = (payload) => new Promise(async (resolve, reject)
 
 
 //Lấy bài đăng theo user
-export const apiGetPostsLimitAdmin = (query) => new Promise(async (resolve, reject) => {
+export const apiGetPostsLimitUser = (query) => new Promise(async (resolve, reject) => {
     try {
         const response = await axiosConfig({
             method: 'get',
-            url: `/api/v1/post/limit-admin`,
+            url: `/api/v1/post/limit-user`,
             params: query
         })
         resolve(response)
@@ -169,11 +169,11 @@ export const apiGetPostsStatus = (query) => new Promise(async (resolve, reject) 
     }
 })
 
-export const apiGetPostsAllStatus = (query) => new Promise(async (resolve, reject) => {
+export const apiGetPostsAllAdmin = (query) => new Promise(async (resolve, reject) => {
     try {
         const response = await axiosConfig({
             method: 'get',
-            url: `/api/v1/post/status-all-post`,
+            url: `/api/v1/post/admin-all-post`,
             params: query
         })
         resolve(response)

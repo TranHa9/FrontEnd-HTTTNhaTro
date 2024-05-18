@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import { Button, NoSearch } from '../../components'
 import { useDispatch, useSelector } from 'react-redux'
-import * as action from '../../store/actions'
+import * as actions from '../../store/actions'
 import { useEffect } from 'react';
 import moment from 'moment';
 import 'moment/locale/vi';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { path } from '../../ultils/constant';
 import { formatVietnameseToString } from '../../ultils/Common/formatVietnameseToString';
 import { apiUpdatePost } from '../../services';
 import Swal from 'sweetalert2';
+import { Pagination } from '../Public';
 
 const ConfirmPost = () => {
     const dispatch = useDispatch()
+    const [searchParams] = useSearchParams()
     const { postsStatus } = useSelector(state => state.post)
+    const [isLoading, setIsLoading] = useState(false)
     const [payload, setPayload] = useState({
         status: 'Đã duyệt'
     })
@@ -21,8 +24,28 @@ const ConfirmPost = () => {
         status: 'Đã hủy'
     })
     useEffect(() => {
-        dispatch(action.getPostsStatus())
-    }, [])
+        setIsLoading(true);
+        let params = []
+        for (let entry of searchParams.entries()) {
+            params.push(entry)
+        }
+        let searchParamsObject = {}
+        params?.forEach(i => {
+            if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+                searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
+            } else {
+                searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
+            }
+        })
+        dispatch(actions.getPostsStatus(searchParamsObject))
+            .then(() => {
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setIsLoading(false);
+            });
+    }, [searchParams])
+
     const formatTime = (createdAt) => {
         moment.locale('vi');
         return moment(createdAt).fromNow()
@@ -35,7 +58,7 @@ const ConfirmPost = () => {
                 setPayload({
                     status: 'Đã duyệt'
                 })
-                dispatch(action.getPostsStatus())
+                dispatch(actions.getPostsStatus())
             })
         } else {
             Swal.fire("Thông báo", "Đã có lỗi", 'error')
@@ -50,7 +73,7 @@ const ConfirmPost = () => {
                 setRefuse({
                     status: 'Đã hủy'
                 })
-                dispatch(action.getPostsStatus())
+                dispatch(actions.getPostsStatus())
             })
         } else {
             Swal.fire("Thông báo", "Đã có lỗi", 'error')
@@ -133,6 +156,7 @@ const ConfirmPost = () => {
                     </table>
                 </div>
             }
+            <Pagination typeConfirm />
         </div>
     )
 }

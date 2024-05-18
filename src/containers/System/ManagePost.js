@@ -41,7 +41,7 @@ const ManagePost = () => {
         })
         //if (categoryId) searchParamsObject.categoryId = categoryId
         if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
-        dispatch(actions.getPostsLimitAdmin(searchParamsObject))
+        dispatch(actions.getPostsLimitUser(searchParamsObject))
             .then(() => {
                 setIsLoading(false);
             })

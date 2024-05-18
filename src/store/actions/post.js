@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { apiGetNewPosts, apiGetPosts, apiGetPostsAllStatus, apiGetPostsLimit, apiGetPostsLimitAdmin, apiGetPostsStatus, apiGetSavePostsLimit, apiaddSavePost } from '../../services/post';
+import { apiGetNewPosts, apiGetPosts, apiGetPostsAllAdmin, apiGetPostsLimit, apiGetPostsLimitUser, apiGetPostsStatus, apiGetSavePostsLimit, apiaddSavePost } from '../../services/post';
 
 export const getPosts = () => async (dispatch) => {
     try {
@@ -47,9 +47,9 @@ export const getPostsLimit = (query) => async (dispatch) => {
     }
 }
 
-export const getPostsAllStatus = (query) => async (dispatch) => {
+export const getPostsAllAdmin = (query) => async (dispatch) => {
     try {
-        const response = await apiGetPostsAllStatus(query)
+        const response = await apiGetPostsAllAdmin(query)
         if (response?.data.err === 0) {
             dispatch({
                 type: actionTypes.GET_STATUS_ALL_POST,
@@ -139,9 +139,9 @@ export const getNewPosts = () => async (dispatch) => {
     }
 }
 
-export const getPostsLimitAdmin = (query) => async (dispatch) => {
+export const getPostsLimitUser = (query) => async (dispatch) => {
     try {
-        const response = await apiGetPostsLimitAdmin(query)
+        const response = await apiGetPostsLimitUser(query)
         if (response?.data.err === 0) {
             dispatch({
                 type: actionTypes.GET_POSTS_ADMIN,

@@ -36,7 +36,7 @@ const ModalCurrent = ({ setIsEditPassword }) => {
             } else if (response?.data.err === 2) {
                 Swal.fire("Thông báo", "Mật khẩu cũ không chính xác", "error")
             } else if (response?.data.err === 3) {
-                Swal.fire("Thông báo", "Mật khẩu mới và mật khẩu cũ không khớp", "error")
+                Swal.fire("Thông báo", "Mật khẩu mới và mật khẩu xác nhận không khớp", "error")
             } else {
                 Swal.fire("Thông báo", "Đã có lỗi", 'error')
             }

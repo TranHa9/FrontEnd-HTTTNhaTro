@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import *as actions from '../../store/actions';
 import { formatDate } from '../../ultils/Common/formatDate';
-import { Loading, ModalPost } from '../../components'
+import { Button, Loading, ModalPost } from '../../components'
 import icons from '../../ultils/icons';
 import { apiDeletePost } from '../../services';
 import Swal from 'sweetalert2';
@@ -16,6 +16,7 @@ const ManagePostAll = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const { postAll, dataEdit } = useSelector(state => state.post)
+    const { categories } = useSelector(state => state.app)
     const [searchParams] = useSearchParams()
     const [isEdit, setIsEdit] = useState(false)
     const [updateData, setUpdateData] = useState(false)
@@ -23,6 +24,7 @@ const ManagePostAll = () => {
     const [status, setStatus] = useState('0')
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
+    const [posterUser, setPosterUser] = useState('');
 
 
     useEffect(() => {
@@ -41,7 +43,7 @@ const ManagePostAll = () => {
         })
         //if (categoryId) searchParamsObject.categoryId = categoryId
         if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
-        dispatch(actions.getPostsAllStatus(searchParamsObject))
+        dispatch(actions.getPostsAllAdmin(searchParamsObject))
             .then(() => {
                 setIsLoading(false);
             })
@@ -78,6 +80,7 @@ const ManagePostAll = () => {
 
     const handlSatust = (e) => {
         setStatus(+e.target.value);
+        setPosterUser('');
         navigate({
             pathname: location?.pathname,
             search: createSearchParams({
@@ -85,11 +88,46 @@ const ManagePostAll = () => {
             }).toString()
         });
     }
+    const handlCategory = (e) => {
+        setPosterUser('');
+        navigate({
+            pathname: location?.pathname,
+            search: createSearchParams({
+                categoryId: parseInt(+e.target.value),
+            }).toString()
+        });
+    }
+    const handlSearchUser = (posterUser) => {
+        navigate({
+            pathname: location?.pathname,
+            search: createSearchParams({
+                useName: posterUser,
+            }).toString()
+        });
+        setSort(0);
+        setStatus('0');
+        document.getElementById("selectCategory").value = "0";
+    }
     return (
         <div className='flex flex-col gap-6'>
             <div className='py-4 border-b border-gray-300 flex items-center justify-between'>
                 <h1 className='text-3xl font-medium'>Quản lý tin đăng</h1>
                 <div className='flex items-center gap-2 my-2'>
+                    <div className='flex items-center justify-center'>
+                        <input
+                            type="text"
+                            placeholder="Tìm theo tên người đăng"
+                            className='outline-none border p-2 border-gray-300 rounded-md'
+                            value={posterUser}
+                            onChange={(e) => setPosterUser(e.target.value)}
+                        />
+                        <Button
+                            text={"Tìm kiếm"}
+                            onClick={() => handlSearchUser(posterUser)}
+                            bgColor={"bg-redcover"}
+                            textColor={"text-white"}
+                        />
+                    </div>
                     <span>Sắp xếp:</span>
                     <span onClick={() => setSort(0)} className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort === 0 && 'text-red-500'}`}>Mặc định</span>
                     <span onClick={() => setSort(1)} className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort === 1 && 'text-red-500'}`}>Mới nhất</span>
@@ -102,6 +140,22 @@ const ManagePostAll = () => {
                         <option value='2'>Đã hết hạn</option>
                         <option value='3'>Đang chờ duyệt</option>
                         <option value='4'>Đã hủy</option>
+                    </select>
+                    <select
+                        id="selectCategory"
+                        onChange={handlCategory}
+                        className='outline-none border p-2 border-gray-300 rounded-md'>
+                        <option value='0'>Lọc theo chuyên mục</option>
+                        {categories?.map(item => {
+                            return (
+                                <option
+                                    key={item?.id}
+                                    value={item?.id}
+                                >
+                                    {item.name}
+                                </option>
+                            )
+                        })}
                     </select>
                 </div>
             </div>
@@ -172,7 +226,7 @@ const ManagePostAll = () => {
                 </div>
             }
             {isEdit && <ModalPost setIsEdit={setIsEdit} />}
-            <Pagination type />
+            <Pagination typeAll />
         </div>
     );
 }
