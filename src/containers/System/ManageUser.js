@@ -6,7 +6,7 @@ import icons from '../../ultils/icons';
 import { apiDeleteUser } from '../../services';
 import Swal from 'sweetalert2';
 import { Pagination } from '../Public';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import avatar from '../../assets/avatar.png'
 import { blobToBase64 } from '../../ultils/Common/toBase64';
 
@@ -15,14 +15,15 @@ const ManageUser = () => {
 
     const dispatch = useDispatch()
     const location = useLocation()
-    //const navigate = useNavigate()
+    const navigate = useNavigate()
     const { users, dataUserEdit } = useSelector(state => state.user)
     const [searchParams] = useSearchParams()
     const [isEdit, setIsEdit] = useState(false)
     const [isCreate, setIsCreate] = useState(false)
     const [updateData, setUpdateData] = useState(false)
-    const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
+    const [userValue, setUserValue] = useState('');
+    const [role, setRole] = useState('')
 
 
     useEffect(() => {
@@ -39,7 +40,6 @@ const ManageUser = () => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
-        if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
         dispatch(actions.apiGetAllUser(searchParamsObject))
             .then(() => {
                 setIsLoading(false);
@@ -47,7 +47,7 @@ const ManageUser = () => {
             .catch(() => {
                 setIsLoading(false);
             });
-    }, [searchParams, dataUserEdit, sort, updateData])
+    }, [searchParams, dataUserEdit, updateData])
 
 
     useEffect(() => {
@@ -64,13 +64,34 @@ const ManageUser = () => {
         }
     }
 
+    const handlSearchType = (userValue) => {
+        setRole('')
+        navigate({
+            pathname: location?.pathname,
+            search: createSearchParams({
+                userValue: userValue,
+            }).toString()
+        });
+    }
+
+    const handlRole = (e) => {
+        setRole(e.target.value);
+        navigate({
+            pathname: location?.pathname,
+            search: createSearchParams({
+                role: e.target.value,
+            }).toString()
+        });
+        setUserValue('')
+    }
+
     return (
         <div className='flex flex-col gap-6'>
             <div className='py-4 border-b border-gray-300 flex items-center justify-between'>
                 <h1 className='text-3xl font-medium'>Quản người dùng</h1>
             </div>
             <div>
-                <div className='flex items-center gap-2 my-2'>
+                <div className='flex items-center justify-between gap-2 my-2'>
                     <Button
                         text={"Thêm mới"}
                         bgColor={"bg-redcover text-white"}
@@ -79,6 +100,29 @@ const ManageUser = () => {
                             setIsCreate(true)
                         }}
                     />
+                    <div className='flex items-center justify-center'>
+                        <input
+                            type="text"
+                            placeholder="Nhập tên hoặc số điện thoại"
+                            className='w-[300px] outline-none border p-2 border-gray-300 rounded-md'
+                            value={userValue}
+                            onChange={(e) => setUserValue(e.target.value)}
+                        />
+                        <Button
+                            text={"Tìm kiếm"}
+                            onClick={() => handlSearchType(userValue)}
+                            bgColor={"bg-redcover"}
+                            textColor={"text-white"}
+                        />
+                        <select
+                            onChange={handlRole}
+                            value={role}
+                            className='outline-none border p-2 border-gray-300 rounded-md ml-3'>
+                            <option value=''>Lọc theo trạng thái</option>
+                            <option value='admin'>Admin</option>
+                            <option value='user'>User</option>
+                        </select>
+                    </div>
                 </div>
                 {isLoading
                     ?

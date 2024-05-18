@@ -5,7 +5,7 @@ import * as actions from '../../store/actions'
 import { useEffect } from 'react';
 import moment from 'moment';
 import 'moment/locale/vi';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { path } from '../../ultils/constant';
 import { formatVietnameseToString } from '../../ultils/Common/formatVietnameseToString';
 import { apiUpdatePost } from '../../services';
@@ -14,15 +14,20 @@ import { Pagination } from '../Public';
 
 const ConfirmPost = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const location = useLocation()
     const [searchParams] = useSearchParams()
     const { postsStatus } = useSelector(state => state.post)
     const [isLoading, setIsLoading] = useState(false)
+    const [sort, setSort] = useState(0)
     const [payload, setPayload] = useState({
         status: 'Đã duyệt'
     })
     const [refuse, setRefuse] = useState({
         status: 'Đã hủy'
     })
+    const [userName, setUserName] = useState('');
+
     useEffect(() => {
         setIsLoading(true);
         let params = []
@@ -37,6 +42,7 @@ const ConfirmPost = () => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
+        if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
         dispatch(actions.getPostsStatus(searchParamsObject))
             .then(() => {
                 setIsLoading(false);
@@ -44,7 +50,7 @@ const ConfirmPost = () => {
             .catch(() => {
                 setIsLoading(false);
             });
-    }, [searchParams])
+    }, [searchParams, sort])
 
     const formatTime = (createdAt) => {
         moment.locale('vi');
@@ -79,10 +85,38 @@ const ConfirmPost = () => {
             Swal.fire("Thông báo", "Đã có lỗi", 'error')
         }
     }
+    const handlSearchName = (userName) => {
+        navigate({
+            pathname: location?.pathname,
+            search: createSearchParams({
+                userName: userName,
+            }).toString()
+        });
+    }
     return (
         <div>
-            <div className='py-4 flex items-center justify-between'>
-                <h1 className='w-full text-3xl font-medium py-4 border-b border-gray-300'>Duyệt bài đăng</h1>
+            <div className='py-4'>
+                <div className='w-full border-b border-gray-300 py-4 flex items-center justify-between'>
+                    <h1 className='text-3xl font-medium '>Duyệt bài đăng</h1>
+                    <div className='flex items-center justify-center gap-2'>
+                        <span>Sắp xếp:</span>
+                        <span onClick={() => setSort(0)} className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort === 0 && 'text-red-500'}`}>Mặc định</span>
+                        <span onClick={() => setSort(1)} className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort === 1 && 'text-red-500'}`}>Mới nhất</span>
+                        <input
+                            type="text"
+                            placeholder="Nhập tên người đăng"
+                            className='w-[300px] outline-none border p-2 border-gray-300 rounded-md'
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                        />
+                        <Button
+                            text={"Tìm kiếm"}
+                            onClick={() => handlSearchName(userName)}
+                            bgColor={"bg-redcover"}
+                            textColor={"text-white"}
+                        />
+                    </div>
+                </div>
             </div>
             {!postsStatus?.length
                 ?
