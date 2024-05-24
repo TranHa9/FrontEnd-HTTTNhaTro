@@ -30,13 +30,15 @@ const Sidebar = () => {
     return (
         <div className='w-full h-screen shadow-lg bg-gray-200 p-4 flex flex-col gap-8'>
             <div className='flex flex-col gap-3'>
-                <div className='flex items-center justify-start gap-4'>
-                    <img src={blobToBase64(currentData?.avatar) || Avatar} alt='avatar' className='w-12 h-12 object-cover rounded-full' />
-                    <div className='flex flex-col'>
-                        <span className='font-semibold'>{currentData?.name || currentData?.username}</span>
-                        <small>{currentData?.phone}</small>
+                <NavLink to={'/he-thong/thong-tin-tai-khoan'}>
+                    <div className='flex items-center justify-start gap-4'>
+                        <img src={blobToBase64(currentData?.avatar) || Avatar} alt='avatar' className='w-12 h-12 object-cover rounded-full' />
+                        <div className='flex flex-col'>
+                            <span className='font-semibold'>{currentData?.name || currentData?.username}</span>
+                            <small>{currentData?.phone}</small>
+                        </div>
                     </div>
-                </div>
+                </NavLink>
                 <span className='truncate'>Mã thành viên: <span className='font-medium'>{currentData?.id}</span></span>
             </div>
             <div>

@@ -1,11 +1,10 @@
 import React from 'react';
 import { ItemSidebar, RelatedPost } from '../../components'
 import { List, Pagination } from './index';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { dataAreas, dataPrices } from '../../ultils/data';
 
 const SearchDetail = () => {
-    const { prices, areas } = useSelector(state => state.app);
     const location = useLocation()
 
     return (
@@ -20,8 +19,8 @@ const SearchDetail = () => {
                     <Pagination />
                 </div>
                 <div className='w-[30%] flex flex-col gap-4 justify-start items-center'>
-                    <ItemSidebar isDouble={true} type='priceCode' content={prices} title='Xem theo giá' />
-                    <ItemSidebar isDouble={true} type='areaCode' content={areas} title='Xem theo diện tích' />
+                    {/* <ItemSidebar isDouble={true} type='priceCode' content={dataPrices} title='Xem theo giá' /> */}
+                    {/* <ItemSidebar isDouble={true} type='areaCode' content={dataAreas} title='Xem theo diện tích' /> */}
                     <RelatedPost />
                 </div>
             </div>

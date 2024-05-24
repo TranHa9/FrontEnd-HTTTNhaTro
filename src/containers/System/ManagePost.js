@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import *as actions from '../../store/actions';
 import { formatDate } from '../../ultils/Common/formatDate';
-import { Loading, ModalPost } from '../../components'
+import { Button, Loading, ModalPost } from '../../components'
 import icons from '../../ultils/icons';
 import { apiDeletePost } from '../../services';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import { Pagination } from '../Public';
 import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 const ManagePost = () => {
-    const { AiOutlineEdit, AiOutlineDelete } = icons
+    const { AiOutlineEdit, AiOutlineDelete, FaXmark } = icons
 
     const dispatch = useDispatch()
     const location = useLocation()
@@ -23,6 +23,8 @@ const ManagePost = () => {
     const [status, setStatus] = useState('0')
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
+    const [isDelete, setIsDelete] = useState(false)
+    const [deleteId, setDeleteId] = useState(null);
 
 
     useEffect(() => {
@@ -50,10 +52,6 @@ const ManagePost = () => {
             });
     }, [searchParams, sort, dataEdit, updateData])
 
-    // useEffect(() => {
-    //     !dataEdit && dispatch(actions.getPostsLimitAdmin())
-    // }, [dataEdit, updateData])
-
     useEffect(() => {
         !dataEdit && setIsEdit(false)
     }, [dataEdit])
@@ -65,7 +63,7 @@ const ManagePost = () => {
         const expiryDate = new Date(isoDateString);
         const currentDate = new Date();
         if (expiryDate.getTime() >= currentDate.getTime()) {
-            return "Đang hoạt động";
+            return "Hoạt động";
         } else {
             return "Đã hết hạn";
         }
@@ -102,9 +100,9 @@ const ManagePost = () => {
                         value={status}
                         className='outline-none border p-2 border-gray-300 rounded-md'>
                         <option value='0'>Lọc theo trạng thái</option>
-                        <option value='1'>Đang hoạt động</option>
+                        <option value='1'>Hoạt động</option>
                         <option value='2'>Đã hết hạn</option>
-                        <option value='3'>Đang chờ duyệt</option>
+                        <option value='3'>Chờ duyệt</option>
                         <option value='4'>Đã hủy</option>
                     </select>
                 </div>
@@ -113,46 +111,50 @@ const ManagePost = () => {
                 ?
                 <Loading />
                 :
-                <div className="">
+                <div className="shadow-md">
                     <table className="w-full">
                         <thead>
                             <tr className='bg-redcover text-white'>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Mã tin</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Tiêu đề</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Giá</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ngày bắt đầu</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ngày hết hạn</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Trạng thái</th>
-                                <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Hoạt động</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Mã tin</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Tiêu đề</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Giá</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Ngày bắt đầu</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Ngày hết hạn</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Trạng thái</th>
+                                <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Hoạt động</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {posts?.length === 0 ? (
                                 <tr>
-                                    <td className="px-4 py-3">Bạn chưa có tin đăng nào</td>
+                                    <td className="px-2 py-3">Bạn chưa có tin đăng nào</td>
                                 </tr>
                             ) : (
                                 posts.map(item => (
                                     <tr key={item.id}>
-                                        <td className="px-4 py-3">{item?.id}</td>
-                                        <td className="px-4 py-3 flex items-center justify-center">
+                                        <td className="px-2 py-3 text-center">{item?.id}</td>
+                                        <td className="px-2 py-3 flex items-center justify-center">
                                             <img src={JSON.parse(item?.images)[0] || ''} alt='ảnh của bài đăng' className='w-10 h-10 object-cover rounded-md' />
                                         </td>
-                                        <td className="px-4 py-3">{item?.name}</td>
-                                        <td className="px-4 py-3">{item?.price}</td>
-                                        <td className="px-4 py-3">{formatDate(item?.created)}</td>
-                                        <td className="px-4 py-3">{formatDate(item?.expired)}</td>
-                                        <td className="px-4 py-3">
+                                        <td className="px-2 py-3">
+                                            <div className='w-[200px] whitespace-nowrap overflow-ellipsis overflow-hidden'>
+                                                {item?.name}
+                                            </div>
+                                        </td>
+                                        <td className="px-2 py-3">{item?.price}</td>
+                                        <td className="px-2 py-3">{formatDate(item?.created)}</td>
+                                        <td className="px-2 py-3">{formatDate(item?.expired)}</td>
+                                        <td className="px-2 py-3">
                                             {(item?.status === 'Đang chờ duyệt')
-                                                ? item?.status
+                                                ? 'Chờ duyệt'
                                                 : (item?.status === 'Đã hủy')
                                                     ? item?.status
                                                     :
                                                     checkExpiration(item?.expired)}
                                         </td>
-                                        <td className="px-4 py-3">
-                                            <div className='flex items-center justify-center gap-2'>
+                                        <td className="px-2 py-3">
+                                            <div className='flex items-center justify-center gap-2 cursor-pointer'>
                                                 <AiOutlineEdit size={24}
                                                     onClick={() => {
                                                         dispatch(actions.editData(item))
@@ -162,7 +164,10 @@ const ManagePost = () => {
                                                 <AiOutlineDelete
                                                     size={24}
                                                     color='red'
-                                                    onClick={() => handleDeletePost(item.id)}
+                                                    onClick={() => {
+                                                        setIsDelete(true)
+                                                        setDeleteId(item.id)
+                                                    }}
                                                 />
                                             </div>
                                         </td>
@@ -174,6 +179,53 @@ const ManagePost = () => {
                 </div>
             }
             {isEdit && <ModalPost setIsEdit={setIsEdit} />}
+            {isDelete && <div
+                className='absolute top-0 left-0 right-0 bottom-0 bg-overlay-50 flex justify-center'
+                onClick={e => {
+                    e.stopPropagation()
+                    setIsDelete(false)
+                }}
+            >
+                <div
+                    className='bg-white mt-5 w-[450px] h-[200px] rounded-lg'
+                    onClick={e => e.stopPropagation()}
+                >
+                    <div className='pr-5 pl-5 flex flex-col gap-6'>
+                        <div className='py-2 border-b border-gray-300 flex items-center justify-between'>
+                            <h1 className='text-3xl font-medium'>Thông báo</h1>
+                            <span
+                                onClick={e => {
+                                    e.stopPropagation()
+                                    setIsDelete(false)
+                                }}
+                                className='cursor-pointer'
+                            ><FaXmark size={30} color='red' /></span>
+                        </div>
+                        <p>Bạn có chắc muốn xóa không ?</p>
+                    </div>
+                    <div className='pr-5 pl-5 mt-6 flex flex-col gap-6'>
+                        <div className='pt-5 border-t border-gray-300 flex gap-4 items-center justify-end'>
+                            <Button
+                                onClick={() => {
+                                    handleDeletePost(deleteId)
+                                    setIsDelete(false)
+                                }}
+                                text={'Xác nhận'}
+                                bgColor={'bg-redcover'}
+                                textColor={'text-white'}
+                            />
+                            <Button
+                                onClick={() => {
+                                    setDeleteId(null)
+                                    setIsDelete(false)
+                                }}
+                                text={'Không'}
+                                bgColor={'bg-gray-300'}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>}
             <Pagination type />
         </div>
     );

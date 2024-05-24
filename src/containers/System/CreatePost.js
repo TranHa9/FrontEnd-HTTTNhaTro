@@ -78,7 +78,6 @@ const CreatePost = ({ isEdit }) => {
             useId: currentData.id,
         }
         const result = validate(finalPayload, setInvalidFields)
-        console.log(finalPayload)
         if (result === 0) {
             if (dataEdit) {
                 finalPayload.postId = dataEdit?.id
@@ -192,7 +191,7 @@ const CreatePost = ({ isEdit }) => {
                         bgColor={'bg-redcover'}
                         textColor={'text-white'}
                     />
-                    <div className='h-[500px]'></div>
+                    <div className='h-[100px]'></div>
                 </div>
                 <div className='w-[30%] pt-12'>
                     <MapWithSearch address={payload.address} />

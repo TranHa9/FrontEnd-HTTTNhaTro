@@ -11,7 +11,7 @@ import avatar from '../../assets/avatar.png'
 import { blobToBase64 } from '../../ultils/Common/toBase64';
 
 const ManageUser = () => {
-    const { AiOutlineEdit, AiOutlineDelete, AiOutlinePlusCircle } = icons
+    const { AiOutlineEdit, AiOutlineDelete, AiOutlinePlusCircle, FaXmark } = icons
 
     const dispatch = useDispatch()
     const location = useLocation()
@@ -20,6 +20,8 @@ const ManageUser = () => {
     const [searchParams] = useSearchParams()
     const [isEdit, setIsEdit] = useState(false)
     const [isCreate, setIsCreate] = useState(false)
+    const [isDelete, setIsDelete] = useState(false)
+    const [deleteUserId, setDeleteUserId] = useState(null);
     const [updateData, setUpdateData] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [userValue, setUserValue] = useState('');
@@ -118,7 +120,7 @@ const ManageUser = () => {
                             onChange={handlRole}
                             value={role}
                             className='outline-none border p-2 border-gray-300 rounded-md ml-3'>
-                            <option value=''>Lọc theo trạng thái</option>
+                            <option value=''>Lọc theo quyền</option>
                             <option value='admin'>Admin</option>
                             <option value='user'>User</option>
                         </select>
@@ -128,47 +130,52 @@ const ManageUser = () => {
                     ?
                     <Loading />
                     :
-                    <div className="">
+                    <div className="shadow-md">
                         <table className="w-full">
                             <thead>
                                 <tr className='bg-redcover text-white'>
-                                    <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Mã</th>
-                                    <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
-                                    <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Tên</th>
-                                    <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Số điện thoại</th>
-                                    <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Quyền</th>
-                                    <th className="px-4 py-3 border text-center text-xs font-bold uppercase">Hoạt động</th>
+                                    <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Mã</th>
+                                    <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Ảnh đại diện</th>
+                                    <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Tên</th>
+                                    <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Số điện thoại</th>
+                                    <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Quyền</th>
+                                    <th className="px-2 py-3 border text-center text-xs font-bold uppercase">Hoạt động</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {users?.length === 0 ? (
                                     <tr>
-                                        <td className="px-4 py-3">không tìm thấy</td>
+                                        <td className="px-2 py-3">không tìm thấy</td>
                                     </tr>
                                 ) : (
-                                    users.map(item => (
+                                    users.map((item, index) => (
                                         <tr key={item.id}>
-                                            <td className="px-4 py-3">{item?.id}</td>
-                                            <td className="px-4 py-3 flex items-center justify-center">
+                                            <td className="px-2 py-3 text-center">{item?.id}</td>
+                                            <td className="px-2 py-3 flex items-center justify-center">
                                                 <img src={blobToBase64(item?.avatar) || avatar} alt='avatar' className='w-10 h-10 object-cover rounded-md' />
                                             </td>
-                                            <td className="px-4 py-3">{item?.name}</td>
-                                            <td className="px-4 py-3">{item?.phone}</td>
-                                            <td className="px-4 py-3">{item?.role}</td>
-                                            <td className="px-4 py-3">
-                                                <div className='flex items-center justify-center gap-2'>
-                                                    <AiOutlineEdit size={24}
-                                                        onClick={() => {
-                                                            dispatch(actions.editUserData(item))
-                                                            setIsEdit(true)
-                                                        }}
-                                                    />
-                                                    <AiOutlineDelete
-                                                        size={24}
-                                                        color='red'
-                                                        onClick={() => handleDeleteUser(item.id)}
-                                                    />
-                                                </div>
+                                            <td className="px-2 py-3">{item?.name}</td>
+                                            <td className="px-2 py-3">{item?.phone}</td>
+                                            <td className="px-2 py-3">{item?.role}</td>
+                                            <td className="px-2 py-3">
+                                                {item?.id !== 1 && (
+                                                    <div className='flex items-center justify-center gap-2 cursor-pointer'>
+                                                        <AiOutlineEdit size={24}
+                                                            onClick={() => {
+                                                                dispatch(actions.editUserData(item))
+                                                                setIsEdit(true)
+                                                            }}
+                                                        />
+                                                        <AiOutlineDelete
+                                                            size={24}
+                                                            color='red'
+                                                            onClick={() => {
+                                                                setIsDelete(true)
+                                                                setDeleteUserId(item.id)
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
                                             </td>
                                         </tr>
                                     ))
@@ -180,8 +187,55 @@ const ManageUser = () => {
             </div>
             {isCreate && <ModalUser setIsCreate={setIsCreate} />}
             {isEdit && <ModalUser setIsEdit={setIsEdit} />}
+            {isDelete && <div
+                className='absolute top-0 left-0 right-0 bottom-0 bg-overlay-50 flex justify-center'
+                onClick={e => {
+                    e.stopPropagation()
+                    setIsDelete(false)
+                }}
+            >
+                <div
+                    className='bg-white mt-5 w-[450px] h-[200px] rounded-lg'
+                    onClick={e => e.stopPropagation()}
+                >
+                    <div className='pr-5 pl-5 flex flex-col gap-6'>
+                        <div className='py-2 border-b border-gray-300 flex items-center justify-between'>
+                            <h1 className='text-3xl font-medium'>Thông báo</h1>
+                            <span
+                                onClick={e => {
+                                    e.stopPropagation()
+                                    setIsDelete(false)
+                                }}
+                                className='cursor-pointer'
+                            ><FaXmark size={30} color='red' /></span>
+                        </div>
+                        <p>Bạn có chắc muốn xóa không ?</p>
+                    </div>
+                    <div className='pr-5 pl-5 mt-6 flex flex-col gap-6'>
+                        <div className='pt-5 border-t border-gray-300 flex gap-4 items-center justify-end'>
+                            <Button
+                                onClick={() => {
+                                    handleDeleteUser(deleteUserId)
+                                    setIsDelete(false)
+                                }}
+                                text={'Xác nhận'}
+                                bgColor={'bg-redcover'}
+                                textColor={'text-white'}
+                            />
+                            <Button
+                                onClick={() => {
+                                    setDeleteUserId(null)
+                                    setIsDelete(false)
+                                }}
+                                text={'Không'}
+                                bgColor={'bg-gray-300'}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>}
             <Pagination typeUser />
-        </div>
+        </div >
     );
 }
 
