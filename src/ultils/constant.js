@@ -22,6 +22,7 @@ export const path = {
     Edit_ACCOUNT: 'thong-tin-tai-khoan',
     MANAGE_USER: 'quan-ly-nguoi-dung',
     MANAGE_USER__PAGE: ':page',
+    MANAGE_CATEGORY: 'quan-ly-chuyen-muc',
     CONFIRM_POST: 'duyet-bai-dang',
     CONFIRM_POST_DETAIL: 'chi-tiet-bai-dang-cho-duyet/',
     CONFIRM_POST_DETAIL_POST__TITLE__POSTSTAUSID: 'chi-tiet-bai-dang-cho-duyet/:title/:postStatusId'

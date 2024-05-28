@@ -1,6 +1,6 @@
 import icons from "./icons";
 
-const { FaPencilAlt, MdOutlinePostAdd, FaUserTag, MdOutlineContactMail, MdOutlineManageAccounts, GrUserManager, RiHeartFill } = icons;
+const { FaPencilAlt, MdOutlinePostAdd, FaUserTag, MdOutlineContactMail, MdOutlineManageAccounts, GrUserManager, RiHeartFill, BiCategory } = icons;
 
 const menuManage = [
     {
@@ -47,6 +47,13 @@ const menuManage = [
     },
     {
         id: '7',
+        text: 'Quản lý chuyên mục',
+        permissions: ['admin'],
+        path: "/he-thong/quan-ly-chuyen-muc",
+        icon: <BiCategory />
+    },
+    {
+        id: '8',
         text: 'Tin đã lưu',
         permissions: ['admin', 'user'],
         path: "/tin-da-luu",
@@ -98,6 +105,13 @@ const menuSidebar = [
     },
     {
         id: '7',
+        text: 'Quản lý chuyên mục',
+        permissions: ['admin'],
+        path: "/he-thong/quan-ly-chuyen-muc",
+        icon: <BiCategory />
+    },
+    {
+        id: '8',
         text: 'Liên hệ',
         permissions: ['admin', 'user'],
         path: "/lien-he",

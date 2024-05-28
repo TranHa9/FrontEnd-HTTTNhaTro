@@ -12,6 +12,7 @@ import { IoIosArrowDown, IoIosCamera } from "react-icons/io";
 import { GoHash } from "react-icons/go";
 import { SiZalo } from "react-icons/si";
 import { FaXmark } from "react-icons/fa6";
+import { BiCategory } from "react-icons/bi";
 
 
 const icons = {
@@ -50,7 +51,8 @@ const icons = {
     MdOutlineContactMail,
     MdOutlineManageAccounts,
     GrUserManager,
-    FaPencilAlt
+    FaPencilAlt,
+    BiCategory
 }
 
 export default icons
