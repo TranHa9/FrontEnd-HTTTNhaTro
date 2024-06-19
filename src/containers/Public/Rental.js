@@ -29,6 +29,7 @@ const Rentail = () => {
             <div className='w-full flex gap-4'>
                 <div className='w-[70%]'>
                     <List categoryId={categoryId} />
+                    <Pagination />
                 </div>
                 <div className='w-[30%] flex flex-col gap-4 justify-start items-center'>
                     <ItemSidebar content={categories} title='Danh sách cho thuê' />
