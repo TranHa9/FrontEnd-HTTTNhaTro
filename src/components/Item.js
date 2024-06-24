@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import icons from '../ultils/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { formatVietnameseToString } from '../ultils/Common/formatVietnameseToString';
 import { path } from '../ultils/constant';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ import { blobToBase64 } from '../ultils/Common/toBase64';
 
 const { RiHeartLine, RiHeartFill } = icons
 
-const Item = ({ images, user, name, description, address, area, price, id }) => {
+const Item = ({ images, user, name, description, address, area, price, id, status }) => {
     const { currentData } = useSelector(state => state.user)
     const [isSaved, setIsSaved] = useState(false);
     const { savePosts } = useSelector(state => state.post)
@@ -26,7 +26,8 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
     }, [savePosts]);
 
     const goLogin = useCallback((flag) => {
-        navigate(path.LOGIN, { state: { flag } })
+        //navigate(path.LOGIN, { state: { flag } })
+        window.location.href = '/login';
     }, [])
 
     const handleAddSavePost = async (postId) => {
@@ -98,7 +99,7 @@ const Item = ({ images, user, name, description, address, area, price, id }) => 
             <div className='w-3/5'>
                 <div className='flex justify-between gap-4 w-full'>
                     <Link to={`${path.DETAIL}${formatVietnameseToString(name.replaceAll('/', '-'))}/${id}`} className='text-red-600 font-bold text-lg'>
-                        {name}
+                        {`${name} ${status === 'Hết phòng' ? '(Đã hết phòng)' : ''}`}
                     </Link>
                 </div>
                 <div className='py-2 flex items-center justify-between gap-2'>

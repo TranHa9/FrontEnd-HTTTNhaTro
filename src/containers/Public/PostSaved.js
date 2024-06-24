@@ -26,6 +26,7 @@ const PostSaved = () => {
                                 name={item?.post?.name}
                                 user={item?.post?.user}
                                 id={item?.postId}
+                                status={item?.status}
                             />
                         )
                     })}

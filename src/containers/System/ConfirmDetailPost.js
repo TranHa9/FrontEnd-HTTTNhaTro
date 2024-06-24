@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostsStatus } from '../../store/actions';
-import { Button, SliderCustom } from '../../components';
+import { Button, ModalComment, SliderCustom } from '../../components';
 import icons from '../../ultils/icons';
 import { formatDate } from '../../ultils/Common/formatDate';
 import moment from 'moment';
@@ -24,6 +24,7 @@ const ConfirmDetailPost = () => {
     const dispatch = useDispatch()
     const history = createBrowserHistory()
     const { postsStatus } = useSelector(state => state.post)
+    const [isModal, setIsModal] = useState(false)
 
     const [payload, setPayload] = useState({
         status: 'Đã duyệt'
@@ -56,21 +57,21 @@ const ConfirmDetailPost = () => {
         }
     }
 
-    const handleRefuseSubmit = async (id) => {
-        refuse.postId = id
-        const response = await apiUpdatePost(refuse)
-        if (response?.data.err === 0) {
-            Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
-                setRefuse({
-                    status: 'Đã hủy'
-                })
-                dispatch(action.getPostsStatus())
-                history.back();
-            })
-        } else {
-            Swal.fire("Thông báo", "Đã có lỗi", 'error')
-        }
-    }
+    // const handleRefuseSubmit = async (id) => {
+    //     refuse.postId = id
+    //     const response = await apiUpdatePost(refuse)
+    //     if (response?.data.err === 0) {
+    //         Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
+    //             setRefuse({
+    //                 status: 'Đã hủy'
+    //             })
+    //             dispatch(action.getPostsStatus())
+    //             history.back();
+    //         })
+    //     } else {
+    //         Swal.fire("Thông báo", "Đã có lỗi", 'error')
+    //     }
+    // }
 
     return (
         <div className='w-full flex gap-4'>
@@ -208,11 +209,16 @@ const ConfirmDetailPost = () => {
                     <Button
                         text={"Từ chối"}
                         bgColor={"bg-gray-300"}
-                        onClick={() => handleRefuseSubmit(postsStatus[0]?.id)}
+                        //onClick={() => handleRefuseSubmit(postsStatus[0]?.id)}
                         fullwidth
+                        onClick={() => {
+                            setIsModal(true)
+                            setRefuse({ ...refuse, postId: postsStatus[0]?.id })
+                        }}
                     />
                 </div>
             </div>
+            {isModal && <ModalComment setIsModal={setIsModal} refuse={refuse} setRefuse={setRefuse} type />}
         </div>
     )
 }

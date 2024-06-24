@@ -37,6 +37,11 @@ const CreatePost = ({ isEdit }) => {
     const [isLoading, setIsLoading] = useState(false)
     const { currentData } = useSelector(state => state.user)
     const [invalidFields, setInvalidFields] = useState([])
+    const [updateStatus, setUpdateStatus] = useState({
+        useId: currentData.id,
+        postId: dataEdit?.id,
+        status: 'Hết phòng'
+    })
 
     useEffect(() => {
         if (dataEdit && dataEdit.images && dataEdit.images) {
@@ -83,7 +88,7 @@ const CreatePost = ({ isEdit }) => {
                 finalPayload.postId = dataEdit?.id
                 const response = await apiUpdatePost(finalPayload)
                 if (response?.data.err === 0) {
-                    Swal.fire("Thông báo", "Đã sửa thành công đang chờ duyệt", "success").then(() => {
+                    Swal.fire("Thông báo", "Đã sửa thành công", "success").then(() => {
                         resetPayload()
                         setResets(true)
                         dispatch(resetDataEdit())
@@ -103,6 +108,17 @@ const CreatePost = ({ isEdit }) => {
                     Swal.fire("Thông báo", "Đã có lỗi", 'error')
                 }
             }
+        }
+    }
+    const handleSubmitStatus = async () => {
+        const response = await apiUpdatePost(updateStatus)
+        if (response?.data.err === 0) {
+            Swal.fire("Thông báo", "Cập nhật trạng thái thành công", "success").then(() => {
+                setUpdateStatus('')
+                dispatch(resetDataEdit())
+            })
+        } else {
+            Swal.fire("Thông báo", "Đã có lỗi", 'error')
         }
     }
     const resetPayload = () => {
@@ -195,9 +211,18 @@ const CreatePost = ({ isEdit }) => {
                 </div>
                 <div className='w-[30%] pt-12'>
                     <MapWithSearch address={payload.address} />
+                    {(isEdit && dataEdit?.status === 'Đã duyệt') && < div className='mt-3'>
+                        <Button
+                            onClick={handleSubmitStatus}
+                            text={'Đã hết phòng'}
+                            bgColor={'bg-secondary4'}
+                            textColor={'text-white'}
+                            fullwidth
+                        />
+                    </div>}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

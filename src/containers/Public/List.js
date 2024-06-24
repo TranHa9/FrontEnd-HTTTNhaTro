@@ -3,6 +3,7 @@ import { Item, Loading, NoSearch } from '../../components';
 import { getPostsLimit } from '../../store/actions/post';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import * as action from '../../store/actions';
 
 const List = ({ categoryId }) => {
     const dispatch = useDispatch()
@@ -10,6 +11,10 @@ const List = ({ categoryId }) => {
     const { posts } = useSelector(state => state.post)
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        dispatch(action.getPostsLimit())
+    }, [])
 
     useEffect(() => {
         setIsLoading(true);
@@ -35,6 +40,7 @@ const List = ({ categoryId }) => {
                 setIsLoading(false);
             });
     }, [searchParams, categoryId, sort])
+
     return (
         <div className='w-full p-2 bg-white shadow-lg rounded-md px-4'>
             <div className='flex items-center justify-between py-3'>
@@ -69,6 +75,7 @@ const List = ({ categoryId }) => {
                                     user={item?.user}
                                     id={item?.id}
                                     item={item}
+                                    status={item?.status}
                                 />
                             )
                         })}

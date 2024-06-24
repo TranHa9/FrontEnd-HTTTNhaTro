@@ -39,7 +39,8 @@ const DetailPost = () => {
     }
 
     const goLogin = useCallback((flag) => {
-        navigate(path.LOGIN, { state: { flag } })
+        //navigate(path.LOGIN, { state: { flag } })
+        window.location.href = '/login';
     }, [])
 
     useEffect(() => {
@@ -94,7 +95,7 @@ const DetailPost = () => {
                 <SliderCustom images={(posts && posts.length > 0 && posts[0]?.images) && JSON.parse(posts[0]?.images)} />
                 <div className='w-full bg-white shadow-md rounded-md p-6'>
                     <div className='flex flex-col gap-2'>
-                        <h2 className='text-2xl font-bold text-red-600'>{posts[0]?.name}</h2>
+                        <h2 className='text-2xl font-bold text-red-600'>{`${posts[0]?.name} ${posts[0]?.status === 'Hết phòng' ? '(Đã hết phòng)' : ''}`}</h2>
                         <div className=' flex items-center gap-2'>
                             <span>Chuyên mục:</span>
                             <span className='text-blue-600 underline font-medium hover:text-orange-600'>

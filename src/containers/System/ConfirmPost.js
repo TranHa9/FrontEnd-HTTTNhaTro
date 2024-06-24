@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, NoSearch } from '../../components'
+import { Button, ModalComment, NoSearch } from '../../components'
 import { useDispatch, useSelector } from 'react-redux'
 import * as actions from '../../store/actions'
 import { useEffect } from 'react';
@@ -19,6 +19,7 @@ const ConfirmPost = () => {
     const [searchParams] = useSearchParams()
     const { postsStatus } = useSelector(state => state.post)
     const [isLoading, setIsLoading] = useState(false)
+    const [isModal, setIsModal] = useState(false)
     const [sort, setSort] = useState(0)
     const [payload, setPayload] = useState({
         status: 'Đã duyệt'
@@ -72,18 +73,18 @@ const ConfirmPost = () => {
     }
 
     const handleRefuseSubmit = async (id) => {
-        refuse.postId = id
-        const response = await apiUpdatePost(refuse)
-        if (response?.data.err === 0) {
-            Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
-                setRefuse({
-                    status: 'Đã hủy'
-                })
-                dispatch(actions.getPostsStatus())
-            })
-        } else {
-            Swal.fire("Thông báo", "Đã có lỗi", 'error')
-        }
+        //refuse.postId = id
+        // const response = await apiUpdatePost(refuse)
+        // if (response?.data.err === 0) {
+        //     Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
+        //         setRefuse({
+        //             status: 'Đã hủy'
+        //         })
+        //         dispatch(actions.getPostsStatus())
+        //     })
+        // } else {
+        //     Swal.fire("Thông báo", "Đã có lỗi", 'error')
+        // }
     }
     const handlSearchName = (userName) => {
         navigate({
@@ -181,7 +182,10 @@ const ConfirmPost = () => {
                                                 <Button
                                                     text={"Từ chối"}
                                                     bgColor={"bg-gray-300"}
-                                                    onClick={() => handleRefuseSubmit(item?.id)}
+                                                    onClick={() => {
+                                                        setIsModal(true)
+                                                        setRefuse({ ...refuse, postId: item?.id })
+                                                    }}
                                                 />
                                             </div>
                                         </td>
@@ -193,6 +197,7 @@ const ConfirmPost = () => {
                 </div>
             }
             <Pagination typeConfirm />
+            {isModal && <ModalComment setIsModal={setIsModal} refuse={refuse} setRefuse={setRefuse} />}
         </div>
     )
 }

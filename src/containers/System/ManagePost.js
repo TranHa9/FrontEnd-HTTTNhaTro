@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import *as actions from '../../store/actions';
 import { formatDate } from '../../ultils/Common/formatDate';
-import { Button, Loading, ModalPost } from '../../components'
+import { Button, Loading, ModalComment, ModalPost } from '../../components'
 import icons from '../../ultils/icons';
 import { apiDeletePost } from '../../services';
 import Swal from 'sweetalert2';
 import { Pagination } from '../Public';
 import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { FaEye } from 'react-icons/fa';
 
 const ManagePost = () => {
     const { AiOutlineEdit, AiOutlineDelete, FaXmark } = icons
@@ -25,6 +26,8 @@ const ManagePost = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isDelete, setIsDelete] = useState(false)
     const [deleteId, setDeleteId] = useState(null);
+    const [isModal, setIsModal] = useState(false)
+    const [report, setReport] = useState('')
 
 
     useEffect(() => {
@@ -41,7 +44,6 @@ const ManagePost = () => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
-        //if (categoryId) searchParamsObject.categoryId = categoryId
         if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
         dispatch(actions.getPostsLimitUser(searchParamsObject))
             .then(() => {
@@ -87,6 +89,7 @@ const ManagePost = () => {
             }).toString()
         });
     }
+
     return (
         <div className='flex flex-col gap-6'>
             <div className='py-4 border-b border-gray-300 flex items-center justify-between'>
@@ -104,6 +107,7 @@ const ManagePost = () => {
                         <option value='2'>Đã hết hạn</option>
                         <option value='3'>Chờ duyệt</option>
                         <option value='4'>Đã hủy</option>
+                        <option value='5'>Hết phòng</option>
                     </select>
                 </div>
             </div>
@@ -146,12 +150,25 @@ const ManagePost = () => {
                                         <td className="px-2 py-3">{formatDate(item?.created)}</td>
                                         <td className="px-2 py-3">{formatDate(item?.expired)}</td>
                                         <td className="px-2 py-3">
-                                            {(item?.status === 'Đang chờ duyệt')
-                                                ? 'Chờ duyệt'
-                                                : (item?.status === 'Đã hủy')
-                                                    ? item?.status
-                                                    :
-                                                    checkExpiration(item?.expired)}
+                                            <div className='relative'>
+                                                {(item?.status === 'Đang chờ duyệt')
+                                                    ? 'Chờ duyệt'
+                                                    : item?.status === 'Hết phòng'
+                                                        ? 'Hết phòng'
+                                                        : (item?.status === 'Đã hủy')
+                                                            ? <div
+                                                                className="cursor-pointer underline text-blue-500 "
+                                                                title={item?.report}
+                                                                onClick={() => {
+                                                                    setIsModal(true)
+                                                                    setReport(item?.report)
+                                                                }}
+                                                            >
+                                                                {item?.status}
+                                                            </div>
+                                                            :
+                                                            checkExpiration(item?.expired)}
+                                            </div>
                                         </td>
                                         <td className="px-2 py-3">
                                             <div className='flex items-center justify-center gap-2 cursor-pointer'>
@@ -178,6 +195,7 @@ const ManagePost = () => {
                     </table>
                 </div>
             }
+            {isModal && <ModalComment setIsModal={setIsModal} report={report} />}
             {isEdit && <ModalPost setIsEdit={setIsEdit} />}
             {isDelete && <div
                 className='absolute top-0 left-0 right-0 bottom-0 bg-overlay-50 flex justify-center'
