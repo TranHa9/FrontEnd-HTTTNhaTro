@@ -24,7 +24,7 @@ const ModalComment = ({ setIsModal, refuse, setRefuse, report, type }) => {
             if (response?.data.err === 0) {
                 Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
                     setRefuse({
-                        status: 'Đã hủy'
+                        status: 'Đã từ chối'
                     })
                     dispatch(actions.getPostsStatus())
                     type && history.back();

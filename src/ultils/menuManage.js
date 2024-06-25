@@ -12,14 +12,14 @@ const menuManage = [
     },
     {
         id: '2',
-        text: 'Quản lý tin đăng',
+        text: 'Quản lý bài cho thuê',
         permissions: ['user'],
         path: "/he-thong/quan-ly-bai-dang",
         icon: <MdOutlinePostAdd />
     },
     {
         id: '3',
-        text: 'Quản lý tin đăng',
+        text: 'Quản lý bài cho thuê',
         permissions: ['admin'],
         path: "/he-thong/quan-ly-tat-ca-bai-dang",
         icon: <MdOutlinePostAdd />
@@ -31,16 +31,16 @@ const menuManage = [
         path: "/he-thong/quan-ly-nguoi-dung",
         icon: <MdOutlineManageAccounts />
     },
-    {
-        id: '5',
-        text: 'Thông tin tài khoản',
-        permissions: ['admin', 'user'],
-        path: "/he-thong/thong-tin-tai-khoan",
-        icon: <GrUserManager />
-    },
+    // {
+    //     id: '5',
+    //     text: 'Thông tin tài khoản',
+    //     permissions: ['admin', 'user'],
+    //     path: "/he-thong/thong-tin-tai-khoan",
+    //     icon: <GrUserManager />
+    // },
     {
         id: '6',
-        text: 'Duyệt bài đăng',
+        text: 'Duyệt bài cho thuê',
         permissions: ['admin'],
         path: "/he-thong/duyet-bai-dang",
         icon: <FaUserTag />
@@ -70,14 +70,14 @@ const menuSidebar = [
     },
     {
         id: '2',
-        text: 'Quản lý tin đăng',
+        text: 'Quản lý bài cho thuê',
         permissions: ['user'],
         path: "/he-thong/quan-ly-bai-dang",
         icon: <MdOutlinePostAdd />
     },
     {
         id: '3',
-        text: 'Quản lý tin đăng',
+        text: 'Quản lý bài cho thuê',
         permissions: ['admin'],
         path: "/he-thong/quan-ly-tat-ca-bai-dang",
         icon: <MdOutlinePostAdd />
@@ -89,16 +89,16 @@ const menuSidebar = [
         path: "/he-thong/quan-ly-nguoi-dung",
         icon: <MdOutlineManageAccounts />
     },
-    {
-        id: '5',
-        text: 'Thông tin tài khoản',
-        permissions: ['admin', 'user'],
-        path: "/he-thong/thong-tin-tai-khoan",
-        icon: <GrUserManager />
-    },
+    // {
+    //     id: '5',
+    //     text: 'Thông tin tài khoản',
+    //     permissions: ['admin', 'user'],
+    //     path: "/he-thong/thong-tin-tai-khoan",
+    //     icon: <GrUserManager />
+    // },
     {
         id: '6',
-        text: 'Duyệt bài đăng',
+        text: 'Duyệt bài cho thuê',
         permissions: ['admin'],
         path: "/he-thong/duyet-bai-dang",
         icon: <FaUserTag />

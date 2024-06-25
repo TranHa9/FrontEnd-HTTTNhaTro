@@ -1,5 +1,4 @@
 import React, { useCallback, useRef } from "react";
-import logo from '../../assets/logo.png';
 import { Button, User } from '../../components';
 import icons from "../../ultils/icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,7 +25,7 @@ const Header = () => {
                     <h1
                         className="text-lg font-bold text-[#E03C31] ml-5"
                     >
-                        Phòng Trọ SV
+                        Thông tin nhà trọ
                     </h1>
                 </Link>
                 <div className="flex items-center justify-center gap-1">

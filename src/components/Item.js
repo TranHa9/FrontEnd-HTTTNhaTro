@@ -125,7 +125,7 @@ const Item = ({ images, user, name, description, address, area, price, id, statu
                     <div className='flex items-center gap-2'>
                         <a
                             className='bg-redcover text-white p-1 rounded-md'
-                            href={`tel:${user?.zalo}`}
+                        //href={`tel:${user?.zalo}`}
                         >
                             {`Gọi ${user?.phone}`}
                         </a>

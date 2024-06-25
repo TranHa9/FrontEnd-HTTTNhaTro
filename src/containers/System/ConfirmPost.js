@@ -25,7 +25,7 @@ const ConfirmPost = () => {
         status: 'Đã duyệt'
     })
     const [refuse, setRefuse] = useState({
-        status: 'Đã hủy'
+        status: 'Đã từ chối'
     })
     const [userName, setUserName] = useState('');
 
@@ -78,7 +78,7 @@ const ConfirmPost = () => {
         // if (response?.data.err === 0) {
         //     Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
         //         setRefuse({
-        //             status: 'Đã hủy'
+        //             status: 'Đã từ chối'
         //         })
         //         dispatch(actions.getPostsStatus())
         //     })

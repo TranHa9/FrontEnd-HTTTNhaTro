@@ -106,7 +106,7 @@ const ManagePost = () => {
                         <option value='1'>Hoạt động</option>
                         <option value='2'>Đã hết hạn</option>
                         <option value='3'>Chờ duyệt</option>
-                        <option value='4'>Đã hủy</option>
+                        <option value='4'>Đã từ chối</option>
                         <option value='5'>Hết phòng</option>
                     </select>
                 </div>
@@ -155,7 +155,7 @@ const ManagePost = () => {
                                                     ? 'Chờ duyệt'
                                                     : item?.status === 'Hết phòng'
                                                         ? 'Hết phòng'
-                                                        : (item?.status === 'Đã hủy')
+                                                        : (item?.status === 'Đã từ chối')
                                                             ? <div
                                                                 className="cursor-pointer underline text-blue-500 "
                                                                 title={item?.report}

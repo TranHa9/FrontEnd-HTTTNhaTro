@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import iconMap from "../assets/map.png"
 import { apiGetPublicMap } from '../services';
-import Loading from './Loading';
 
 const MapWithSearch = ({ address }) => {
     const [coords, setCoords] = useState({ longitude: 105.8542, latitude: 21.0285 })

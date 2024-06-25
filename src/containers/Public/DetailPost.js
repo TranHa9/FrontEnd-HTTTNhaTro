@@ -201,7 +201,7 @@ const DetailPost = () => {
                     <h3 className='font-bold text-xl'>{posts[0]?.user?.name}</h3>
                     <a
                         className='w-full text-white font-bold text-lg bg-green-700 py-2 flex items-center justify-center gap-2 rounded-md'
-                        href={`tel:${posts[0]?.user.zalo}`}
+                    //href={`tel:${posts[0]?.user.zalo}`}
                     >
                         <FaPhoneAlt />
                         {posts[0]?.user?.phone}
