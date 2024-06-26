@@ -16,22 +16,30 @@ const Pagination = ({ type, typeUser, typeAll, typeConfirm, typeCategory }) => {
     const [isHideStart, setIsHideStart] = useState(false)
     const [searchParams] = useSearchParams()
 
+    // Chọn dữ liệu hiển thị dựa trên các type props truyền vào
     const postsCover = type ? postOfCurrent : typeUser ? users : typeAll ? postAll : typeConfirm ? postsStatus : typeCategory ? categories : posts
     const countCover = type ? postCount : typeUser ? countUser : typeAll ? countAll : typeConfirm ? countStatus : typeCategory ? countCategory : count
 
     useEffect(() => {
+        // Lấy số trang từ URL
         let page = searchParams.get('page')
+        // Nếu số trang trong URL khác trang hiện tại thì cập nhật trang hiện tại
         page && +page !== currentPage && setCurrentPage(+page)
+        // Nếu không có số trang trong URL thì đặt trang hiện tại là 1
         !page && setCurrentPage(1)
     }, [searchParams])
 
     useEffect(() => {
+        // Tính toán số trang tối đa
         let maxPage = Math.ceil(countCover / process.env.REACT_APP_LIMIT_POSTS)
+        // Tính toán trang kết thúc và trang bắt đầu để hiển thị
         let end = (currentPage + 2) > maxPage ? maxPage : (currentPage + 2)
         let start = (currentPage - 2) <= 1 ? 1 : (currentPage - 2)
         let temp = []
+        // Tạo mảng các số trang sẽ hiển thị
         for (let i = start; i <= end; i++) temp.push(i)
         setArrPage(temp)
+        // Kiểm soát việc ẩn/hiện nút cuối cùng và đầu tiên
         currentPage >= (maxPage - 2) ? setIsHideEnd(true) : setIsHideEnd(false)
         currentPage <= 3 ? setIsHideStart(true) : setIsHideStart(false)
     }, [countCover, postsCover, currentPage])

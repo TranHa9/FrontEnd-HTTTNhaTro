@@ -20,6 +20,9 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
     )
 
     const [activedEl, setActivedEl] = useState('')
+    const [addressPayload, setAddressPayload] = useState(null);
+
+    //Đọc sự thay đổi của thanh track để sét lại vị trí cho thumb
     useEffect(() => {
         const activedTrackEl = document.getElementById('track-active')
         if (activedTrackEl) {
@@ -33,39 +36,56 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
         }
     }, [persent1, persent2])
 
+    //Để lấy vị trí cho thumb khi kích trên thanh track
     const handleClickTrack = (e, value) => {
         e.stopPropagation()
         const stackEl = document.getElementById('track')
+
+        // Lấy kích thước và vị trí của phần tử 'track'
         const stacRect = stackEl.getBoundingClientRect()
+
+        // Tính toán phần trăm vị trí click trong thanh 'track'
         let percent = value ? value : Math.round((e.clientX - stacRect.left) * 100 / stacRect.width, 0)
+
+        // Kiểm tra vị trí click gần với persent1 hay persent2 hơn
         if (Math.abs(percent - persent1) <= (Math.abs(percent - persent2))) {
             setPersent1(percent)
         } else {
             setPersent2(percent)
         }
     }
+
+    //Chuyển thanh track đo từ 100 sang theo giá trị price hoặc area
     const convert100toTarget = (percent) => {
         return name === 'price'
             ? (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10
             : name === 'area' ? (Math.ceil(Math.round((percent * 0.9)) / 5) * 5) : 0
     }
+
+    //Chuyển thanh track đo từ giá trị price hoặc area sang 100
     const convertto100 = (percent) => {
         let target = name === 'price' ? 15 : name === 'area' ? 90 : 1
         return Math.floor((percent / target) * 100)
     }
+
+    //Lấy giá trị cho thanh track khi kích chọn ở mục chọn nhanh
     const handlActive = (code, value) => {
         setActivedEl(code)
         let arrMaxMin = name === 'price' ? getNumbersPrice(value) : getNumbersArea(value)
+        //Kiểm tra arrMaxMin có mấy phần tử
         if (arrMaxMin.length === 1) {
             if (arrMaxMin[0] === 1) {
+                //Sét lại giá trị từ 0 đến 1 (dưới 1 triệu)
                 setPersent1(0)
                 setPersent2(convertto100(1))
             }
             if (arrMaxMin[0] === 20) {
+                //Sét lại giá trị từ 0 đến 20 (dưới 20m)
                 setPersent1(0)
                 setPersent2(convertto100(20))
             }
             if (arrMaxMin[0] === 15 || arrMaxMin[0] === 90) {
+                //Sét lại giá trị 100 (trên 15 triệu || trên 90m)
                 setPersent1(100)
                 setPersent2(100)
             }
@@ -75,7 +95,6 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
             setPersent2(convertto100(arrMaxMin[1]))
         }
     }
-
     const handleSubmitAddress = (e) => {
         e.stopPropagation()
         setQueries({
@@ -87,7 +106,6 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
         });
         setIsShowModal(false);
     }
-    const [addressPayload, setAddressPayload] = useState(null);
 
     const handleAddressChange = (payload) => {
         setAddressPayload(payload);
@@ -118,19 +136,19 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
 
         let arrMinMax = [convertedMin, convertedMax]
         handleSubmit(e, {
-            [`${name}Number`]: `${(persent1 === persent2 && persent1 === 100) ? 'Trên ' : 'Từ '}${convert100toTarget(min)}${(persent1 === persent2 && persent1 === 100)
-                ? ''
-                : ` - ${convert100toTarget(max)}`} ${name === 'price' ? 'triệu' : 'm2'}`,
+            [`${name}Number`]: `${(persent1 === persent2 && persent1 === 100) ?
+                'Trên '
+                : 'Từ '}${convert100toTarget(min)}${(persent1 === persent2 && persent1 === 100)
+                    ? ''
+                    : ` - ${convert100toTarget(max)}`} ${name === 'price' ? 'triệu' : 'm2'}`,
             [name]: arrMinMax
         }, {
             [`${name}Arr`]: [min, max]
         })
     }
-
     return (
         <div
             onClick={(e) => { setIsShowModal(false) }}
-
             className='fixed top-0 left-0 right-0 bottom-0 bg-overlay-50 z-20 flex justify-center items-center'
         >
             <div
@@ -185,21 +203,20 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                             )
                         })}
                     </div>}
-                {(name === 'province')
-                    && <div className=' flex flex-col'>
-                        <div className='px-6'>
-                            <Address type setPayload={handleAddressChange} />
-                        </div>
-                        {(name === 'province') &&
-                            <button
-                                type='button'
-                                className='w-full absolute bottom-0 bg-redcover py-2 font-medium rounded-bl-md rounded-br-md'
-                                onClick={handleSubmitAddress}
-                            >
-                                Áp dụng
-                            </button>}
+                {(name === 'province') && <div className=' flex flex-col'>
+                    <div className='px-6'>
+                        <Address type setPayload={handleAddressChange} />
+                    </div>
+                    {(name === 'province') &&
+                        <button
+                            type='button'
+                            className='w-full absolute bottom-0 bg-redcover py-2 font-medium rounded-bl-md rounded-br-md'
+                            onClick={handleSubmitAddress}
+                        >
+                            Áp dụng
+                        </button>}
 
-                    </div>}
+                </div>}
                 {(name === 'price' || name === 'area') && <div className='p-12 py-20'>
                     <div className='flex flex-col items-center justify-center relative'>
                         <div className='z-20 absolute top-[-48px] font-bold text-xl text-orange-600'>
@@ -275,8 +292,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                             })}
                         </div>
                     </div>
-                </div>
-                }
+                </div>}
                 {(name === 'price' || name === 'area') &&
                     <button
                         type='button'

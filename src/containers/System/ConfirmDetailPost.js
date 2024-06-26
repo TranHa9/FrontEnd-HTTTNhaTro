@@ -57,22 +57,6 @@ const ConfirmDetailPost = () => {
         }
     }
 
-    // const handleRefuseSubmit = async (id) => {
-    //     refuse.postId = id
-    //     const response = await apiUpdatePost(refuse)
-    //     if (response?.data.err === 0) {
-    //         Swal.fire("Thông báo", "Đã từ chối", "success").then(() => {
-    //             setRefuse({
-    //                 status: 'Đã từ chối'
-    //             })
-    //             dispatch(action.getPostsStatus())
-    //             history.back();
-    //         })
-    //     } else {
-    //         Swal.fire("Thông báo", "Đã có lỗi", 'error')
-    //     }
-    // }
-
     return (
         <div className='w-full flex gap-4'>
             <div className='w-[70%]'>

@@ -17,7 +17,7 @@ const initState = {
 
 const postReducer = (state = initState, action) => {
     switch (action.type) {
-        case actionTypes.GET_POSTS:
+        // case actionTypes.GET_POSTS:
         case actionTypes.GET_POSTS_LIMIT:
             return {
                 ...state,

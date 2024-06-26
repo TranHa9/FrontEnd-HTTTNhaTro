@@ -3,7 +3,6 @@ import { Item, Loading, NoSearch } from '../../components';
 import { getPostsLimit } from '../../store/actions/post';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import * as action from '../../store/actions';
 
 const List = ({ categoryId }) => {
     const dispatch = useDispatch()
@@ -13,24 +12,26 @@ const List = ({ categoryId }) => {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        dispatch(action.getPostsLimit())
-    }, [])
-
-    useEffect(() => {
         setIsLoading(true);
+        // Tạo một mảng để lưu các cặp key-value từ searchParams
         let params = []
         for (let entry of searchParams.entries()) {
             params.push(entry)
         }
+        // Tạo đối tượng từ các cặp key-value trong params
         let searchParamsObject = {}
         params?.forEach(i => {
             if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+                // Nếu key đã tồn tại trong searchParamsObject, thêm giá trị vào mảng
                 searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
             } else {
+                // Nếu key chưa tồn tại, tạo key mới và gán giá trị là mảng chứa giá trị hiện tại
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
+        // Nếu có categoryId, thêm vào đối tượng searchParamsObject
         if (categoryId) searchParamsObject.categoryId = categoryId
+        // Nếu sort bằng 1, thêm thuộc tính order vào đối tượng searchParamsObject
         if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
         dispatch(getPostsLimit(searchParamsObject))
             .then(() => {
@@ -40,7 +41,6 @@ const List = ({ categoryId }) => {
                 setIsLoading(false);
             });
     }, [searchParams, categoryId, sort])
-
     return (
         <div className='w-full p-2 bg-white shadow-lg rounded-md px-4'>
             <div className='flex items-center justify-between py-3'>

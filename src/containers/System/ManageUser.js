@@ -30,15 +30,19 @@ const ManageUser = () => {
 
     useEffect(() => {
         setIsLoading(true);
+        // Tạo một mảng để lưu các cặp key-value từ searchParams
         let params = []
         for (let entry of searchParams.entries()) {
             params.push(entry)
         }
+        // Tạo đối tượng từ các cặp key-value trong params
         let searchParamsObject = {}
         params?.forEach(i => {
             if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+                // Nếu key đã tồn tại trong searchParamsObject, thêm giá trị vào mảng
                 searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
             } else {
+                // Nếu key chưa tồn tại, tạo key mới và gán giá trị là mảng chứa giá trị hiện tại
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })

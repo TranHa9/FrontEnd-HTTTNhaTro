@@ -7,16 +7,20 @@
     margin-bottom: 6px;
 }
 
+/* Định dạng lại cho input range cho các trình duyệt */
+/* Định dạng lại thanh track của type range cho trình duyệt Google Chrome và Safari. */
 input[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     height: 5px;
 }
 
+/* Định dạng lại thanh track của type range cho trình duyệt Mozilla Firefox. */
 input[type="range"]::-moz-range-track {
     -moz-appearance: none;
     height: 5px;
 }
 
+/* Định dạng lại điểm thumb của type range cho trình duyệt Google Chrome và Safari. */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 25px;
@@ -25,6 +29,7 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     box-shadow: 0px 0px 5px 0px;
     margin-top: -8px;
+    /*Tương tác với chuột*/
     pointer-events: auto;
     cursor: pointer;
 }
@@ -33,6 +38,7 @@ input[type="range"]::-webkit-slider-thumb:active {
     box-shadow: 0px 0px 5px 0px red;
 }
 
+/* Định dạng lại điểm thumb của type range cho trình duyệt Mozilla Firefox. */
 input[type="range"]::-moz-range-thumb {
     -moz-appearance: none;
     width: 25px;
@@ -49,6 +55,7 @@ input[type="range"]::-moz-range-thumb:active {
     box-shadow: 0px 0px 5px 0px red;
 }
 
+/* Định dạng lại nút chuyển ảnh slide */
 button.slick-arrow::before {
     font-size: 40px !important;
     color: yellow !important;

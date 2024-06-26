@@ -21,6 +21,7 @@ const ManagePostAll = () => {
     const [isEdit, setIsEdit] = useState(false)
     const [updateData, setUpdateData] = useState(false)
     const [posts, setPosts] = useState([])
+    const [category, setCategory] = useState(0)
     const [status, setStatus] = useState('0')
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -33,19 +34,22 @@ const ManagePostAll = () => {
 
     useEffect(() => {
         setIsLoading(true);
+        // Tạo một mảng để lưu các cặp key-value từ searchParams
         let params = []
         for (let entry of searchParams.entries()) {
             params.push(entry)
         }
+        // Tạo đối tượng từ các cặp key-value trong params
         let searchParamsObject = {}
         params?.forEach(i => {
             if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+                // Nếu key đã tồn tại trong searchParamsObject, thêm giá trị vào mảng
                 searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
             } else {
+                // Nếu key chưa tồn tại, tạo key mới và gán giá trị là mảng chứa giá trị hiện tại
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
-        //if (categoryId) searchParamsObject.categoryId = categoryId
         if (sort === 1) searchParamsObject.order = ['createdAt', 'DESC']
         dispatch(actions.getPostsAllAdmin(searchParamsObject))
             .then(() => {
@@ -85,6 +89,7 @@ const ManagePostAll = () => {
     const handlSatust = (e) => {
         setStatus(+e.target.value);
         setPosterUser('');
+        setCategory(0)
         navigate({
             pathname: location?.pathname,
             search: createSearchParams({
@@ -93,7 +98,9 @@ const ManagePostAll = () => {
         });
     }
     const handlCategory = (e) => {
+        setCategory(+e.target.value);
         setPosterUser('');
+        setStatus('0');
         navigate({
             pathname: location?.pathname,
             search: createSearchParams({
@@ -149,6 +156,7 @@ const ManagePostAll = () => {
                     <select
                         id="selectCategory"
                         onChange={handlCategory}
+                        value={category}
                         className='outline-none border p-2 border-gray-300 rounded-md cursor-pointer'>
                         <option value='0'>Lọc theo chuyên mục</option>
                         {categories?.map(item => {

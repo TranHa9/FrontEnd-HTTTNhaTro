@@ -1,12 +1,10 @@
 import React from 'react';
-import { ItemSidebar, RelatedPost } from '../../components'
+import { RelatedPost } from '../../components'
 import { List, Pagination } from './index';
 import { useLocation } from 'react-router-dom';
-import { dataAreas, dataPrices } from '../../ultils/data';
 
 const SearchDetail = () => {
     const location = useLocation()
-
     return (
         <div className='flex flex-col gap-3'>
             <div>
@@ -19,8 +17,6 @@ const SearchDetail = () => {
                     <Pagination />
                 </div>
                 <div className='w-[30%] flex flex-col gap-4 justify-start items-center'>
-                    {/* <ItemSidebar isDouble={true} type='priceCode' content={dataPrices} title='Xem theo giá' /> */}
-                    {/* <ItemSidebar isDouble={true} type='areaCode' content={dataAreas} title='Xem theo diện tích' /> */}
                     <RelatedPost />
                 </div>
             </div>

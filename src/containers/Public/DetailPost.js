@@ -180,7 +180,7 @@ const DetailPost = () => {
                                 </tr>
                                 <tr className='w-full '>
                                     <td className="px-4 py-3">Zalo</td>
-                                    <td className="px-4 py-3">{posts[0]?.user?.zalo}</td>
+                                    <td className="px-4 py-3">{posts[0]?.user?.zalo || 'Chưa cập nhật'}</td>
                                 </tr>
                             </tbody>
                         </table>
